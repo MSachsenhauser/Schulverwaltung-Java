@@ -8,30 +8,16 @@
 </head>
 <body>
 <%
-	String nickName = request.getParameter("txt_nickname");
-	String password = request.getParameter("txt_password");
-	if(nickName != "" && password != "")
-	{
-		if(nickName == "Michael" || nickName == "Nicole0")
-		{
-			if(password == "asdfg")
-			{
-				out.write("passt");		
-			}
-			else
-			{
-				out.write("<b>Passwort falsch</b>");
-			}
-		}
-		else
-		{
-			out.write("<b>Nickname falsch</b>");
-		}
-	}
+try
+{
+	out.write(request.getAttribute("LoginState").toString());
+}
+catch(Exception ex)
+{}
 %>
-<form method="post" action="Start.jsp">
-	<Label>Nickname</Label> &nbsp; &nbsp; <input type="text" name="txt_nickname" /><br />
-	<Label>Passwort</Label> &nbsp; &nbsp; <input type="password" name="txt_password" /><br />
+<form method="post" action="LoginServlet">
+	<Label>Nickname: </Label> &nbsp; &nbsp; <input type="text" name="txt_nickname" /><br />
+	<Label>Passwort: </Label> &nbsp; &nbsp; <input type="password" name="txt_password" /><br />
 	<input type="submit" value="Login" />
 </form>
 </body>
