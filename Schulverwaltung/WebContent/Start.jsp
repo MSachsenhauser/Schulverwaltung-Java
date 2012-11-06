@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@page import="Database.*" %>
+    <%@page import="model.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,10 +12,19 @@
 <%
 try
 {
-	out.write(request.getAttribute("LoginState").toString());
+	LoginState curLoginState = (LoginState)request.getAttribute("LoginState");
+	switch(curLoginState)
+	{
+		case LoggedIn: break;
+		case WrongUserNameOrPassword: break;
+		case NoUserName: break;
+		case NoPassword: break;
+	}
 }
 catch(Exception ex)
-{}
+{
+	out.write(ex.getMessage());
+}
 %>
 <form method="post" action="LoginServlet">
 	<Label>Nickname: </Label> &nbsp; &nbsp; <input type="text" name="txt_nickname" /><br />
