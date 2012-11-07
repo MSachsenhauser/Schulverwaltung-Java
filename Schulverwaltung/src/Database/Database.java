@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Database {
-	private String dburl = "jdbc:mysql://localhost:3306/zinssaetze?user='root'";
+	private String dburl = "jdbc:mysql://localhost:3306/schulverwaltung?user='root'";
 	private String dbdriver = "com.mysql.jdbc.Driver";
 	
 	private Connection conn;
@@ -15,7 +15,7 @@ public class Database {
     public Database()
     {
     }
-    
+
     public Database(String customUser)
     {
     	dburl = "jdbc:mysql://localhost:3306/zinssaetze?user='" + customUser + "'";
@@ -30,7 +30,6 @@ public class Database {
     {
     	dburl = "jdbc:mysql://localhost:3306/" + customDatabase + "?user='" + customUser + "'&password='" + customPassword + "'";
     }
-    
     
     private void getConnection()
     {
@@ -109,6 +108,7 @@ public class Database {
     	
     	try
     	{
+    		// SELECT Name from tbl_person WHere ID=1;
     		state = conn.createStatement();
     		ResultSet result = state.executeQuery(command);
     		result.first();
@@ -205,6 +205,7 @@ public class Database {
     {
     	try
     	{
+    		// Delete from tbl_person;
     		state = conn.createStatement();
     		return state.executeUpdate(command);
     	}
@@ -221,6 +222,5 @@ public class Database {
     protected void finalize()
     {
     	this.closeConnection();
-    	System.out.println("Ich bin drauﬂen");
     }
 }

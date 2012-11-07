@@ -1,5 +1,8 @@
 package model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.apache.jasper.tagplugins.jstl.core.Out;
 
 import Database.Database;
@@ -39,6 +42,7 @@ public class LoginBean {
 		
 		int foundLogin = db.getInt("SELECT COUNT(*) FROM tbl_Login WHERE Username ='" + this.userName + 
 								   "' AND Password='" + this.password + "'");
+		
 		if(foundLogin == 1)
 		{
 			this.state = LoginState.LoggedIn;
