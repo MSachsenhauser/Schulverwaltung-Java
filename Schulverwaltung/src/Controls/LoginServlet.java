@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.LoginBean;
+import model.LoginState;
 
 /**
  * Servlet implementation class LoginServlet
@@ -30,11 +31,14 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		String nickName = request.getParameter("txt_nickname");
 		String password = request.getParameter("txt_password");
 		LoginBean login = new LoginBean(nickName, password);
 		login.DoLogin();
+		if(login.getState() == LoginState.LoggedIn)
+		{
+			request.getSession().setAttribute("Login", login);
+		}
 		request.setAttribute("LoginState", login.getState());
 		RequestDispatcher view = request.getRequestDispatcher("Start.jsp");
 		view.forward(request, response);
@@ -47,5 +51,4 @@ public class LoginServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		this.doGet(request, response);
 	}
-
 }
