@@ -1,6 +1,6 @@
 package Elements;
 
-public class GradeType {
+public class GradeType implements IDatabaseObject{
 	private int id = -1;
 	private String description ="";
 	private double weight = 0.00;
@@ -22,5 +22,25 @@ public class GradeType {
 	}
 	public void setWeight(double weight) {
 		this.weight = weight;
+	}
+	@Override
+	public void addToDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void removeFromDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
 	}
 }

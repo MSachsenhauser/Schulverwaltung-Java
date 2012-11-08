@@ -1,6 +1,6 @@
 package Elements;
 
-public class Subject {
+public class Subject implements IDatabaseObject{
 	private int id = -1;
 	private String description ="";
 	
@@ -15,5 +15,25 @@ public class Subject {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	@Override
+	public void addToDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void removeFromDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
 	}
 }

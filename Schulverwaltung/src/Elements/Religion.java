@@ -1,6 +1,6 @@
 package Elements;
 
-public class Religion {
+public class Religion implements IDatabaseObject{
 	private int id = -1;
 	private String description ="";
 	private int subjectId = -1;
@@ -22,5 +22,25 @@ public class Religion {
 	}
 	public void setSubjectId(int subjectId) {
 		this.subjectId = subjectId;
+	}
+	@Override
+	public void addToDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void removeFromDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
 	}
 }

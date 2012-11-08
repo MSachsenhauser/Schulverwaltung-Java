@@ -49,4 +49,10 @@ public class Teacher extends Person{
 		
 	}
 
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

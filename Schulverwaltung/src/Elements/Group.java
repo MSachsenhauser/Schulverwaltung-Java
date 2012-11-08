@@ -1,6 +1,6 @@
 package Elements;
 
-public class Group {
+public class Group implements IDatabaseObject{
 	private int id = -1;
 	private String description = "";
 	private int timetableId = -1;
@@ -22,5 +22,25 @@ public class Group {
 	}
 	public void setTimetableId(int timetableId) {
 		this.timetableId = timetableId;
+	}
+	@Override
+	public void addToDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void removeFromDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
 	}
 }

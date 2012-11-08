@@ -1,6 +1,6 @@
 package Elements;
 
-public class Company {
+public class Company implements IDatabaseObject{
 	private int id = -1;
 	private String name = "";
 	private String street = "";
@@ -53,5 +53,29 @@ public class Company {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	@Override
+	public void addToDb() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeFromDb() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
 	}
 }

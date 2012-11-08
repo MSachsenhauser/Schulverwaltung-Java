@@ -1,6 +1,6 @@
 package Elements;
 
-public class Room {
+public class Room implements IDatabaseObject{
 	private int id = -1;
 	private String number = "";
 	private String description ="";
@@ -21,5 +21,25 @@ public class Room {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	@Override
+	public void addToDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void removeFromDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -21,7 +21,7 @@
 			<td align="center">
 				<table>
 					<tr>
-						<td><label>Username: </label></td>
+						<td><label>Benutzername: </label></td>
 						<td><input type="text" name="txt_nickname" value="<%= request.getParameter("txt_nickname") != null ? request.getParameter("txt_nickname") : "" %>" /></td>
 					</tr>
 					<tr>
@@ -63,10 +63,6 @@
 			</td>
 		</tr>
 	</table>
-	<!--  <Label>Nickname: </Label> &nbsp; &nbsp; <input type="text" name="txt_nickname" /><br />
-	<Label>Passwort: </Label> &nbsp; &nbsp; <input type="password" name="txt_password" /><br />
-	<input type="submit" value="Login" /> -->
-	
 </form>
 </body>
 </html>

@@ -34,4 +34,10 @@ public class Instructor extends Person{
 		this.companyId = companyId;
 		this.company = new Company(companyId);
 	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
+	}
 }

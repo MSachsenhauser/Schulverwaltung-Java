@@ -1,6 +1,6 @@
 package Elements;
 
-public abstract class Person {
+public abstract class Person implements IDatabaseObject {
 	private int id = -1;
 	private String name ="";
 	private String firstname ="";
@@ -37,10 +37,4 @@ public abstract class Person {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	public abstract void addToDb();
-	
-	public abstract void removeFromDb();
-	
-	public abstract void save();
 }

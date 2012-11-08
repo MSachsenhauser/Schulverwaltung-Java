@@ -38,4 +38,9 @@ public class Guardian extends Person{
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
+	}
 }

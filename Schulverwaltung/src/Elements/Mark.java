@@ -1,6 +1,6 @@
 package Elements;
 
-public class Mark {
+public class Mark implements IDatabaseObject{
 	private int id = -1;
 	private int mark = -1;
 	private int studentId = -1;
@@ -35,6 +35,26 @@ public class Mark {
 	}
 	public void setTrend(String trend) {
 		this.trend = trend;
+	}
+	@Override
+	public void addToDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void removeFromDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

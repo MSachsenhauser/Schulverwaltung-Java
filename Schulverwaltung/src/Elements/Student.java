@@ -83,4 +83,9 @@ public class Student extends Person{
 	{
 		
 	}
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
+	}
 }

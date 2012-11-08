@@ -1,6 +1,6 @@
 package Elements;
 
-public class Grade {
+public class Grade implements IDatabaseObject{
 	private int id = -1;
 	private String description = "";
 	private int roomId = -1;
@@ -33,5 +33,25 @@ public class Grade {
 	}
 	public Teacher getGradeTeacher() {
 		return gradeteacher;
+	}
+	@Override
+	public void addToDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void removeFromDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
 	}
 }

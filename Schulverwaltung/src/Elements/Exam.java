@@ -2,12 +2,21 @@ package Elements;
 
 import java.util.Date;
 
-public class Exam {
+public class Exam implements IDatabaseObject{
 	private int id = -1;
 	private int typeId = -1;
 	private Date date = new Date();
 	private int teacherId = -1;
+	private Teacher teacher = new Teacher();
 	private int subjectId = -1;
+	private Subject subject = new Subject();
+	
+	public Teacher getTeacher() {
+		return teacher;
+	}
+	public Subject getSubject() {
+		return subject;
+	}
 	public int getId() {
 		return id;
 	}
@@ -37,5 +46,25 @@ public class Exam {
 	}
 	public void setSubjectId(int subjectId) {
 		this.subjectId = subjectId;
+	}
+	@Override
+	public void addToDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void removeFromDb() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
 	}
 }
