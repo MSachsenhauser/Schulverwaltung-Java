@@ -9,7 +9,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Login</title>
 </head>
-<body>
+<body onLoad="document.getElementById('nickname').focus()">
+
 <form method="post" action="LoginServlet">
 	<table style="width: 100%; height: 100%">
 		<tr>
@@ -22,7 +23,7 @@
 				<table>
 					<tr>
 						<td><label>Benutzername: </label></td>
-						<td><input type="text" name="txt_nickname" value="<%= request.getParameter("txt_nickname") != null ? request.getParameter("txt_nickname") : "" %>" /></td>
+						<td><input type="text" name="txt_nickname" id="nickname" value="<%= request.getParameter("txt_nickname") != null ? request.getParameter("txt_nickname") : "" %>" /></td>
 					</tr>
 					<tr>
 						<td><label>Passwort: </label></td>
@@ -41,7 +42,7 @@
 									switch(curLoginState)
 									{
 										case LoggedIn:
-											out.write("<script language='javascript' type='text/javascript'>document.location = 'Berechnung.html';</script>"); 
+											out.write("<script language='javascript' type='text/javascript'>document.location = 'main.html';</script>"); 
 											break;
 										case WrongUserNameOrPassword: out.write("Falsche Logindaten"); break;
 										case NoUserName: out.write("Kein Benutzername"); break;

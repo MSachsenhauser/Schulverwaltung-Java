@@ -51,9 +51,8 @@ public class LoginBean {
 		
 		Database db = new Database();
 		
-		int foundLogin;// = db.getInt("SELECT COUNT(*) FROM tbl_Login WHERE Username ='" + this.userName + 
-						//		   "' AND Password='" + this.password + "'");
-		foundLogin = 1;
+		int foundLogin = db.getInt("SELECT COUNT(*) FROM Login WHERE Login ='" + this.userName + 
+								   "' AND Passwort='" + this.password + "'");
 		if(foundLogin == 1)
 		{
 			this.state = LoginState.LoggedIn;

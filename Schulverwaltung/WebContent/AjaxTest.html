@@ -4,8 +4,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 </head>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script language="javascript" type="text/javascript" src="Scripts/jquery.js"></script>
 <script language="javascript" type="text/javascript">
-
+$(document).ready(function(){
+	$("#dialog").hide();
+  	
+	  $( "#dialog" ).dialog( "option", "show", "slide" );
+	  $("#txtResult").click(function(){
+	    $(this).hide();
+	  });
+	  $("p").click(function(){
+		    $(this).fadeToggle();
+		  });
+	  $("button").click(function(){
+		$("#dialog").show();
+	  });
+	});
 function convertToDecimal()
 {
 	var url = "http://localhost:8080/Schulverwaltung/AjaxControl?key=" + escape(document.getElementById("txtTest").value);
@@ -16,12 +31,17 @@ function writeDecimal(result)
 {
 	document.getElementById("txtResult").value = result;
 }
+
+
 	
 </script>
-<script language="javascript" type="text/javascript" src="Ajax.js"></script>
+<script language="javascript" type="text/javascript" src="Scripts/Ajax.js"></script>
 <body>
+<div id="dialog" title="Dialog Title" >I'm in a dialog</div>
+<p>If you click on me, I will disappear.</p>
 	<input type="text" id="txtTest" onkeyup="convertToDecimal();" />
 	<br/>
 	<input type="text" id="txtResult" />
+	<button id="txtResult">test</button>
 </body>
 </html>

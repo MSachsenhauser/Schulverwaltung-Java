@@ -1,0 +1,22 @@
+td.MenuItem
+{
+	background-color: #91bfdd; 
+	padding: 5px;
+}
+
+td.MenuItem > a
+{
+	color: #00527E;
+	font-weight: bold;
+	font-size: 14pt;
+}
+
+td.MenuItem:hover
+{
+	background-color: #00527E;
+}
+
+td.MenuItem:hover > a
+{
+	color: White;
+}
