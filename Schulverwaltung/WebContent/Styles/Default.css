@@ -2,6 +2,7 @@ td.MenuItem
 {
 	background-color: #91bfdd; 
 	padding: 5px;
+	cursor: pointer;
 }
 
 td.MenuItem > a

@@ -1,7 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@page import="org.apache.catalina.Session"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="ISO-8859-1"%>
+    <%@page import="Database.*" %>
+    <%@page import="model.*" %>
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Startseite</title>
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 <script language="javascript" type="text/javascript" src="Scripts/jquery.js"></script>
@@ -9,6 +14,22 @@
 
 </head>
 <body>
+<% 
+		try
+		{
+			LoginBean curLogin = (LoginBean)request.getSession().getAttribute("Login");
+			curLogin.DoLogin();
+			if(curLogin.getState() != LoginState.LoggedIn)
+			{
+				out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp?href=main.jsp';</script>"); 
+			}
+		}
+		catch(Exception ex)
+		{
+			out.write(ex.getMessage());
+			out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp?href=main.jsp';</script>");
+		}
+%>
 <form method="post" action="LoginServlet">
 <center>
 	<table>
