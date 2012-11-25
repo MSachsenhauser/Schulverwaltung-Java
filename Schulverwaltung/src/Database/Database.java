@@ -57,7 +57,7 @@ public class Database implements Closeable {
 	 *            Auflistung der zu hinzufügenden Parameter anhand ihres Index
 	 * 
 	 * @return Liefert falls das Command 1 oder -1 bzw. true ausgibt True
-	 *         ansonsten False
+	 *         ansonsten False   asfsadf
 	 */
 	public boolean getBoolean(String command) {
 		boolean retVal;
