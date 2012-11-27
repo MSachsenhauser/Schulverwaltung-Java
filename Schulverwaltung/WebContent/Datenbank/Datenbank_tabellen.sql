@@ -226,3 +226,10 @@ login varchar(60) primary key,
 passwort varchar(20),
 email varchar (100)
 );
+
+
+insert into login
+(login, passwort, email) values 
+("Michael", "asdfg", "m.sachsenhauser@googlemail.com"),
+("Nicole", "123", "nicole.uhb@googlemail.com"), 
+("Administrator", "Administrator", "");
