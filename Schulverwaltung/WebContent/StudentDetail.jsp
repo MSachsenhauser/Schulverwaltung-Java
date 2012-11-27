@@ -20,7 +20,6 @@
 			curStudent.load();
 			request.setAttribute("CurStudent", curStudent);
 		}
-		List<Job> jobs = new List<Job>();
 	%>
 	<table>
 		<tr>
