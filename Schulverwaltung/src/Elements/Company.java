@@ -1,5 +1,10 @@
 package Elements;
 
+import java.sql.ResultSet;
+
+import Database.*;
+import Database.Error;
+
 public class Company implements IDatabaseObject<Company>{
 	private int id = -1;
 	private String name = "";
@@ -81,7 +86,18 @@ public class Company implements IDatabaseObject<Company>{
 
 	@Override
 	public Company load() {
-		// TODO Auto-generated method stub
+		try(Database db = new Database())
+		{
+			ResultSet result = db.getDataRows("SELECT * FROM beruf WHERE Id=?", this.getId());
+			while(result.next())
+			{
+				this.setName(result.getString("Name"));
+			}
+		}
+		catch(Exception ex)
+		{
+			Error.Out(ex);
+		}
 		return this;
 	}
 }
