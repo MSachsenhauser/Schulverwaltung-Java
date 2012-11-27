@@ -31,6 +31,7 @@ public class Error {
 						 exception + (extra != "" ? "\n\tDetails: " + extra : ""));
 			writer.flush();
 			writer.close();
+			// blablabal
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
