@@ -1,20 +1,22 @@
 package Elements;
 
-public class Subject implements IDatabaseObject{
+public class Subject implements IDatabaseObject<Subject>{
 	private int id = -1;
 	private String description ="";
 	
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public Subject setId(int id) {
 		this.id = id;
+		return this;
 	}
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public Subject setDescription(String description) {
 		this.description = description;
+		return this;
 	}
 	@Override
 	public void addToDb() {
@@ -32,8 +34,8 @@ public class Subject implements IDatabaseObject{
 		
 	}
 	@Override
-	public void load() {
+	public Subject load() {
 		// TODO Auto-generated method stub
-		
+		return this;
 	}
 }

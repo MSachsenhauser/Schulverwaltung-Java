@@ -1,26 +1,29 @@
 package Elements;
 
-public class Room implements IDatabaseObject{
+public class Room implements IDatabaseObject<Room>{
 	private int id = -1;
 	private String number = "";
 	private String description ="";
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public Room setId(int id) {
 		this.id = id;
+		return this;
 	}
 	public String getNumber() {
 		return number;
 	}
-	public void setNumber(String number) {
+	public Room setNumber(String number) {
 		this.number = number;
+		return this;
 	}
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public Room setDescription(String description) {
 		this.description = description;
+		return this;
 	}
 	@Override
 	public void addToDb() {
@@ -38,8 +41,8 @@ public class Room implements IDatabaseObject{
 		
 	}
 	@Override
-	public void load() {
+	public Room load() {
 		// TODO Auto-generated method stub
-		
+		return this;
 	}
 }

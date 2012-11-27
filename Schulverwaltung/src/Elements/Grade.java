@@ -1,6 +1,6 @@
 package Elements;
 
-public class Grade implements IDatabaseObject{
+public class Grade implements IDatabaseObject<Grade>{
 	private int id = -1;
 	private String description = "";
 	private int roomId = -1;
@@ -10,26 +10,30 @@ public class Grade implements IDatabaseObject{
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public Grade setId(int id) {
 		this.id = id;
+		return this;
 	}
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public Grade setDescription(String description) {
 		this.description = description;
+		return this;
 	}
 	public int getRoomId() {
 		return roomId;
 	}
-	public void setRoomId(int roomId) {
+	public Grade setRoomId(int roomId) {
 		this.roomId = roomId;
+		return this;
 	}
 	public int getTeacherId() {
 		return teacherId;
 	}
-	public void setTeacherId(int teacherId) {
+	public Grade setTeacherId(int teacherId) {
 		this.teacherId = teacherId;
+		return this;
 	}
 	public Teacher getGradeTeacher() {
 		return gradeteacher;
@@ -50,8 +54,8 @@ public class Grade implements IDatabaseObject{
 		
 	}
 	@Override
-	public void load() {
+	public Grade load() {
 		// TODO Auto-generated method stub
-		
+		return this;
 	}
 }

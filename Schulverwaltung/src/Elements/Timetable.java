@@ -2,21 +2,23 @@ package Elements;
 
 import java.util.Date;
 
-public class Timetable implements IDatabaseObject{
+public class Timetable implements IDatabaseObject<Timetable>{
 	private int id = -1;
 	private Date validTill = new Date();
 	
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public Timetable setId(int id) {
 		this.id = id;
+		return this;
 	}
 	public Date getValidTill() {
 		return validTill;
 	}
-	public void setValidTill(Date validTill) {
+	public Timetable setValidTill(Date validTill) {
 		this.validTill = validTill;
+		return this;
 	}
 	@Override
 	public void addToDb() {
@@ -34,8 +36,8 @@ public class Timetable implements IDatabaseObject{
 		
 	}
 	@Override
-	public void load() {
+	public Timetable load() {
 		// TODO Auto-generated method stub
-		
+		return this;
 	}
 }

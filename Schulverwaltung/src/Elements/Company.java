@@ -1,6 +1,6 @@
 package Elements;
 
-public class Company implements IDatabaseObject{
+public class Company implements IDatabaseObject<Company>{
 	private int id = -1;
 	private String name = "";
 	private String street = "";
@@ -21,38 +21,44 @@ public class Company implements IDatabaseObject{
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public Company setId(int id) {
 		this.id = id;
+		return this;
 	}
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public Company setName(String name) {
 		this.name = name;
+		return this;
 	}
 	public String getStreet() {
 		return street;
 	}
-	public void setStreet(String street) {
+	public Company setStreet(String street) {
 		this.street = street;
+		return this;
 	}
 	public String getPlz() {
 		return plz;
 	}
-	public void setPlz(String plz) {
+	public Company setPlz(String plz) {
 		this.plz = plz;
+		return this;
 	}
 	public String getCity() {
 		return city;
 	}
-	public void setCity(String city) {
+	public Company setCity(String city) {
 		this.city = city;
+		return this;
 	}
 	public String getPhone() {
 		return phone;
 	}
-	public void setPhone(String phone) {
+	public Company setPhone(String phone) {
 		this.phone = phone;
+		return this;
 	}
 
 	@Override
@@ -74,8 +80,8 @@ public class Company implements IDatabaseObject{
 	}
 
 	@Override
-	public void load() {
+	public Company load() {
 		// TODO Auto-generated method stub
-		
+		return this;
 	}
 }

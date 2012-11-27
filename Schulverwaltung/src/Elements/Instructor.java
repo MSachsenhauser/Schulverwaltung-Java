@@ -1,6 +1,6 @@
 package Elements;
 
-public class Instructor extends Person{
+public class Instructor extends Person<Instructor>{
 	private int companyId = -1;
 	private Company company = new Company();
 	
@@ -30,14 +30,15 @@ public class Instructor extends Person{
 		return companyId;
 	}
 
-	public void setCompanyId(int companyId) {
+	public Instructor setCompanyId(int companyId) {
 		this.companyId = companyId;
 		this.company = new Company(companyId);
+		return this;
 	}
 
 	@Override
-	public void load() {
+	public Instructor load() {
 		// TODO Auto-generated method stub
-		
+		return this;
 	}
 }

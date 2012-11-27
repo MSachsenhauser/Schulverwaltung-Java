@@ -1,6 +1,6 @@
 package Elements;
 
-public class GradeType implements IDatabaseObject{
+public class GradeType implements IDatabaseObject<GradeType>{
 	private int id = -1;
 	private String description ="";
 	private double weight = 0.00;
@@ -8,20 +8,23 @@ public class GradeType implements IDatabaseObject{
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public GradeType setId(int id) {
 		this.id = id;
+		return this;
 	}
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public GradeType setDescription(String description) {
 		this.description = description;
+		return this;
 	}
 	public double getWeight() {
 		return weight;
 	}
-	public void setWeight(double weight) {
+	public GradeType setWeight(double weight) {
 		this.weight = weight;
+		return this;
 	}
 	@Override
 	public void addToDb() {
@@ -39,8 +42,8 @@ public class GradeType implements IDatabaseObject{
 		
 	}
 	@Override
-	public void load() {
+	public GradeType load() {
 		// TODO Auto-generated method stub
-		
+		return this;
 	}
 }

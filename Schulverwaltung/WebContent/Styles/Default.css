@@ -21,3 +21,57 @@ td.MenuItem:hover > a
 {
 	color: White;
 }
+
+td.SelectedMenuItem
+{ 
+	padding: 5px;
+	cursor: pointer;
+	background-color: #00527E;
+}
+
+td.SelectedMenuItem > a
+{	
+	font-weight: bold;
+	font-size: 14pt;
+	color: White;
+	text-decoration: none;
+}
+
+td.SelectedMenuItem:hover >a
+{
+	text-decoration: underline;
+}
+
+table.DetailList
+{
+	width: 100%;
+	background-color: white;
+}
+
+tr.DetailEntry:hover >td
+{
+	width: 100%;
+	height: 10px;
+	background-color: lightYellow;
+}
+tr.DetailEntry > td
+{
+	width: 100%;
+	height: 10px;
+	background-color: lightGray;
+	cursor: pointer;
+	color: Black;
+}
+td.DetailHeader
+{
+	cursor:pointer;
+	background-color: lightBlue;	
+	font-size: larger;
+	font-weight: bold;
+}
+
+#HeaderRow
+{
+	position: relative ;
+	margin-top: -30px;
+}

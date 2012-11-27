@@ -1,6 +1,6 @@
 package Elements;
 
-public class Religion implements IDatabaseObject{
+public class Religion implements IDatabaseObject<Religion>{
 	private int id = -1;
 	private String description ="";
 	private int subjectId = -1;
@@ -8,20 +8,23 @@ public class Religion implements IDatabaseObject{
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public Religion setId(int id) {
 		this.id = id;
+		return this;
 	}
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public Religion setDescription(String description) {
 		this.description = description;
+		return this;
 	}
 	public int getSubjectId() {
 		return subjectId;
 	}
-	public void setSubjectId(int subjectId) {
+	public Religion setSubjectId(int subjectId) {
 		this.subjectId = subjectId;
+		return this;
 	}
 	@Override
 	public void addToDb() {
@@ -39,8 +42,8 @@ public class Religion implements IDatabaseObject{
 		
 	}
 	@Override
-	public void load() {
+	public Religion load() {
 		// TODO Auto-generated method stub
-		
+		return this;
 	}
 }

@@ -1,6 +1,6 @@
 package Elements;
 
-public class Mark implements IDatabaseObject{
+public class Mark implements IDatabaseObject<Mark>{
 	private int id = -1;
 	private int mark = -1;
 	private int studentId = -1;
@@ -9,32 +9,37 @@ public class Mark implements IDatabaseObject{
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public Mark setId(int id) {
 		this.id = id;
+		return this;
 	}
 	public int getMark() {
 		return mark;
 	}
-	public void setMark(int mark) {
+	public Mark setMark(int mark) {
 		this.mark = mark;
+		return this;
 	}
 	public int getStudentId() {
 		return studentId;
 	}
-	public void setStudentId(int studentId) {
+	public Mark setStudentId(int studentId) {
 		this.studentId = studentId;
+		return this;
 	}
 	public int getExamId() {
 		return examId;
 	}
-	public void setExamId(int examId) {
+	public Mark setExamId(int examId) {
 		this.examId = examId;
+		return this;
 	}
 	public String getTrend() {
 		return trend;
 	}
-	public void setTrend(String trend) {
+	public Mark setTrend(String trend) {
 		this.trend = trend;
+		return this;
 	}
 	@Override
 	public void addToDb() {
@@ -52,9 +57,8 @@ public class Mark implements IDatabaseObject{
 		
 	}
 	@Override
-	public void load() {
+	public Mark load() {
 		// TODO Auto-generated method stub
-		
+		return this;
 	}
-	
 }

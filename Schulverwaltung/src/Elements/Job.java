@@ -1,6 +1,6 @@
 package Elements;
 
-public class Job implements IDatabaseObject{
+public class Job implements IDatabaseObject<Job>{
 	private int id = -1;
 	private String description = "";
 	private double duration = 0.00;
@@ -8,20 +8,23 @@ public class Job implements IDatabaseObject{
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public Job setId(int id) {
 		this.id = id;
+		return this;
 	}
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public Job setDescription(String description) {
 		this.description = description;
+		return this;
 	}
 	public double getDuration() {
 		return duration;
 	}
-	public void setDuration(double duration) {
+	public Job setDuration(double duration) {
 		this.duration = duration;
+		return this;
 	}
 	@Override
 	public void addToDb() {
@@ -39,8 +42,8 @@ public class Job implements IDatabaseObject{
 		
 	}
 	@Override
-	public void load() {
+	public Job load() {
 		// TODO Auto-generated method stub
-		
+		return this;
 	}
 }

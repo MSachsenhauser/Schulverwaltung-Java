@@ -1,6 +1,6 @@
 package Elements;
 
-public abstract class Person implements IDatabaseObject {
+public abstract class Person <T> implements IDatabaseObject<T> {
 	private int id = -1;
 	private String name ="";
 	private String firstname ="";
@@ -10,31 +10,36 @@ public abstract class Person implements IDatabaseObject {
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public T setId(int id) {
 		this.id = id;
+		return (T) this;
 	}
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public T setName(String name) {
 		this.name = name;
+		return (T) this;
 	}
 	public String getFirstname() {
 		return firstname;
 	}
-	public void setFirstname(String firstname) {
+	public T setFirstname(String firstname) {
 		this.firstname = firstname;
+		return (T) this;
 	}
 	public String getTelefon() {
 		return phone;
 	}
-	public void setTelefon(String phone) {
+	public T setTelefon(String phone) {
 		this.phone = phone;
+		return (T) this;
 	}
 	public String getEmail() {
 		return email;
 	}
-	public void setEmail(String email) {
+	public T setEmail(String email) {
 		this.email = email;
+		return (T) this;
 	}
 }

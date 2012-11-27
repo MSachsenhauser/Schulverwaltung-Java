@@ -2,7 +2,7 @@ package Elements;
 
 import java.util.Date;
 
-public class Teacher extends Person{
+public class Teacher extends Person<Teacher>{
 	private Date birthday = new Date();
 	private int roomId = -1;
 	private double workhours = 0.00;
@@ -11,24 +11,27 @@ public class Teacher extends Person{
 			return birthday;
 		}
 
-		public void setBirthday(Date birthday) {
+		public Teacher setBirthday(Date birthday) {
 			this.birthday = birthday;
+			return this;
 		}
 
 		public int getRoomId() {
 			return roomId;
 		}
 
-		public void setRoomId(int roomId) {
+		public Teacher setRoomId(int roomId) {
 			this.roomId = roomId;
+			return this;
 		}
 
 		public double getWorkhours() {
 			return workhours;
 		}
 
-		public void setWorkhours(double workhours) {
+		public Teacher setWorkhours(double workhours) {
 			this.workhours = workhours;
+			return this;
 		}
 
 	@Override
@@ -50,9 +53,9 @@ public class Teacher extends Person{
 	}
 
 	@Override
-	public void load() {
+	public Teacher load() {
 		// TODO Auto-generated method stub
-		
+		return this;
 	}
 
 }

@@ -42,7 +42,9 @@
 									switch(curLoginState)
 									{
 										case LoggedIn:
-											out.write("<script language='javascript' type='text/javascript'>document.location = 'main.jsp';</script>"); 
+											out.write("<script language='javascript' type='text/javascript'>" + 
+												      "window.location.href = 'main.jsp';" +
+													  "</script>"); 
 											break;
 										case WrongUserNameOrPassword: out.write("Falsche Logindaten"); break;
 										case NoUserName: out.write("Kein Benutzername"); break;

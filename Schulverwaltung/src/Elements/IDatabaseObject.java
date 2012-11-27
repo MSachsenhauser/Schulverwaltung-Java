@@ -1,6 +1,6 @@
 package Elements;
 
-public interface IDatabaseObject {
+public interface IDatabaseObject<T> {
 	
 	/**
 	 * Methode zum Anlegen in der Datenbank
@@ -17,5 +17,5 @@ public interface IDatabaseObject {
 	 * */
 	void save();
 	
-	void load();
+	T load();
 }

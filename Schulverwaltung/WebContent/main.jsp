@@ -15,20 +15,20 @@
 </head>
 <body>
 <% 
-		try
+	try
+	{
+		LoginBean curLogin = (LoginBean)request.getSession().getAttribute("Login");
+		curLogin.DoLogin();
+		if(curLogin.getState() != LoginState.LoggedIn)
 		{
-			LoginBean curLogin = (LoginBean)request.getSession().getAttribute("Login");
-			curLogin.DoLogin();
-			if(curLogin.getState() != LoginState.LoggedIn)
-			{
-				out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp?href=main.jsp';</script>"); 
-			}
+			out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>"); 
 		}
-		catch(Exception ex)
-		{
-			out.write(ex.getMessage());
-			out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp?href=main.jsp';</script>");
-		}
+	}
+	catch(Exception ex)
+	{
+		out.write(ex.getMessage());
+		out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>");
+	}
 %>
 <form method="post" action="LoginServlet">
 <center>
@@ -43,8 +43,8 @@
 				<div>
 					<table>
 						<tr>
-							<td class="MenuItem"><a href="#1">Menü1</</a></td>
-							<td class="MenuItem"><a href="#2">Menü2</</a></td>
+							<td class="SelectedMenuItem"><a href="main.jsp">Start</</a></td>
+							<td class="MenuItem"><a href="Students.jsp">Schüler</</a></td>
 						</tr>
 					</table>
 				</div>

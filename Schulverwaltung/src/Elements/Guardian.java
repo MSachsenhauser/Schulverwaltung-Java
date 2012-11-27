@@ -1,25 +1,28 @@
 package Elements;
 
-public class Guardian extends Person{
+public class Guardian extends Person<Guardian>{
 	private String street = "";
 	private String plz = "";
 	public String getStreet() {
 		return street;
 	}
-	public void setStreet(String street) {
+	public Guardian setStreet(String street) {
 		this.street = street;
+		return this;
 	}
 	public String getPlz() {
 		return plz;
 	}
-	public void setPlz(String plz) {
+	public Guardian setPlz(String plz) {
 		this.plz = plz;
+		return this;
 	}
 	public String getCity() {
 		return city;
 	}
-	public void setCity(String city) {
+	public Guardian setCity(String city) {
 		this.city = city;
+		return this;
 	}
 	private String city = "";
 	
@@ -39,8 +42,8 @@ public class Guardian extends Person{
 		
 	}
 	@Override
-	public void load() {
+	public Guardian load() {
 		// TODO Auto-generated method stub
-		
+		return this;
 	}
 }
