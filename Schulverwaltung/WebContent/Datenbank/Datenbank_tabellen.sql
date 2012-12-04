@@ -15,6 +15,7 @@ create table schueler
 		eintrittsdatum date,
 		verkuerzt boolean,
 		telefon varchar(100),
+		email varchar (100),
 		ausbilderid int,
 		berufid int,
 		religionid int,
