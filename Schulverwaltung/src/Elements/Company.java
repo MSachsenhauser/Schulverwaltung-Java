@@ -12,7 +12,10 @@ public class Company implements IDatabaseObject<Company>{
 	private String plz = "";
 	private String city = "";
 	private String phone = "";
+	private int sperrkennzeichen = -1;
 	
+
+
 	public Company()
 	{
 		
@@ -65,6 +68,14 @@ public class Company implements IDatabaseObject<Company>{
 		this.phone = phone;
 		return this;
 	}
+	
+	public int getSperrkennzeichen() {
+		return sperrkennzeichen;
+	}
+
+	public void setSperrkennzeichen(int sperrkennzeichen) {
+		this.sperrkennzeichen = sperrkennzeichen;
+	}
 
 	@Override
 	public void addToDb() {
@@ -88,10 +99,15 @@ public class Company implements IDatabaseObject<Company>{
 	public Company load() {
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * FROM beruf WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * FROM betrieb WHERE Id=?", this.getId());
 			while(result.next())
 			{
 				this.setName(result.getString("Name"));
+				this.setCity(result.getString("city"));
+				this.setPhone(result.getString("phone"));
+				this.setPlz(result.getString("plz"));
+				this.setStreet(result.getString("street"));
+				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
 			}
 		}
 		catch(Exception ex)

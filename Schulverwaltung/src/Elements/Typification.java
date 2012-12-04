@@ -1,30 +1,27 @@
 package Elements;
 
 import java.sql.ResultSet;
-import java.util.Date;
 
 import Database.Database;
 import Database.Error;
 
-public class Timetable implements IDatabaseObject<Timetable>{
-	private int id = -1;
-	private int sperrkennzeichen = -1;
-	private Date validTill = new Date();
+public class Typification implements IDatabaseObject<Typification>{
 	
+	private int id = -1;
+	private String bezeichnung = "";
+	private int sperrkennzeichen = -1;
 	public int getId() {
 		return id;
+
 	}
-	public Timetable setId(int id) {
-		this.id = id;
+	public String getBezeichnung() {
+		return bezeichnung;
+	}
+	public Typification setBezeichnung(String bezeichnung) {
+		this.bezeichnung = bezeichnung;
 		return this;
 	}
-	public Date getValidTill() {
-		return validTill;
-	}
-	public Timetable setValidTill(Date validTill) {
-		this.validTill = validTill;
-		return this;
-	}
+	
 	public int getSperrkennzeichen() {
 		return sperrkennzeichen;
 	}
@@ -48,15 +45,18 @@ public class Timetable implements IDatabaseObject<Timetable>{
 		
 	}
 	@Override
-	public Timetable load() {
+	public Typification load() {
 		// TODO Auto-generated method stub
 		
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * FROM stundenplan WHERE Id=?", this.getId());
+			
+		
+			ResultSet result = db.getDataRows("SELECT * FROM vorbildung WHERE Id=?", this.getId());
 			while(result.next())
 			{
-				this.setValidTill(result.getDate("validTill"));
+				
+				this.setBezeichnung(result.getString("bezeichnung"));
 				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
 			}
 		}

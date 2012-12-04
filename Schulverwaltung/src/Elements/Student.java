@@ -1,6 +1,10 @@
 package Elements;
 
+import java.sql.ResultSet;
 import java.util.Date;
+
+import Database.Database;
+import Database.Error;
 
 public class Student extends Person<Student>{
 	private Date birthday = new Date();
@@ -12,6 +16,7 @@ public class Student extends Person<Student>{
 	private String street = "";
 	private String plz = "";
 	private String city = "";
+	private int sperrkennzeichen = -1;
 	
 	public Student()
 	{
@@ -102,6 +107,13 @@ public class Student extends Person<Student>{
 		this.shortened = shortened;
 		return this;
 	}
+	public int getSperrkennzeichen() {
+		return sperrkennzeichen;
+	}
+
+	public void setSperrkennzeichen(int sperrkennzeichen) {
+		this.sperrkennzeichen = sperrkennzeichen;
+	}
 	
 	@Override
 	public void addToDb()
@@ -123,6 +135,33 @@ public class Student extends Person<Student>{
 	@Override
 	public Student load() {
 		// TODO Auto-generated method stub
+		
+		try(Database db = new Database())
+		{
+			ResultSet result = db.getDataRows("SELECT * FROM schueler WHERE Id=?", this.getId());
+			while(result.next())
+			{
+				this.setBirthday(result.getDate("birthday"));
+				this.setCity(result.getString("city"));
+				this.setCompanyId(result.getInt("companyId"));
+				this.setEmail(result.getString("email"));
+				this.setEntry(result.getDate("entry"));
+				this.setFirstname(result.getString("firstname"));
+				this.setJobId(result.getInt("jobId"));
+				this.setName(result.getString("name"));
+				this.setPlz(result.getString("plz"));
+				this.setReligionId(result.getInt("religionId"));
+				this.setShortened(result.getBoolean("shortened"));
+				this.setBirthday(result.getDate("birthday"));
+				this.setTelefon(result.getString("phone"));
+				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
+			
+			}
+		}
+		catch(Exception ex)
+		{
+			Error.Out(ex);
+		}
 		return this;
 	}
 }
