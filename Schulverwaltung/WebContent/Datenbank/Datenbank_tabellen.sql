@@ -3,251 +3,251 @@
 create database schulverwaltung;
 use schulverwaltung
 
-create table schueler 
+create table student 
 	(
-		schuelerid int primary key,
-		nachname varchar(100),
-		vorname varchar(100),
-		strasse varchar (100),
-		ort varchar (100),
+		id int primary key,
+		name varchar(100),
+		firstname varchar(100),
+		street varchar (100),
+		city varchar (100),
 		plz varchar (100),
-		geburtsdatum date,
-		eintrittsdatum date,
-		verkuerzt boolean,
-		telefon varchar(100),
+		birthday date,
+		entry date,
+		shortened boolean,
+		phone varchar(100),
 		email varchar (100),
-		ausbilderid int,
-		berufid int,
-		religionid int,
+		intructorid int,
+		jobId int,
+		religionId int,
 		disableflag int
 	);
 
-create table fach
+create table subject
 	(
-		facid int primary key,
-		bezeichnung varchar(500),
+		id int primary key,
+		description varchar(500),
 		disableflag int
 	);
 
 create table religion
 	(
-		religionid int primary key,
-		bezeichnung varchar(500),
-		fachid int,
+		id int primary key,
+		description varchar(500),
+		subjectid int,
 		disableflag int
 	);
 
-create table stundenplan
+create table timetable
 	(
-		stundenplanid int primary key,
-		gueltigbis date,
+		id int primary key,
+		validTill date,
 		disableflag int
 	);
 
-create table gruppe
+create table group
 	(
-		gruppenid int primary key,
-		bezeichnung varchar(500),
+		id int primary key,
+		description varchar(500),
 		disableflag int
 	);
 
-create table erziehungsberechtigte
+create table guardian
 	(
-		erzbid int primary key,
-		nachname varchar (100),
-		vorname varchar(100),
-		telefon varchar (100),
-		strasse varchar (100),
-		ort varchar (100),
+		id int primary key,
+		name varchar (100),
+		firstname varchar(100),
+		phone varchar (100),
+		street varchar (100),
+		city varchar (100),
 		plz varchar (100),
 		disableflag int
 	);
 
-create table stunden2fach
+create table hour2subject
 	(
-		fachid int primary key,
-		stunden varchar(100),
-		gruppeid varchar(100),
+		subjectid int primary key,
+		hour varchar(100),
+		groupid varchar(100),
 		disableflag int
 	);
 
-create table vorbildung
+create table typification
 	(
-		vorbildungid int primary key,
-		bezeichnung varchar (500),
+		id int primary key,
+		description varchar (500),
 		disableflag int
 	);
 
-create table klasse
+create table grade
 	(
-		klasseid int primary key,
-		bezeichnung varchar (500),
-		klassenzimmerid int (100),
-		klassenleiterid int (100),
+		id int primary key,
+		description varchar (500),
+		roomId int (100),
+		teacherId int (100),
 		disableflag int
 	);
 
-create table pruefung
+create table exam
 	(
-		pruefungid int primary key,
-		typid int,
-		datum date,
-		fachid int,
-		lehrerid int,
+		id int primary key,
+		typeId int,
+		examdate date,
+		subjectId int,
+		teacherId int,
 		disableflag int
 	);
 
 create table beruf 
 	(
-		berufid int primary key,
-		bezeichnung varchar (500),
-		dauer int,
+		id int primary key,
+		description varchar (500),
+		duration int,
 		disableflag int
 	);
 
-create table betrieb
+create table company
 	(
-		betriebid int primary key,
+		id int primary key,
 		name varchar (100),
-		strasse varchar (100),
-		ort varchar (100),
+		street varchar (100),
+		city varchar (100),
 		plz varchar (100),
-		telefon varchar (100),
+		phone varchar (100),
 		disableflag int
 	);
 
-create table lehrer
+create table teacher
 	(
-		lehrerid int primary key,
-		nachname varchar (100),
-		vorname varchar (100),
-		telefon varchar (100),
+		id int primary key,
+		name varchar (100),
+		firstname varchar (100),
+		phone varchar (100),
 		email varchar (100),
-		raumid int,
-		geburtstag date,
-		arbeitsstunden dec(2,2),
+		roomid int,
+		birthday date,
+		workhours dec(2,2),
 		disableflag int
 	);
 
-create table raum
+create table room
 	(
-		raumid int primary key,
-		raumnummer varchar (20),
-		bezeichnung varchar (500),
+		id int primary key,
+		number varchar (20),
+		description varchar (500),
 		disableflag int
 	);
 
-create table ausbilder
+create table instructor
 	(
-		ausbilderid int primary key,
-		nachname varchar (100),
-		vorname varchar (100),
-		telefon varchar (100),
+		id int primary key,
+		name varchar (100),
+		firstname varchar (100),
+		phone varchar (100),
 		email varchar (100),
-		betriebid int,
+		companyid int,
 		disableflag int
 	);
 
-create table note
+create table mark
 	(
-		noteid int primary key,
-		note int,
-		schuelerid int,
-		pruefungid int,
-		tendenz varchar (1),
+		id int primary key,
+		mark int,
+		studentid int,
+		examid int,
+		trend varchar (1),
 		disableflag int
 	);
 
-create table note2typ
+create table marktype
 	(
-		typid int primary key,
-		bezeichnung varchar (500),
-		gewichtung decimal (4,2),
+		id int primary key,
+		description varchar (500),
+		weight decimal (4,2),
 		disableflag int
 	);
 
 
-create table gruppe2klasse
+create table group2grade
 	(
-		gruppeid int ,
-		klasseid int,
-		primary key (gruppeid, klasseid)
+		groupid int ,
+		gradeid int,
+		primary key (groupid, gradeid)
 	);
 
-create table schueler2erzb
+create table student2guardian
 	(
-		schuelerid int,
-		erzbid int,
-		primary key (schuelerid, erzbid)
-	);
-
-
-create table schueler2gruppe
-	(
-		schuelerid int,
-		gruppeid int,
-		primary key(schuelerid, gruppeid)
+		studentid int,
+		guardianid int,
+		primary key (studentid, guardianid)
 	);
 
 
-create table klassensprecher
+create table student2groop
 	(
-		schuelerid int,
-		klasseid int,
-		primary key (schuelerid, klasseid)
+		studentid int,
+		groupid int,
+		primary key(studentid, groupid)
 	);
 
-create table plan2stunden
+
+create table grademaster
 	(
-		stundenplanid int,
-		fachid int,
-		wochentag varchar (100),
-		gruppeid int,
-		stunde int,
-		primary key (stundenplanid, wochentag, stunde, gruppeid)
+		studentid int,
+		gradeid int,
+		primary key (studentid, gradeid)
 	);
 
-create table schueler2betrieb
+create table plan2hour
 	(
-		schuelerid int,
-		betriebid int,
-		primary key (schuelerid, betriebid)
+		timetableid int,
+		subjectid int,
+		weekday varchar (100),
+		groupid int,
+		hour int,
+		primary key (timetableid, weekday, hour, groupid)
 	);
 
-create table schueler2votbildung
+create table student2company
 	(
-		schuelerid int,
-		votbildungid int,
-		primary key (schuelerid, votbildungid)
+		studentid int,
+		companyid int,
+		primary key (studentid, companyid)
 	);
 
-create table gruppe2fach
+create table student2typification
 	(
-		gruppeid int,
-		fachid int,
-		raumid int,
-		lehrerid int,
-		primary key (gruppeid, fachid)
+		studentid int,
+		typificationid int,
+		primary key (studentid, typificationid)
 	);
 
-create table befreite2fach
+create table group2subject
 	(
-		schuelerid int,
-		fachid int,
-		antragsdatum date,
-		primary key (schuelerid, fachid)
+		groupid int,
+		subjectid int,
+		roomid int,
+		teacherid int,
+		primary key (groupid, subjectid)
+	);
+
+create table free2subjekt
+	(
+		studentid int,
+		subjectid int,
+		freedate date,
+		primary key (studentid, subjectid)
 	);
 
 create table login
 	(
 		login varchar(60) primary key,
-		passwort varchar(20),
+		password varchar(20),
 		email varchar (100)
 	);
 
 
 insert into login
-(login, passwort, email) values 
+(login, password, email) values 
 ("Michael", "asdfg", "m.sachsenhauser@googlemail.com"),
 ("Nicole", "123", "nicole.uhb@googlemail.com"), 
 ("Administrator", "Administrator", "");
