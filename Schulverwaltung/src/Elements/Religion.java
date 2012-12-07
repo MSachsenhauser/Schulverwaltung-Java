@@ -9,7 +9,7 @@ public class Religion implements IDatabaseObject<Religion>{
 	private int id = -1;
 	private String description ="";
 	private int subjectId = -1;
-	private int sperrkennzeichen = -1;
+	private int disableflag = -1;
 	
 	public int getId() {
 		return id;
@@ -32,12 +32,12 @@ public class Religion implements IDatabaseObject<Religion>{
 		this.subjectId = subjectId;
 		return this;
 	}
-	public int getSperrkennzeichen() {
-		return sperrkennzeichen;
+	public int getDisableflag() {
+		return disableflag;
 	}
 
-	public void setSperrkennzeichen(int sperrkennzeichen) {
-		this.sperrkennzeichen = sperrkennzeichen;
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
 	}
 
 	@Override
@@ -52,8 +52,20 @@ public class Religion implements IDatabaseObject<Religion>{
 	}
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
-		
+		try(Database db = new Database())
+		{
+			db.NoQuery("update religion set description = ?,subjectId = ?,disableflag = ?, where id = ?",
+					this.getDescription(),
+					this.getSubjectId(),
+					this.getDisableflag(),
+					this.getId());
+			
+			
+		}
+		catch(Exception ex)
+		{
+			Error.Out(ex);
+		}
 	}
 	@Override
 	public Religion load() {
@@ -67,7 +79,7 @@ public class Religion implements IDatabaseObject<Religion>{
 				
 				this.setDescription(result.getString("description"));
 				this.setSubjectId(result.getInt("subjectId"));
-				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
+				this.setDisableflag(result.getInt("disableflag"));
 			}
 		}
 		catch(Exception ex)

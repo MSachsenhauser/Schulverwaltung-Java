@@ -9,7 +9,7 @@ public class Group implements IDatabaseObject<Group>{
 	private int id = -1;
 	private String description = "";
 	private int timetableId = -1;
-	private int sperrkennzeichen = -1;
+	private int disableflag = -1;
 	
 	public int getId() {
 		return id;
@@ -32,12 +32,12 @@ public class Group implements IDatabaseObject<Group>{
 		this.timetableId = timetableId;
 		return this;
 	}
-	public int getSperrkennzeichen() {
-		return sperrkennzeichen;
+	public int getDisableflag() {
+		return disableflag;
 	}
 
-	public void setSperrkennzeichen(int sperrkennzeichen) {
-		this.sperrkennzeichen = sperrkennzeichen;
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
 	}
 	@Override
 	public void addToDb() {
@@ -51,21 +51,33 @@ public class Group implements IDatabaseObject<Group>{
 	}
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
-		
+		try(Database db = new Database())
+		{
+			db.NoQuery("update group set description = ?,timetableId = ?,disableflag = ? where id = ?",
+					this.getDescription(),
+					this.getTimetableId(),
+					this.getDisableflag(),
+					this.getId());
+			
+		}
+		catch(Exception ex)
+		{
+			Error.Out(ex);
+		}
 	}
+
 	@Override
 	public Group load() {
 		// TODO Auto-generated method stub
 		
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * FROM gruppe WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * FROM group WHERE Id=?", this.getId());
 			while(result.next())
 			{
 				this.setDescription(result.getString("description"));
 				this.setTimetableId(result.getInt("timetableId"));
-				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
+				this.setDisableflag(result.getInt("disableflag"));
 			}
 		}
 		catch(Exception ex)

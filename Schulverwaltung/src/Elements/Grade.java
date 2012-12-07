@@ -11,7 +11,7 @@ public class Grade implements IDatabaseObject<Grade>{
 	private int roomId = -1;
 	private int teacherId = -1;
 	private Teacher gradeteacher = new Teacher();
-	private int sperrkennzeichen = -1;
+	private int disableflag = -1;
 	
 	public int getId() {
 		return id;
@@ -44,12 +44,12 @@ public class Grade implements IDatabaseObject<Grade>{
 	public Teacher getGradeTeacher() {
 		return gradeteacher;
 	}
-	public int getSperrkennzeichen() {
-		return sperrkennzeichen;
+	public int getDisableflag() {
+		return disableflag;
 	}
 
-	public void setSperrkennzeichen(int sperrkennzeichen) {
-		this.sperrkennzeichen = sperrkennzeichen;
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
 	}
 	@Override
 	public void addToDb() {
@@ -63,7 +63,22 @@ public class Grade implements IDatabaseObject<Grade>{
 	}
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
+		try(Database db = new Database())
+		{
+			db.NoQuery("update grade set description = ?,roomId = ?,teacherId = ?, disableflag = ? where id = ?",
+					this.getDescription(),
+					this.getRoomId(),
+					this.getTeacherId(),
+					this.getDisableflag(),
+					this.getId());
+			
+		}
+		catch(Exception ex)
+		{
+			Error.Out(ex);
+		}
+	
+
 		
 	}
 	@Override
@@ -72,14 +87,14 @@ public class Grade implements IDatabaseObject<Grade>{
 				
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * FROM klasse WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * FROM grade WHERE Id=?", this.getId());
 			while(result.next())
 			{
 				
 				this.setDescription(result.getString("description"));
 				this.setRoomId(result.getInt("roomId"));
 				this.setTeacherId(result.getInt("teacherId"));
-				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
+				this.setDisableflag(result.getInt("disableflag"));
 				
 			}
 		}

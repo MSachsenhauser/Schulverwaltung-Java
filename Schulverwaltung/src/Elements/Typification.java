@@ -8,26 +8,26 @@ import Database.Error;
 public class Typification implements IDatabaseObject<Typification>{
 	
 	private int id = -1;
-	private String bezeichnung = "";
-	private int sperrkennzeichen = -1;
+	private String description = "";
+	private int disableflag = -1;
 	public int getId() {
 		return id;
 
 	}
 	public String getBezeichnung() {
-		return bezeichnung;
+		return description;
 	}
-	public Typification setBezeichnung(String bezeichnung) {
-		this.bezeichnung = bezeichnung;
+	public Typification setBezeichnung(String description) {
+		this.description = description;
 		return this;
 	}
 	
-	public int getSperrkennzeichen() {
-		return sperrkennzeichen;
+	public int getDisableflag() {
+		return disableflag;
 	}
 
-	public void setSperrkennzeichen(int sperrkennzeichen) {
-		this.sperrkennzeichen = sperrkennzeichen;
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
 	}
 	@Override
 	public void addToDb() {
@@ -41,8 +41,19 @@ public class Typification implements IDatabaseObject<Typification>{
 	}
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
-		
+		try(Database db = new Database())
+		{
+			db.NoQuery("update typification set description = ?, disableflag  = ? where id = ?",
+					this.getBezeichnung(),
+					this.getDisableflag(),
+					this.getId());
+			
+			
+		}
+		catch(Exception ex)
+		{
+			Error.Out(ex);
+		}
 	}
 	@Override
 	public Typification load() {
@@ -52,12 +63,12 @@ public class Typification implements IDatabaseObject<Typification>{
 		{
 			
 		
-			ResultSet result = db.getDataRows("SELECT * FROM vorbildung WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * FROM typification WHERE Id=?", this.getId());
 			while(result.next())
 			{
 				
-				this.setBezeichnung(result.getString("bezeichnung"));
-				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
+				this.setBezeichnung(result.getString("description"));
+				this.setDisableflag(result.getInt("sperrkennzeichen"));
 			}
 		}
 		catch(Exception ex)

@@ -10,7 +10,7 @@ public class Mark implements IDatabaseObject<Mark>{
 	private int mark = -1;
 	private int studentId = -1;
 	private int examId = -1;
-	private int sperrkennzeichen = -1;
+	private int disableflag = -1;
 	private String trend = "";
 	public int getId() {
 		return id;
@@ -47,12 +47,12 @@ public class Mark implements IDatabaseObject<Mark>{
 		this.trend = trend;
 		return this;
 	}
-	public int getSperrkennzeichen() {
-		return sperrkennzeichen;
+	public int getDisableflag() {
+		return disableflag;
 	}
 
-	public void setSperrkennzeichen(int sperrkennzeichen) {
-		this.sperrkennzeichen = sperrkennzeichen;
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
 	}
 	@Override
 	public void addToDb() {
@@ -66,8 +66,22 @@ public class Mark implements IDatabaseObject<Mark>{
 	}
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
-		
+		try(Database db = new Database())
+		{
+			db.NoQuery("update mark set examId = ?,mark = ?,studentId = ?, trend = ?, disableflag  = ? where id = ?",
+					this.getExamId(),
+					this.getMark(),
+					this.getStudentId(),
+					this.getTrend(),
+					this.getDisableflag(),
+					this.getId());
+			
+			
+		}
+		catch(Exception ex)
+		{
+			Error.Out(ex);
+		}
 	}
 	@Override
 	public Mark load() {
@@ -75,14 +89,14 @@ public class Mark implements IDatabaseObject<Mark>{
 		
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * FROM note WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * FROM mark WHERE Id=?", this.getId());
 			while(result.next())
 			{
 				this.setExamId (result.getInt("examId") );
 				this.setMark(result.getInt("mark"));
 				this.setStudentId(result.getInt("studentId"));
 				this.setTrend(result.getString("trend"));
-				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
+				this.setDisableflag(result.getInt("disableflag"));
 			}
 		}
 		catch(Exception ex)

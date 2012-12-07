@@ -9,7 +9,7 @@ public class MarkType implements IDatabaseObject<MarkType> {
 	private int id = -1;
 	private String description = "";
 	private double weight = 0.00;
-	private int sperrkennzeichen = -1;
+	private int disableflag = -1;
 
 	public int getId() {
 		return id;
@@ -37,12 +37,12 @@ public class MarkType implements IDatabaseObject<MarkType> {
 		this.weight = weight;
 		return this;
 	}
-	public int getSperrkennzeichen() {
-		return sperrkennzeichen;
+	public int getDisableflag() {
+		return disableflag;
 	}
 
-	public void setSperrkennzeichen(int sperrkennzeichen) {
-		this.sperrkennzeichen = sperrkennzeichen;
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
 	}
 
 	@Override
@@ -57,21 +57,33 @@ public class MarkType implements IDatabaseObject<MarkType> {
 
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
+		try(Database db = new Database())
+		{
+			db.NoQuery("update marktype set description = ?,weight = ?, disableflag  = ? where id = ?",
+					this.getDescription(),
+					this.getWeight(),
+					this.getDisableflag(),
+					this.getId());
+			
+			
+		}
+		catch(Exception ex)
+		{
+			Error.Out(ex);
+		}
 	}
-
 	@Override
 	public MarkType load() {
 		// TODO Auto-generated method stub
 		
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * FROM note2typ WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * FROM marktype WHERE Id=?", this.getId());
 			while(result.next())
 			{
 				this.setDescription(result.getString("description"));
 				this.setWeight(result.getDouble("weight"));
-				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
+				this.setDisableflag(result.getInt("disableflag"));
 			}
 		}
 		catch(Exception ex)

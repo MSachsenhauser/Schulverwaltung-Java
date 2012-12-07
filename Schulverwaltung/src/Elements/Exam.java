@@ -8,13 +8,13 @@ import Database.Error;
 
 public class Exam implements IDatabaseObject<Exam>{
 	private int id = -1;
-	private int typeId = -1;
-	private Date date = new Date();
+	private int typeid = -1;
+	private Date examdate = new Date();
 	private int teacherId = -1;
 	private Teacher teacher = new Teacher();
 	private int subjectId = -1;
 	private Subject subject = new Subject();
-	private int sperrkennzeichen = -1;
+	private int disableflag = -1;
 	
 	public Teacher getTeacher() {
 		return teacher;
@@ -30,17 +30,17 @@ public class Exam implements IDatabaseObject<Exam>{
 		return this;
 	}
 	public int getTypeId() {
-		return typeId;
+		return typeid;
 	}
 	public Exam setTypeId(int typeId) {
-		this.typeId = typeId;
+		this.typeid = typeId;
 		return this;
 	}
-	public Date getDate() {
-		return date;
+	public Date getExamdate() {
+		return examdate;
 	}
-	public Exam setDate(Date string) {
-		this.date = string;
+	public Exam setExamdate(Date string) {
+		this.examdate = string;
 		return this;
 	}
 	public int getTeacherId() {
@@ -58,12 +58,12 @@ public class Exam implements IDatabaseObject<Exam>{
 		return this;
 	}
 	
-	public int getSperrkennzeichen() {
-		return sperrkennzeichen;
+	public int getDisableflag() {
+		return disableflag;
 	}
 
-	public void setSperrkennzeichen(int sperrkennzeichen) {
-		this.sperrkennzeichen = sperrkennzeichen;
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
 	}
 	@Override
 	public void addToDb() {
@@ -77,8 +77,22 @@ public class Exam implements IDatabaseObject<Exam>{
 	}
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
-		
+		try(Database db = new Database())
+		{
+			db.NoQuery("update exam set date = ?,subjectId = ?,teacherId = ?, typeId = ?, disableflag  = ? where id = ?",
+					this.getExamdate(),
+					this.getSubjectId(),
+					this.getTeacherId(),
+					this.getTypeId(),
+					this.getDisableflag(),
+					this.getId());
+			
+			
+		}
+		catch(Exception ex)
+		{
+			Error.Out(ex);
+		}
 	}
 	@Override
 	public Exam load() {
@@ -86,14 +100,14 @@ public class Exam implements IDatabaseObject<Exam>{
 		
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * FROM pruefung WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * FROM exam WHERE Id=?", this.getId());
 			while(result.next())
 			{
-				this.setDate(result.getDate("date"));
+				this.setExamdate(result.getDate("date"));
 				this.setSubjectId(result.getInt("subjectId"));
 				this.setTeacherId(result.getInt("teacherId"));
 				this.setTypeId(result.getInt("typeId"));
-				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
+				this.setDisableflag(result.getInt("disableflag"));
 			}
 		}
 		catch(Exception ex)

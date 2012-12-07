@@ -9,14 +9,14 @@ import Database.Error;
 public class Student extends Person<Student>{
 	private Date birthday = new Date();
 	private Date entry = new Date();
-	private int companyId = -1;
+	private int intructorid = -1;
 	private int jobId = -1;
 	private int religionId = -1;
 	private Boolean shortened = false;
 	private String street = "";
 	private String plz = "";
 	private String city = "";
-	private int sperrkennzeichen = -1;
+	private int disableflag = -1;
 	
 	public Student()
 	{
@@ -63,13 +63,6 @@ public class Student extends Person<Student>{
 		this.entry = entry;
 		return this;
 	}
-	public int getCompanyId() {
-		return companyId;
-	}
-	public Student setCompanyId(int companyId) {
-		this.companyId = companyId;
-		return this;
-	}
 	
 	public Company getCompany()
 	{
@@ -107,13 +100,21 @@ public class Student extends Person<Student>{
 		this.shortened = shortened;
 		return this;
 	}
-	public int getSperrkennzeichen() {
-		return sperrkennzeichen;
+	public int getDisableflag() {
+		return disableflag;
 	}
 
-	public void setSperrkennzeichen(int sperrkennzeichen) {
-		this.sperrkennzeichen = sperrkennzeichen;
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
 	}
+	public int getIntructorid() {
+		return intructorid;
+	}
+
+	public void setIntructorid(int intructorid) {
+		this.intructorid = intructorid;
+	}
+
 	
 	@Override
 	public void addToDb()
@@ -128,22 +129,41 @@ public class Student extends Person<Student>{
 	}
 	
 	@Override
-	public void save()
+	public void save(){
+	try(Database db = new Database())
 	{
+		db.NoQuery("update student set birthday = ?,city = ?,email = ?, entry = ?, firstname = ?, jobId = ?, name = ?, plz = ?, religionId = ? , shortened = ? , phone = ? , disableflag  = ? where id = ?",
+				this.getBirthday(),
+				this.getCity(),
+				this.getEmail(),
+				this.getEntry(),
+				this.getFirstname(),
+				this.getJobId(),
+				this.getName(),
+				this.getPlz(),
+				this.getReligionId(),
+				this.getShortened(),
+				this.getTelefon(),
+				this.getDisableflag(),
+				this.getId());
+		
 		
 	}
-	@Override
+	catch(Exception ex)
+	{
+		Error.Out(ex);
+	}
+}
 	public Student load() {
 		// TODO Auto-generated method stub
 		
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * FROM schueler WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * FROM student WHERE Id=?", this.getId());
 			while(result.next())
 			{
 				this.setBirthday(result.getDate("birthday"));
 				this.setCity(result.getString("city"));
-				this.setCompanyId(result.getInt("companyId"));
 				this.setEmail(result.getString("email"));
 				this.setEntry(result.getDate("entry"));
 				this.setFirstname(result.getString("firstname"));
@@ -152,9 +172,9 @@ public class Student extends Person<Student>{
 				this.setPlz(result.getString("plz"));
 				this.setReligionId(result.getInt("religionId"));
 				this.setShortened(result.getBoolean("shortened"));
-				this.setBirthday(result.getDate("birthday"));
 				this.setTelefon(result.getString("phone"));
-				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
+				this.setDisableflag(result.getInt("disableflag"));
+				
 			
 			}
 		}

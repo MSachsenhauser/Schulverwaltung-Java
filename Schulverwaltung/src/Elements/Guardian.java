@@ -8,7 +8,7 @@ import Database.Error;
 public class Guardian extends Person<Guardian>{
 	private String street = "";
 	private String plz = "";
-	private int sperrkennzeichen = -1;
+	private int disableflag = -1;
 	public String getStreet() {
 		return street;
 	}
@@ -32,12 +32,12 @@ public class Guardian extends Person<Guardian>{
 	}
 	private String city = "";
 	
-	public int getSperrkennzeichen() {
-		return sperrkennzeichen;
+	public int getDisableflag() {
+		return disableflag;
 	}
 
-	public void setSperrkennzeichen(int sperrkennzeichen) {
-		this.sperrkennzeichen = sperrkennzeichen;
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
 	}
 	
 	@Override
@@ -52,16 +52,33 @@ public class Guardian extends Person<Guardian>{
 	}
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
-		
+		try(Database db = new Database())
+		{
+			db.NoQuery("update guardian set city = ?,email = ?,firstname = ?, name = ?, plz  = ?,street = ?, phone = ?, disableflag = ? where id = ?",
+					this.getCity(),
+					this.getEmail(),
+					this.getFirstname(),
+					this.getName(),
+					this.getPlz(),
+					this.getStreet(),
+					this.getTelefon(),
+					this.getDisableflag(),
+					this.getId());
+			
+		}
+		catch(Exception ex)
+		{
+			Error.Out(ex);
+		}
 	}
+
 	@Override
 	public Guardian load() {
 		// TODO Auto-generated method stub
 		
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * FROM erziehungsberechtigte WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * FROM guardian WHERE Id=?", this.getId());
 			while(result.next())
 			{
 				this.setCity(result.getString("city"));
@@ -71,7 +88,7 @@ public class Guardian extends Person<Guardian>{
 				this.setPlz(result.getString("plz"));
 				this.setStreet(result.getString("street"));
 				this.setTelefon(result.getString("phone"));
-				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
+				this.setDisableflag(result.getInt("disableflag"));
 				
 			}
 		}

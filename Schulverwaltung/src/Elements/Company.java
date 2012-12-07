@@ -12,7 +12,7 @@ public class Company implements IDatabaseObject<Company>{
 	private String plz = "";
 	private String city = "";
 	private String phone = "";
-	private int sperrkennzeichen = -1;
+	private int disableflag = -1;
 	
 
 
@@ -69,12 +69,12 @@ public class Company implements IDatabaseObject<Company>{
 		return this;
 	}
 	
-	public int getSperrkennzeichen() {
-		return sperrkennzeichen;
+	public int getDisableflag() {
+		return disableflag;
 	}
 
-	public void setSperrkennzeichen(int sperrkennzeichen) {
-		this.sperrkennzeichen = sperrkennzeichen;
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
 	}
 
 	@Override
@@ -92,22 +92,37 @@ public class Company implements IDatabaseObject<Company>{
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
-		
+		try(Database db = new Database())
+		{
+			db.NoQuery("update company set name = ?,street = ?,city = ?, plz = ?, phone  = ?, disableflag = ? where id = ?",
+					this.getName(),
+					this.getStreet(),
+					this.getCity(),
+					this.getPlz(),
+					this.getPhone(),
+					this.getDisableflag(),
+					this.getId());
+			
+		}
+		catch(Exception ex)
+		{
+			Error.Out(ex);
+		}
 	}
 
 	@Override
 	public Company load() {
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * FROM betrieb WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * FROM company WHERE Id=?", this.getId());
 			while(result.next())
 			{
-				this.setName(result.getString("Name"));
+				this.setName(result.getString("name"));
 				this.setCity(result.getString("city"));
 				this.setPhone(result.getString("phone"));
 				this.setPlz(result.getString("plz"));
 				this.setStreet(result.getString("street"));
-				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
+				this.setDisableflag(result.getInt("disableflag"));
 			}
 		}
 		catch(Exception ex)

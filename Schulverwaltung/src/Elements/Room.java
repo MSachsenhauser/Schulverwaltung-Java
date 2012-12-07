@@ -9,7 +9,7 @@ public class Room implements IDatabaseObject<Room>{
 	private int id = -1;
 	private String number = "";
 	private String description ="";
-	private int sperrkennzeichen = -1;
+	private int disableflag = -1;
 	public int getId() {
 		return id;
 	}
@@ -31,12 +31,12 @@ public class Room implements IDatabaseObject<Room>{
 		this.description = description;
 		return this;
 	}
-	public int getSperrkennzeichen() {
-		return sperrkennzeichen;
+	public int getDisableflag() {
+		return disableflag;
 	}
 
-	public void setSperrkennzeichen(int sperrkennzeichen) {
-		this.sperrkennzeichen = sperrkennzeichen;
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
 	}
 
 	@Override
@@ -51,8 +51,20 @@ public class Room implements IDatabaseObject<Room>{
 	}
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
-		
+		try(Database db = new Database())
+		{
+			db.NoQuery("update room set description = ?,number = ?, disableflag  = ? where id = ?",
+					this.getDescription(),
+					this.getNumber(),
+					this.getDisableflag(),
+					this.getId());
+			
+			
+		}
+		catch(Exception ex)
+		{
+			Error.Out(ex);
+		}
 	}
 	@Override
 	public Room load() {
@@ -60,13 +72,13 @@ public class Room implements IDatabaseObject<Room>{
 		
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * FROM raum WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * room raum WHERE Id=?", this.getId());
 			while(result.next())
 			{
 				
 				this.setDescription(result.getString("description"));
 				this.setNumber(result.getString("number"));
-				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
+				this.setDisableflag(result.getInt("disableflag"));
 			}
 		}
 		catch(Exception ex)

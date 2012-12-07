@@ -10,7 +10,7 @@ public class Teacher extends Person<Teacher>{
 	private Date birthday = new Date();
 	private int roomId = -1;
 	private double workhours = 0.00;
-	private int sperrkennzeichen = -1;
+	private int disableflag = -1;
 	
 	
 	public Date getBirthday() {
@@ -40,12 +40,12 @@ public class Teacher extends Person<Teacher>{
 			return this;
 		}
 		
-		public int getSperrkennzeichen() {
-			return sperrkennzeichen;
+		public int getDisableflag() {
+			return disableflag;
 		}
 
-		public void setSperrkennzeichen(int sperrkennzeichen) {
-			this.sperrkennzeichen = sperrkennzeichen;
+		public void setDisableflag(int disableflag) {
+			this.disableflag = disableflag;
 		}
 
 	@Override
@@ -62,8 +62,25 @@ public class Teacher extends Person<Teacher>{
 
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
-		
+		try(Database db = new Database())
+		{
+			db.NoQuery("update teacher set birthday = ?,email = ?,firstname = ?, name = ?, roomId = ?,phone = ?,workhours = ?, disableflag  = ? where id = ?",
+					this.getBirthday(),
+					this.getEmail(),
+					this.getFirstname(),
+					this.getName(),
+					this.getRoomId(),
+					this.getTelefon(),
+					this.getWorkhours(),
+					this.getDisableflag(),
+					this.getId());
+			
+			
+		}
+		catch(Exception ex)
+		{
+			Error.Out(ex);
+		}
 	}
 
 	@Override
@@ -72,7 +89,7 @@ public class Teacher extends Person<Teacher>{
 		
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * FROM lehrer WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * FROM teacher WHERE Id=?", this.getId());
 			while(result.next())
 			{
 				this.setBirthday(result.getDate("birthday"));
@@ -82,7 +99,7 @@ public class Teacher extends Person<Teacher>{
 				this.setRoomId(result.getInt("roomId"));
 				this.setTelefon(result.getString("phone"));
 				this.setWorkhours(result.getDouble("workhours"));
-				this.setSperrkennzeichen(result.getInt("sperrkennzeichen"));
+				this.setDisableflag(result.getInt("disableflag"));
 			}
 		}
 		catch(Exception ex)
