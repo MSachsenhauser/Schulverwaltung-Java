@@ -8,7 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Startseite</title>
-<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="Styles/Themes/redmond/jquery-ui.css" />
 <script language="javascript" type="text/javascript" src="Scripts/jquery.js"></script>
 <link href="Styles/Default.css" rel="stylesheet" type="text/css"/>
 
@@ -44,7 +44,7 @@
 					<table>
 						<tr>
 							<td class="SelectedMenuItem"><a href="main.jsp">Start</</a></td>
-							<td class="MenuItem"><a href="Students.jsp">Schüler</</a></td>
+							<td class="MenuItem"><a href="StudentServlet">Schüler</</a></td>
 						</tr>
 					</table>
 				</div>

@@ -1,8 +1,9 @@
 $(document).ready(function()
 		{
-			$("#btnSave").click(function()
+			$("#form").submit(function()
 					{
 						parent.closeDialog();
+						this.submit(); // use the native submit method of the form element
 					});
 		}
 );

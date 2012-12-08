@@ -7,7 +7,10 @@ function UseAjax(url, resultFunction, useXML)
 	req.open("Get", url, true);
 	useResponseXML = useXML;
 	resFunction = resultFunction;
-	req.onreadystatechange = callback;
+	if(resFunction != null)
+		{
+			req.onreadystatechange = callback;
+		}
 	req.send(null);
 }
 

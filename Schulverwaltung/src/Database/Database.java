@@ -111,59 +111,53 @@ public class Database implements AutoCloseable{
     
     private void addParamsToStatement(Object ... params)
     {
-    		for(int i = 0; i < params.length; i++)
+    	int paramIndex = 1;
+    		for(Object param:params)
     		{
     			try
     			{
-	    			Object param = params[i];
 	    			if(param.getClass().equals(String.class))
 	    			{
-	    				preparedStatement.setString(i, param.toString());
-	    				break;
+	    				preparedStatement.setString(paramIndex, param.toString());
 	    			}
 	    			
 	    			if(param.getClass().equals(int.class))
 	    			{
-	    				preparedStatement.setInt(i, (int)param);
-	    				break;
+	    				preparedStatement.setInt(paramIndex, (int)param);
 	    			}
 	    			
 	    			if(param.getClass().equals(double.class))
 	    			{
-	    				preparedStatement.setDouble(i, (double)param);
-	    				break;
+	    				preparedStatement.setDouble(paramIndex, (double)param);
 	    			}
 	    			
 	    			if(param.getClass().equals(Boolean.class))
 	    			{
-	    				preparedStatement.setBoolean(i, (Boolean)param);
-	    				break;
+	    				preparedStatement.setBoolean(paramIndex, (Boolean)param);
 	    			}
 	    			
 	    			if(param.getClass().equals(InputStream.class))
 	    			{
-	    				preparedStatement.setBlob(i, (InputStream)param);
-	    				break;
+	    				preparedStatement.setBlob(paramIndex, (InputStream)param);
 	    			}
 	    			
 	    			if(param.getClass().equals(byte[].class))
 	    			{
-	    				preparedStatement.setBytes(i, (byte[])param);
-	    				break;
+	    				preparedStatement.setBytes(paramIndex, (byte[])param);
 	    			}
 	    			
 	    			if(param.getClass().equals(java.sql.Date.class))
 	    			{
-	    				preparedStatement.setDate(i, (java.sql.Date)param);
-	    				break;
+	    				preparedStatement.setDate(paramIndex, (java.sql.Date)param);
 	    			}
 	    			
-	    			preparedStatement.setObject(i, param);
+	    			preparedStatement.setObject(paramIndex, param);
     			}
     			catch(Exception ex)
     			{
     				ex.printStackTrace();
     			}
+    			paramIndex++;
     		}
     }
     

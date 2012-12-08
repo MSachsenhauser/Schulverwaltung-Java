@@ -19,7 +19,8 @@ import Elements.*;
 @WebServlet("/StudentServlet")
 public class StudentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    private static String oldSortKey = "nachname";
+    private static String oldFilter = "";
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -32,22 +33,47 @@ public class StudentServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String filter = request.getAttribute("Filter").toString();
-		String sortKey = request.getAttribute("SortKey").toString();
-		String sql = "SELECT * FROM Schueler ";
-		
+		String filter = request.getParameter("Filter");
+		String sortKey = request.getParameter("SortKey");
+		Boolean showDisabled = request.getParameter("ShowDisabled") != null ? 
+							   true : 
+							   false;
+		String sql = "SELECT * FROM student ";
+		sql += " WHERE DisableFlag = " + (!showDisabled ? "0" : "0 OR DisableFlag = 1");
 		// Dann jetzt noch auf Parameter umstellen dann passts
-		if(!filter.isEmpty())
+		if(filter != null)
 		{
-			sql += " WHERE ";
-			// Hier dann die Ganzen dursuchenden Felder dazuschreiben
+			if(!filter.isEmpty())
+			{
+				sql += "AND( ";
+				sql += "Firstname like '" + filter + "%'";
+				sql += "OR Name like '" + filter + "%' ";
+				sql += ")";
+				// Hier dann die Ganzen dursuchenden Felder dazuschreiben
+			}
 		}
-		
-		if(!sortKey.isEmpty())
+		if(sortKey != null)
 		{
-			sql += " Order By " + sortKey;
+			if(!sortKey.isEmpty())
+			{
+				String orderKey = "";
+				switch(sortKey)
+				{
+					case "0": orderKey = "id"; break; 
+					case "1": orderKey = "firstname"; break;
+					case "2": orderKey = "name"; break;
+					default: orderKey = "name";
+				}
+				if(orderKey.equals(StudentServlet.oldSortKey))
+					{
+						orderKey += " DESC";
+					}
+				StudentServlet.oldSortKey = orderKey;
+				
+				sql += " Order By " + orderKey;
+			}
 		}
-		
+		System.out.println(sql);
 		LinkedList<Student> students = new LinkedList<Student>();
 	    Database db = new Database();
 	    ResultSet result = db.getDataRows(sql);
@@ -56,9 +82,7 @@ public class StudentServlet extends HttpServlet {
 			{
 				Student student = new Student();
 				student.setId(result.getInt("Id"));
-				// Hier nur die Daten laden die wir auch anzeigen wegen der Ladezeit!!
-				// Bei dem Detailfenster werden sowieso alle Daten nochmal geladen
-				
+				student.load();
 				students.add(student);
 			}
 		} catch (SQLException e) {
