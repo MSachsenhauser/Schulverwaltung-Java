@@ -57,6 +57,7 @@
 					<table>
 						<tr>
 							<td class="MenuItem"><a href="main.jsp">Start</a></td>
+							<td class="MenuItem"><a href="Administration.jsp">Administration</a></td>
 							<td class="SelectedMenuItem"><a href="Students.jsp">Schüler</a></td>
 						</tr>
 					</table>
@@ -106,7 +107,7 @@
 						out.write("			</tr>");
 						out.write("		</thead>");
 						out.write("		<tbody>");
-						if(students.size() > 0)
+						if(students != null && students.size() > 0)
 						{
 							for(Student student:students)
 							{
@@ -126,7 +127,7 @@
 			</td>
 		</tr>
 	</table>
+	</center>
 </form>
-</center>
 </body>
 </html>

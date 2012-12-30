@@ -44,6 +44,7 @@
 					<table>
 						<tr>
 							<td class="SelectedMenuItem"><a href="main.jsp">Start</</a></td>
+							<td class="MenuItem"><a href="Administration.jsp">Administration</a></td>
 							<td class="MenuItem"><a href="StudentServlet">Schüler</</a></td>
 						</tr>
 					</table>
