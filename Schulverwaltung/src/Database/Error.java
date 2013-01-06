@@ -2,7 +2,6 @@ package Database;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Logger;
 import java.io.*;
 public class Error {
 	
@@ -31,7 +30,6 @@ public class Error {
 						 exception + (extra != "" ? "\n\tDetails: " + extra : ""));
 			writer.flush();
 			writer.close();
-			// blablabal
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

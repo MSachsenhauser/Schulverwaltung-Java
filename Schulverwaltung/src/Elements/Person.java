@@ -1,5 +1,6 @@
 package Elements;
 
+@SuppressWarnings("unchecked")
 public abstract class Person <T> implements IDatabaseObject<T> {
 	private int id = -1;
 	private String name ="";
@@ -10,6 +11,7 @@ public abstract class Person <T> implements IDatabaseObject<T> {
 	public int getId() {
 		return id;
 	}
+
 	public T setId(int id) {
 		this.id = id;
 		return (T) this;

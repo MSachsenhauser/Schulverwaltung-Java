@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
-import java.util.Date;
 
 public class Database implements AutoCloseable{
 	private String dburl = "jdbc:mysql://localhost:3306/schulverwaltung?user='root'";
@@ -18,7 +17,6 @@ public class Database implements AutoCloseable{
     private PreparedStatement preparedStatement;
     public Database()
     {
-    	//abde
     }
 
     public Database(String customUser)
@@ -114,7 +112,7 @@ public class Database implements AutoCloseable{
     {
     	int paramIndex = 1;
     		if(params[0] instanceof Collection){
-    			for(Object param:(Collection)params[0])
+    			for(Object param:(Collection<?>)params[0])
     			{
     				try
         			{
