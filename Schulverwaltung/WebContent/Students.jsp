@@ -15,7 +15,13 @@
     <script src="Scripts/jquery-ui.js"></script>
     <link rel="stylesheet" href="/resources/demos/style.css" />
     <script language="javascript" type="text/javascript" src="Scripts/Ajax.js"></script>
-<script language="javascript" type="text/javascript" src="Scripts/Students.js"></script>
+	<script language="javascript" type="text/javascript" src="Scripts/List.js"></script>
+	<script language="javascript" type="text/javascript">
+		detailFileName = "StudentDetail.jsp";
+		deleteServlet = "DeleteStudentServlet";
+		deleteText = "Möchten Sie die ausgewählten Schüler wirklich entfernen?";
+		elementName = "Schüler";
+	</script>
 <link href="Styles/Default.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
@@ -58,14 +64,14 @@
 						<tr>
 							<td class="MenuItem"><a href="main.jsp">Start</a></td>
 							<td class="MenuItem"><a href="Administration.jsp">Administration</a></td>
-							<td class="SelectedMenuItem"><a href="Students.jsp">Schüler</a></td>
+							<td class="SelectedMenuItem"><a href="StudentServlet">Schüler</a></td>
 						</tr>
 					</table>
 				</div>
 			</td>
 		</tr>
 		<tr>
-			<td align="center" style="background: lightBlue; width: 100%; height: 400px">
+			<td align="center" style="background: lightBlue; width: 100%; height: 550px">
 				<div style="background: lightBlue; width: 100%;">
 					<table style="width: 100%;">
 						<tr>
@@ -93,9 +99,7 @@
 				<br/>
 				<div style="background: lightBlue; width: 100%; height: 100%; overflow: auto">
 					<%
-						LinkedList<Student> students = (LinkedList<Student>)request.getAttribute("Students");
-						/* LinkedList<Student> students = new LinkedList();
-						students.add(new Student().setId(2));*/
+						ArrayList<Student> students = (ArrayList<Student>)request.getAttribute("List");
 						out.write("	<table class=\"DetailList\" border=1>\n");
 						out.write("		<thead style=\"background-color: white\">");
 						out.write("			<tr>");

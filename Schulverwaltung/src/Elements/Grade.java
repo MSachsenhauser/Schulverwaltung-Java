@@ -10,7 +10,7 @@ public class Grade implements IDatabaseObject<Grade>{
 	private String description = "";
 	private int roomId = -1;
 	private int teacherId = -1;
-	private Teacher gradeteacher = new Teacher();
+	private Teacher teacher = null;
 	private int disableflag = -1;
 	
 	public int getId() {
@@ -39,10 +39,15 @@ public class Grade implements IDatabaseObject<Grade>{
 	}
 	public Grade setTeacherId(int teacherId) {
 		this.teacherId = teacherId;
+		this.teacher = null;
 		return this;
 	}
-	public Teacher getGradeTeacher() {
-		return gradeteacher;
+	public Teacher getTeacher() {
+		if(teacher == null)
+		{
+			teacher = new Teacher().setId(this.teacherId).load();
+		}
+		return teacher;
 	}
 	public int getDisableflag() {
 		return disableflag;

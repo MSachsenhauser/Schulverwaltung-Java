@@ -13,9 +13,5 @@
 	</classpathentry>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry exported="true" kind="lib" path="C:/xampp/tomcat/bin/tomcat-juli.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/xampp/tomcat/lib/jsp-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/xampp/tomcat/lib/catalina.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/xampp/tomcat/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

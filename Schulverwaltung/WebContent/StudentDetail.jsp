@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="Elements.*" %>
 <%@ page import="java.text.*" %>
-<%@ page import="Controls.StudentDetailServlet" %>
+<%@ page import="Servlets.StudentDetailServlet" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +13,7 @@
 </head>
 <body>
 <%
-		int studentId = Integer.parseInt(request.getParameter("StudentId"));
+		int studentId = Integer.parseInt(request.getParameter("Id"));
 		Student curStudent = new Student().setId(studentId);
 		if(curStudent.getId() != -1)
 		{

@@ -77,6 +77,11 @@ td.DetailHeader:hover
 
 #HeaderRow
 {
-	position: relative ;
+	position: relative;
 	margin-top: -30px;
+}
+
+body.TabItem
+{
+	 height: 400px;
 }

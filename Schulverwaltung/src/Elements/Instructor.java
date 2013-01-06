@@ -8,9 +8,13 @@ import Database.Error;
 public class Instructor extends Person<Instructor>{
 	private int companyId = -1;
 	private int disableflag = -1;
-	private Company company = new Company();
+	private Company company = null;
 	
 	public Company getCompany() {
+		if(this.company == null)
+		{
+			this.company = new Company().setId(this.companyId).load();
+		}
 		return company;
 	}
 	public int getDisableflag() {
@@ -58,7 +62,7 @@ public class Instructor extends Person<Instructor>{
 
 	public Instructor setCompanyId(int companyId) {
 		this.companyId = companyId;
-		this.company = new Company(companyId);
+		this.company = null;
 		return this;
 	}
 

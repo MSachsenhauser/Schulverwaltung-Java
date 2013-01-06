@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.Date;
 
 public class Database implements AutoCloseable{
@@ -98,7 +99,7 @@ public class Database implements AutoCloseable{
     	try
     	{
     		preparedStatement = conn.prepareStatement(command);
-    		this.addParamsToStatement(params);
+    	    this.addParamsToStatement(params);
     		ResultSet result = preparedStatement.executeQuery();
     		return result;
     	}
@@ -112,11 +113,62 @@ public class Database implements AutoCloseable{
     private void addParamsToStatement(Object ... params)
     {
     	int paramIndex = 1;
+    		if(params[0] instanceof Collection){
+    			for(Object param:(Collection)params[0])
+    			{
+    				try
+        			{
+        				if(param.getClass().equals(String.class))
+    	    			{
+    	    				preparedStatement.setString(paramIndex, param.toString());
+    	    			}
+    	    			
+    	    			if(param.getClass().equals(int.class))
+    	    			{
+    	    				preparedStatement.setInt(paramIndex, (int)param);
+    	    			}
+    	    			
+    	    			if(param.getClass().equals(double.class))
+    	    			{
+    	    				preparedStatement.setDouble(paramIndex, (double)param);
+    	    			}
+    	    			
+    	    			if(param.getClass().equals(Boolean.class))
+    	    			{
+    	    				preparedStatement.setBoolean(paramIndex, (Boolean)param);
+    	    			}
+    	    			
+    	    			if(param.getClass().equals(InputStream.class))
+    	    			{
+    	    				preparedStatement.setBlob(paramIndex, (InputStream)param);
+    	    			}
+    	    			
+    	    			if(param.getClass().equals(byte[].class))
+    	    			{
+    	    				preparedStatement.setBytes(paramIndex, (byte[])param);
+    	    			}
+    	    			
+    	    			if(param.getClass().equals(java.sql.Date.class))
+    	    			{
+    	    				preparedStatement.setDate(paramIndex, (java.sql.Date)param);
+    	    			}
+    	    			
+    	    			preparedStatement.setObject(paramIndex, param);
+        			}
+        			catch(Exception ex)
+        			{
+        				ex.printStackTrace();
+        			}
+        			paramIndex++;
+    			}
+    			return;
+    		}
+    		
     		for(Object param:params)
     		{
     			try
     			{
-	    			if(param.getClass().equals(String.class))
+    				if(param.getClass().equals(String.class))
 	    			{
 	    				preparedStatement.setString(paramIndex, param.toString());
 	    			}

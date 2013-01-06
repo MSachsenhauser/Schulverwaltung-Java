@@ -77,4 +77,9 @@ public class Typification implements IDatabaseObject<Typification>{
 		}
 		return this;
 	}
+	@Override
+	public Typification setId(int id) {
+		this.id = id;
+		return this;
+	}
 }

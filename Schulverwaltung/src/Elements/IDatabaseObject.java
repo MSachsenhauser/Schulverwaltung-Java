@@ -18,4 +18,6 @@ public interface IDatabaseObject<T> {
 	void save();
 	
 	T load();
+	
+	T setId(int id);
 }

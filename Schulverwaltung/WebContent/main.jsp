@@ -1,6 +1,6 @@
 <%@page import="org.apache.catalina.Session"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="UTF-8"%>
     <%@page import="Database.*" %>
     <%@page import="model.*" %>
 <!DOCTYPE html>
@@ -45,14 +45,14 @@
 						<tr>
 							<td class="SelectedMenuItem"><a href="main.jsp">Start</</a></td>
 							<td class="MenuItem"><a href="Administration.jsp">Administration</a></td>
-							<td class="MenuItem"><a href="StudentServlet">Schüler</</a></td>
+							<td class="MenuItem"><a href="StudentServlet">SchÃ¼ler</</a></td>
 						</tr>
 					</table>
 				</div>
 			</td>
 		</tr>
 		<tr>
-			<td align="center" style="background: lightBlue; width: 100%; height: 450px">
+			<td align="center" style="background: lightBlue; width: 100%; height: 550px">
 				<div style="background: lightBlue; width: 100%; height: 100%">
 				
 				</div>

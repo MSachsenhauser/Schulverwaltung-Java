@@ -97,7 +97,7 @@ create table exam
 		disableflag int
 	);
 
-create table beruf 
+create table job 
 	(
 		id int primary key,
 		description varchar (500),

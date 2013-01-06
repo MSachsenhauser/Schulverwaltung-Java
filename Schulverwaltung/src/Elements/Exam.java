@@ -11,15 +11,23 @@ public class Exam implements IDatabaseObject<Exam>{
 	private int typeid = -1;
 	private Date examdate = new Date();
 	private int teacherId = -1;
-	private Teacher teacher = new Teacher();
+	private Teacher teacher = null;
 	private int subjectId = -1;
 	private Subject subject = new Subject();
 	private int disableflag = -1;
-	
+
 	public Teacher getTeacher() {
+		if(teacher == null)
+		{
+			teacher = new Teacher().setId(this.teacherId).load();
+		}
 		return teacher;
 	}
 	public Subject getSubject() {
+		if(this.subject == null)
+		{
+			this.subject = new Subject().setId(this.subjectId).load();
+		}
 		return subject;
 	}
 	public int getId() {
@@ -48,6 +56,7 @@ public class Exam implements IDatabaseObject<Exam>{
 	}
 	public Exam setTeacherId(int string) {
 		this.teacherId = string;
+		this.teacher = null;
 		return this;
 	}
 	public int getSubjectId() {
@@ -55,6 +64,7 @@ public class Exam implements IDatabaseObject<Exam>{
 	}
 	public Exam setSubjectId(int string) {
 		this.subjectId = string;
+		this.subject = null;
 		return this;
 	}
 	

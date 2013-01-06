@@ -1,4 +1,4 @@
-package Elements;
+package Helpers;
 
 public class CheckString 
 {

@@ -58,8 +58,6 @@ public class Job implements IDatabaseObject<Job>{
 					this.getDuration(),
 					this.getDisableflag(),
 					this.getId());
-			
-			
 		}
 		catch(Exception ex)
 		{
@@ -75,11 +73,9 @@ public class Job implements IDatabaseObject<Job>{
 			ResultSet result = db.getDataRows("SELECT * FROM job WHERE Id=?", this.getId());
 			while(result.next())
 			{
-				
 				this.setDescription(result.getString("description"));
 				this.setDuration(result.getInt("duration"));
 				this.setDisableflag(result.getInt("disableflag"));
-		
 			}
 		}
 		catch(Exception ex)
