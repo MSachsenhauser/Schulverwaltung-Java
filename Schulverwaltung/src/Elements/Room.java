@@ -46,8 +46,14 @@ public class Room implements IDatabaseObject<Room>{
 	}
 	@Override
 	public void removeFromDb() {
-		// TODO Auto-generated method stub
-		
+		try (Database db = new Database())
+		{
+			db.NoQuery("UPDATE Room SET Disableflag = 1 WHERE Id = ?", this.getId());
+		}
+		catch(Exception ex)
+		{
+			
+		}
 	}
 	@Override
 	public void save() {

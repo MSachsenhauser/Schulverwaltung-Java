@@ -30,10 +30,10 @@ public abstract class Person <T> implements IDatabaseObject<T> {
 		this.firstname = firstname;
 		return (T) this;
 	}
-	public String getTelefon() {
+	public String getPhone() {
 		return phone;
 	}
-	public T setTelefon(String phone) {
+	public T setPhone(String phone) {
 		this.phone = phone;
 		return (T) this;
 	}

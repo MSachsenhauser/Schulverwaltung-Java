@@ -52,7 +52,14 @@ public class MarkType implements IDatabaseObject<MarkType> {
 
 	@Override
 	public void removeFromDb() {
-		// TODO Auto-generated method stub
+		try (Database db = new Database())
+		{
+			db.NoQuery("UPDATE MarkType SET Disableflag = 1 WHERE Id = ?", this.getId());
+		}
+		catch(Exception ex)
+		{
+			
+		}
 	}
 
 	@Override

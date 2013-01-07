@@ -14,8 +14,6 @@ public class Company implements IDatabaseObject<Company>{
 	private String phone = "";
 	private int disableflag = -1;
 	
-
-
 	public Company()
 	{
 		
@@ -85,8 +83,14 @@ public class Company implements IDatabaseObject<Company>{
 
 	@Override
 	public void removeFromDb() {
-		// TODO Auto-generated method stub
-		
+		try (Database db = new Database())
+		{
+			db.NoQuery("UPDATE Company SET Disableflag = 1 WHERE Id = ?", this.getId());
+		}
+		catch(Exception ex)
+		{
+			
+		}
 	}
 
 	@Override

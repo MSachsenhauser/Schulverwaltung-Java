@@ -61,8 +61,14 @@ public class Mark implements IDatabaseObject<Mark>{
 	}
 	@Override
 	public void removeFromDb() {
-		// TODO Auto-generated method stub
-		
+		try (Database db = new Database())
+		{
+			db.NoQuery("UPDATE Mark SET Disableflag = 1 WHERE Id = ?", this.getId());
+		}
+		catch(Exception ex)
+		{
+			
+		}
 	}
 	@Override
 	public void save() {
@@ -74,9 +80,7 @@ public class Mark implements IDatabaseObject<Mark>{
 					this.getStudentId(),
 					this.getTrend(),
 					this.getDisableflag(),
-					this.getId());
-			
-			
+					this.getId());	
 		}
 		catch(Exception ex)
 		{

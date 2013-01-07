@@ -42,7 +42,7 @@
 									{
 										case LoggedIn:
 											out.write("<script language='javascript' type='text/javascript'>" + 
-												      "window.location.href = 'main.jsp';" +
+												      "window.location.href = 'Main.jsp';" +
 													  "</script>"); 
 											break;
 										case WrongUserNameOrPassword: out.write("Falsche Logindaten"); break;

@@ -56,8 +56,14 @@ public class Teacher extends Person<Teacher>{
 
 	@Override
 	public void removeFromDb() {
-		// TODO Auto-generated method stub
-		
+		try (Database db = new Database())
+		{
+			db.NoQuery("UPDATE Teacher SET Disableflag = 1 WHERE Id = ?", this.getId());
+		}
+		catch(Exception ex)
+		{
+			
+		}
 	}
 
 	@Override
@@ -70,7 +76,7 @@ public class Teacher extends Person<Teacher>{
 					this.getFirstname(),
 					this.getName(),
 					this.getRoomId(),
-					this.getTelefon(),
+					this.getPhone(),
 					this.getWorkhours(),
 					this.getDisableflag(),
 					this.getId());
@@ -97,7 +103,7 @@ public class Teacher extends Person<Teacher>{
 				this.setFirstname(result.getString("firstname"));
 				this.setName(result.getString("name"));
 				this.setRoomId(result.getInt("roomId"));
-				this.setTelefon(result.getString("phone"));
+				this.setPhone(result.getString("phone"));
 				this.setWorkhours(result.getDouble("workhours"));
 				this.setDisableflag(result.getInt("disableflag"));
 			}

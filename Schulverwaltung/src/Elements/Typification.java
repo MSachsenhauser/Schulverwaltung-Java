@@ -36,8 +36,14 @@ public class Typification implements IDatabaseObject<Typification>{
 	}
 	@Override
 	public void removeFromDb() {
-		// TODO Auto-generated method stub
-		
+		try (Database db = new Database())
+		{
+			db.NoQuery("UPDATE Typification SET Disableflag = 1 WHERE Id = ?", this.getId());
+		}
+		catch(Exception ex)
+		{
+			
+		}
 	}
 	@Override
 	public void save() {
@@ -47,8 +53,6 @@ public class Typification implements IDatabaseObject<Typification>{
 					this.getBezeichnung(),
 					this.getDisableflag(),
 					this.getId());
-			
-			
 		}
 		catch(Exception ex)
 		{
@@ -61,8 +65,6 @@ public class Typification implements IDatabaseObject<Typification>{
 		
 		try(Database db = new Database())
 		{
-			
-		
 			ResultSet result = db.getDataRows("SELECT * FROM typification WHERE Id=?", this.getId());
 			while(result.next())
 			{

@@ -9,12 +9,13 @@ import Database.Error;
 public class Exam implements IDatabaseObject<Exam>{
 	private int id = -1;
 	private int typeid = -1;
-	private Date examdate = new Date();
+	private Date executionDate = new Date();
 	private int teacherId = -1;
 	private Teacher teacher = null;
 	private int subjectId = -1;
 	private Subject subject = new Subject();
 	private int disableflag = -1;
+	private Date announceDate = new Date();
 
 	public Teacher getTeacher() {
 		if(teacher == null)
@@ -44,11 +45,11 @@ public class Exam implements IDatabaseObject<Exam>{
 		this.typeid = typeId;
 		return this;
 	}
-	public Date getExamdate() {
-		return examdate;
+	public Date getExecutionDate() {
+		return executionDate;
 	}
-	public Exam setExamdate(Date string) {
-		this.examdate = string;
+	public Exam setExecutionDate(Date string) {
+		this.executionDate = string;
 		return this;
 	}
 	public int getTeacherId() {
@@ -75,6 +76,14 @@ public class Exam implements IDatabaseObject<Exam>{
 	public void setDisableflag(int disableflag) {
 		this.disableflag = disableflag;
 	}
+	
+	public Date getAnnounceDate() {
+		return announceDate;
+	}
+	public void setAnnounceDate(Date announceDate) {
+		this.announceDate = announceDate;
+	}
+	
 	@Override
 	public void addToDb() {
 		// TODO Auto-generated method stub
@@ -82,22 +91,27 @@ public class Exam implements IDatabaseObject<Exam>{
 	}
 	@Override
 	public void removeFromDb() {
-		// TODO Auto-generated method stub
-		
+		try (Database db = new Database())
+		{
+			db.NoQuery("UPDATE Exam SET Disableflag = 1 WHERE Id = ?", this.getId());
+		}
+		catch(Exception ex)
+		{
+			
+		}
 	}
 	@Override
 	public void save() {
 		try(Database db = new Database())
 		{
-			db.NoQuery("update exam set date = ?,subjectId = ?,teacherId = ?, typeId = ?, disableflag  = ? where id = ?",
-					this.getExamdate(),
+			db.NoQuery("update exam set executionDate = ?, announceDate = ?,subjectId = ?,teacherId = ?, typeId = ?, disableflag  = ? where id = ?",
+					this.getExecutionDate(),
+					this.getAnnounceDate(),
 					this.getSubjectId(),
 					this.getTeacherId(),
 					this.getTypeId(),
 					this.getDisableflag(),
 					this.getId());
-			
-			
 		}
 		catch(Exception ex)
 		{
@@ -113,7 +127,8 @@ public class Exam implements IDatabaseObject<Exam>{
 			ResultSet result = db.getDataRows("SELECT * FROM exam WHERE Id=?", this.getId());
 			while(result.next())
 			{
-				this.setExamdate(result.getDate("date"));
+				this.setExecutionDate(result.getDate("executionDate"));
+				this.setAnnounceDate(result.getDate("announceDate"));
 				this.setSubjectId(result.getInt("subjectId"));
 				this.setTeacherId(result.getInt("teacherId"));
 				this.setTypeId(result.getInt("typeId"));

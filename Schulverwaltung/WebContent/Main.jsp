@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@page import="Database.*" %>
+    <%@page import="Helpers.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,15 +40,9 @@
 		</tr>
 		<tr>
 			<td align="center">
-				<div>
-					<table>
-						<tr>
-							<td class="SelectedMenuItem"><a href="main.jsp">Start</</a></td>
-							<td class="MenuItem"><a href="Administration.jsp">Administration</a></td>
-							<td class="MenuItem"><a href="StudentServlet">Schüler</</a></td>
-						</tr>
-					</table>
-				</div>
+				<%
+					out.write(MenuHelper.GenerateTopMenu("Main.jsp"));
+				%>
 			</td>
 		</tr>
 		<tr>

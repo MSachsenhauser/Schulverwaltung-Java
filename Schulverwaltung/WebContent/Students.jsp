@@ -4,6 +4,7 @@
     <%@page import="Database.*" %>
     <%@page import="java.util.*" %>
     <%@page import="Elements.*" %>
+     <%@page import="Helpers.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,15 +59,9 @@
 		</tr>
 		<tr>
 			<td align="center">
-				<div>
-					<table>
-						<tr>
-							<td class="MenuItem"><a href="main.jsp">Start</a></td>
-							<td class="MenuItem"><a href="Administration.jsp">Administration</a></td>
-							<td class="SelectedMenuItem"><a href="StudentServlet">Schüler</a></td>
-						</tr>
-					</table>
-				</div>
+				<%
+					out.write(MenuHelper.GenerateTopMenu("StudentServlet"));
+				%>
 			</td>
 		</tr>
 		<tr>
@@ -90,7 +85,7 @@
 								<input type="button" value="Neu" id="btnNew"/>
 							</td>
 							<td align="Right" >
-								<input type="button" value="Löschen" id="btnDelete" onClick="deleteStudents();"/>
+								<input type="button" value="Löschen" id="btnDelete" onClick="deleteEntries();"/>
 							</td>
 						</tr>
 					</table>

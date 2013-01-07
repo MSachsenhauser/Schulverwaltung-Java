@@ -13,7 +13,13 @@
     <script src="Scripts/jquery-ui.js"></script>
     <link rel="stylesheet" href="/resources/demos/style.css" />
     <script language="javascript" type="text/javascript" src="Scripts/Ajax.js"></script>
-<script language="javascript" type="text/javascript" src="Scripts/Religions.js"></script>
+	<script language="javascript" type="text/javascript" src="Scripts/List.js"></script>
+	<script language="javascript" type="text/javascript">
+		detailFileName = "ReligionDetails.jsp";
+		deleteServlet = "DeleteReligionServlet";
+		deleteText = "Möchten Sie die ausgewählten Religionen wirklich entfernen?";
+		elementName = "Religion";
+	</script>
 <link href="Styles/Default.css" rel="stylesheet" type="text/css"/>
 </head>
 <body class="TabItem">

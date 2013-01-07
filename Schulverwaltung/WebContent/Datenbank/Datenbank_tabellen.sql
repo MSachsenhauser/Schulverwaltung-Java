@@ -16,7 +16,7 @@ create table student
 		shortened boolean,
 		phone varchar(100),
 		email varchar (100),
-		intructorid int,
+		instructorid int,
 		jobId int,
 		religionId int,
 		disableflag int
@@ -91,9 +91,10 @@ create table exam
 	(
 		id int primary key,
 		typeId int,
-		examdate date,
+		executionDate date,
 		subjectId int,
 		teacherId int,
+		announceDate date,
 		disableflag int
 	);
 
@@ -245,6 +246,154 @@ create table login
 		email varchar (100)
 	);
 
+CREATE OR REPLACE VIEW qryStudent 
+(
+	Id, Name, Firstname, Street, City, plz, birthday, 
+	entry, shortened, phone, email, Instructor, Company, 
+	Job, Religion, disableflag
+)
+AS 
+(
+	SELECT student.Id, student.Name, student.Firstname,
+	student.Street, student.City, student.plz, student.birthday, 
+	entry, shortened, student.phone, student.email, 
+	Concat(Concat(instructor.Name, ' '), instructor.Firstname), 
+	company.Name, job.description, religion.description, 
+	student.disableflag 
+	FROM Student 
+	INNER JOIN instructor ON instructorid = instructor.id 
+	INNER JOIN religion ON religionId = religion.Id 
+	INNER JOIN company ON instructor.companyId = company.id 
+	INNER JOIN job ON jobId = job.id
+) 
+WITH CHECK OPTION;
+
+CREATE OR REPLACE VIEW qryReligion
+(
+		id,
+		description,
+		subject,
+		disableflag
+)
+AS
+(
+	SELECT religion.id, religion.description, subject.description, religion.disableflag 
+	FROM religion INNER JOIN subject on religion.subjectId = subject.id
+)
+WITH CHECK OPTION;
+
+CREATE OR REPLACE VIEW qryGrade
+(
+	id,
+	description,
+	room,
+	teacher,
+	disableflag
+)
+AS
+(
+	SELECT grade.id, grade.description, room.number, 
+	       Concat(Concat(teacher.Name, ' '), teacher.Firstname), grade.disableflag
+	FROM grade
+	INNER JOIN room on grade.roomId = room.id  
+	INNER JOIN teacher on grade.teacherId = teacher.id
+)
+WITH CHECK OPTION;
+
+CREATE OR REPLACE VIEW qryExam
+(	
+	id,
+	type,
+	executionDate,
+	subject,
+	teacher,
+	announceDate,
+	disableflag
+)
+AS
+(
+	SELECT exam.id, typification.description, exam.executionDate, 
+		   subject.description, Concat(Concat(teacher.Name, ' '), 
+		   teacher.Firstname), exam.announceDate, exam.disableflag
+	FROM exam
+	INNER JOIN marktype ON exam.typeId = marktype.Id 
+	INNER JOIN subject on exam.subjectId = subject.Id 
+	INNER JOIN teacher on exam.teacherId = teacher.Id 
+)
+WITH CHECK OPTION;
+
+CREATE OR REPLACE VIEW qryTeacher
+(
+	id,
+	name,
+	firstname,
+	phone,
+	email,
+	room,
+	birthday,
+	workhours,
+	disableflag
+)
+AS
+(
+	SELECT teacher.id, teacher.name, teacher.firstname, teacher.phone, teacher.email, room.number,
+		   teacher.birthday, teacher.workhours, teacher.disableflag
+	FROM teacher
+	INNER JOIN room on teacher.roomid = room.id
+)
+WITH CHECK OPTION;
+
+CREATE OR REPLACE VIEW qryInstructor
+(
+	id,
+	name,
+	firstname,
+	phone,
+	email,
+	company,
+	disableflag
+)
+AS
+(
+	SELECT instructor.id, instructor.name, instructor.firstname, instructor.phone, 
+		   instructor.email, company.name, instructor.disableflag
+	FROM instructor
+	INNER JOIN company ON instructor.companyId = company.Id
+)
+WITH CHECK OPTION;
+
+CREATE OR REPLACE VIEW qry_mark
+(
+	id,
+	mark,
+	student,
+	exam,
+	trend,
+	disableflag
+)
+AS
+(
+	SELECT mark.id, mark.mark, Concat(Concat(student.Name, ' '), 
+		   student.Firstname), mark.trend, mark.disableflag
+	FROM mark
+	INNER JOIN student on mark.studentId = student.id
+)
+WITH CHECK OPTION;
+
+CREATE OR REPLACE VIEW qry_grademaster
+(
+	student,
+	grade
+)
+AS
+(
+	SELECT Concat(Concat(student.Name, ' '), 
+		   student.Firstname), grade.description
+	FROM grademaster
+	INNER JOIN grade on grademaster.gradeId = grade.id
+	INNER JOIN student on gradeMaster.studentId = student.id
+)
+WITH CHECK OPTION;
 
 insert into login
 (login, password, email) values 

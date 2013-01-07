@@ -9,7 +9,7 @@ import Database.Error;
 public class Student extends Person<Student>{
 	private Date birthday = new Date();
 	private Date entry = new Date();
-	private int intructorid = -1;
+	private int intructorId = -1;
 	private int jobId = -1;
 	private int religionId = -1;
 	private Boolean shortened = false;
@@ -17,6 +17,10 @@ public class Student extends Person<Student>{
 	private String plz = "";
 	private String city = "";
 	private int disableflag = -1;
+	private Job job = null;
+	private Religion religion = null;
+	private Company company = null;
+	private Instructor instructor = null;
 	
 	public Student()
 	{
@@ -66,23 +70,38 @@ public class Student extends Person<Student>{
 	
 	public Company getCompany()
 	{
-		return new Company();
+		if(this.company == null)
+		{
+			this.company = new Company().setId(this.instructor.getCompanyId()).load();
+		}
+		return this.company;
 	}
 	
 	public Job getJob()
 	{
-		return new Job();//.setId(this.jobId).load();
+		if(this.job == null)
+		{
+			this.job = new Job().setId(this.jobId).load();
+		}
+		
+		return this.job;
 	}
 	
 	public Religion getReligion()
 	{
-		return new Religion();//.setId(this.religionId).load();
+		if(this.religion == null)
+		{
+			this.religion = new Religion().setId(this.religionId).load();
+		}
+		
+		return this.religion;
 	}
 	
 	public int getJobId() {
 		return jobId;
 	}
 	public Student setJobId(int jobId) {
+		this.job = null;
 		this.jobId = jobId;
 		return this;
 	}
@@ -90,6 +109,7 @@ public class Student extends Person<Student>{
 		return religionId;
 	}
 	public Student setReligionId(int religionId) {
+		this.religion = null;
 		this.religionId = religionId;
 		return this;
 	}
@@ -107,25 +127,66 @@ public class Student extends Person<Student>{
 	public void setDisableflag(int disableflag) {
 		this.disableflag = disableflag;
 	}
-	public int getIntructorid() {
-		return intructorid;
+	public int getIntructorId() {
+		return intructorId;
 	}
 
-	public void setIntructorid(int intructorid) {
-		this.intructorid = intructorid;
+	public void setIntructorId(int intructorId) {
+		this.instructor = null;
+		this.company = null;
+		this.intructorId = intructorId;
 	}
 
 	
 	@Override
 	public void addToDb()
 	{
+		try(Database db = new Database())
+		{
+			int id = db.getInt("SELECT MAX(Id) FROM student") + 1;
+			this.setId(id);
+			/*
+			 * id int primary key,
+				name varchar(100),
+				firstname varchar(100),
+				street varchar (100),
+				city varchar (100),
+				plz varchar (100),
+				birthday date,
+				entry date,
+				shortened boolean,
+				phone varchar(100),
+				email varchar (100),
+				instructorid int,
+				jobId int,
+				religionId int,
+				disableflag int
+			 */
+			db.NoQuery("INSERT INTO student(Id, Name, Firstname, Street, City, Plz, Birthday, " + "" +
+					   "Entry, Shortened, Phone, Email, InstructorId, JobId, ReligionId, disableflag)" +
+					   " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)",
+					   this.getId(), this.getName(), this.getFirstname(), this.getStreet(), this.getCity(),
+					   this.getPlz(), this.getBirthday(), this.getEntry(), this.getShortened(), this.getPhone(),
+					   this.getEmail(), this.getIntructorId(), this.getJobId(), this.getReligionId());
+		}
 		
+		catch(Exception ex)
+		{
+			
+		}
 	}
 	
 	@Override
 	public void removeFromDb()
 	{
-		
+		try (Database db = new Database())
+		{
+			db.NoQuery("UPDATE Student SET Disableflag = 1 WHERE Id = ?", this.getId());
+		}
+		catch(Exception ex)
+		{
+			
+		}
 	}
 	
 	@Override
@@ -143,11 +204,9 @@ public class Student extends Person<Student>{
 				this.getPlz(),
 				this.getReligionId(),
 				this.getShortened(),
-				this.getTelefon(),
+				this.getPhone(),
 				this.getDisableflag(),
 				this.getId());
-		
-		
 	}
 	catch(Exception ex)
 	{
@@ -155,8 +214,6 @@ public class Student extends Person<Student>{
 	}
 }
 	public Student load() {
-		// TODO Auto-generated method stub
-		
 		try(Database db = new Database())
 		{
 			ResultSet result = db.getDataRows("SELECT * FROM student WHERE Id=?", this.getId());
@@ -172,10 +229,8 @@ public class Student extends Person<Student>{
 				this.setPlz(result.getString("plz"));
 				this.setReligionId(result.getInt("religionId"));
 				this.setShortened(result.getBoolean("shortened"));
-				this.setTelefon(result.getString("phone"));
+				this.setPhone(result.getString("phone"));
 				this.setDisableflag(result.getInt("disableflag"));
-				
-			
 			}
 		}
 		catch(Exception ex)

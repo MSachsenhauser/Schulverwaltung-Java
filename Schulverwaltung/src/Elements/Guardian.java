@@ -47,8 +47,14 @@ public class Guardian extends Person<Guardian>{
 	}
 	@Override
 	public void removeFromDb() {
-		// TODO Auto-generated method stub
-		
+		try (Database db = new Database())
+		{
+			db.NoQuery("UPDATE Guardian SET Disableflag = 1 WHERE Id = ?", this.getId());
+		}
+		catch(Exception ex)
+		{
+			
+		}
 	}
 	@Override
 	public void save() {
@@ -61,7 +67,7 @@ public class Guardian extends Person<Guardian>{
 					this.getName(),
 					this.getPlz(),
 					this.getStreet(),
-					this.getTelefon(),
+					this.getPhone(),
 					this.getDisableflag(),
 					this.getId());
 			
@@ -87,7 +93,7 @@ public class Guardian extends Person<Guardian>{
 				this.setName(result.getString("name"));
 				this.setPlz(result.getString("plz"));
 				this.setStreet(result.getString("street"));
-				this.setTelefon(result.getString("phone"));
+				this.setPhone(result.getString("phone"));
 				this.setDisableflag(result.getInt("disableflag"));
 				
 			}
