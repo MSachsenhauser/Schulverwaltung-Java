@@ -68,13 +68,13 @@
 				        <iframe src="ReligionServlet" style="border: none; height: 100%; width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
 				    </div>
 				    <div id="tab3" style="width: 100%; height: 100%; overflow: auto">
-				        <iframe src="TeacherServlet" style="border: none; height: 100%; width: 100%; margin-left: -60px; margin-top: -15px;"></iframe>
+				        <iframe src="TeacherServlet" style="border: none; height: 100%;  width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
 				    </div>
 				    <div id="tab4" style="width: 100%; height: 100%; overflow: auto">
-				        <iframe src="TimeTableServlet" style="border: none; height: 100%; width: 100%; margin-left: -60px; margin-top: -15px;"></iframe>
+				        <iframe src="TimeTableServlet" style="border: none; height: 100%; width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
 				    </div>
 				    <div id="tab5" style="width: 100%; height: 100%; overflow: auto">
-						<iframe src="GradeServlet" style="border: none; height: 100%; width: 100%; margin-left: -60px; margin-top: -15px;"></iframe>
+						<iframe src="GradeServlet" style="border: none; height: 100%; width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
 				    </div>
 				</div>
 			</td>
