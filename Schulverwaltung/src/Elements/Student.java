@@ -143,7 +143,16 @@ public class Student extends Person<Student>{
 	{
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM student") + 1;
+			int id = db.getInt("SELECT MAX(Id) FROM student");
+			if(id == -1)
+			{
+				id = 1;
+			}
+			else
+			{
+				id++;
+			}
+			
 			this.setId(id);
 			/*
 			 * id int primary key,

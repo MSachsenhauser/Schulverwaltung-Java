@@ -70,9 +70,20 @@
 			</td>
 			<td>
 				<!-- <input type="text" name="job" value="<%=curStudent.getJob().getDescription()%>"/> -->
-				<select <%=readonly%> id="lstJobs" style="width: 100%">
+				<select <%=readonly%> name="Job" style="width: 100%">
+					<option value="-1"></option>
 					<%
-						// Hier berufe aus der Datenbank laden und als Option einfügen
+						for(Job job:ElementLists.getJobs())
+						{
+							if(curStudent.getJobId() == job.getId())
+							{
+								out.write("<option selected=\"true\" value=\"" + job.getId() + "\">" + job.getDescription() + "</option>\n");
+							}
+							else
+							{
+								out.write("<option value=\"" + job.getId() + "\">" + job.getDescription() + "</option>\n");
+							}
+						}
 					%>
 				</select>
 			</td>

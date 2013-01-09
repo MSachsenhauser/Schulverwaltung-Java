@@ -40,6 +40,7 @@ public class StudentDetailServlet extends HttpServlet {
 			.setStreet(getParamValue("street"))
 			.setPlz(getParamValue("plz"))
 			.setCity(getParamValue("city"))
+			.setJobId(Integer.parseInt(getParamValue("Job")))
 			.setShortened(Boolean.parseBoolean(getParamValue("shortened")))
 			.setBirthday(format.parse(getParamValue("birthday")))
 			.setEntry(format.parse(getParamValue("entry")));
@@ -51,9 +52,8 @@ public class StudentDetailServlet extends HttpServlet {
 			{
 				curStudent.save();
 			}
-			RequestDispatcher view = request.getRequestDispatcher("StudentDetail.jsp?StudentId=" + studentId);
+			RequestDispatcher view = request.getRequestDispatcher("StudentDetail.jsp?Id=" + 1);
 			view.forward(request, response);
-			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
