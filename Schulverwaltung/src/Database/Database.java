@@ -403,7 +403,7 @@ public class Database implements AutoCloseable{
     {
     	try
     	{
-    		// Delete from tbl_person;
+    		this.openConnection();
     		state = conn.createStatement();
     		return state.executeUpdate(command);
     	}
@@ -418,7 +418,7 @@ public class Database implements AutoCloseable{
     {
     	try
     	{
-    		// Delete from tbl_person;
+    		this.openConnection();
     		preparedStatement = conn.prepareStatement(command);
     		this.addParamsToStatement(params);
     		return preparedStatement.executeUpdate();

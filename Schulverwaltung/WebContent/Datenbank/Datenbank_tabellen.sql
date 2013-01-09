@@ -102,7 +102,7 @@ create table job
 	(
 		id int primary key,
 		description varchar (500),
-		duration int,
+		duration int default 3,
 		disableflag int default 0
 	);
 
