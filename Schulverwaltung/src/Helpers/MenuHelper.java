@@ -9,6 +9,7 @@ public class MenuHelper {
 		menuItems.add(new MenuItem("Start", "Main.jsp"));
 		menuItems.add(new MenuItem("Administration", "Administration.jsp"));
 		menuItems.add(new MenuItem("Schüler", "StudentServlet"));
+		menuItems.add(new MenuItem("Import", "Import.jsp"));
 	}
 	
 	public static String GenerateTopMenu(String curPage)

@@ -41,6 +41,7 @@
 		<tr>
 			<td align="center">
 				<%
+				
 					out.write(MenuHelper.GenerateTopMenu("Main.jsp"));
 				%>
 			</td>

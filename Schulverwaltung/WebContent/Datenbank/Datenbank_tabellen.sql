@@ -19,14 +19,14 @@ create table student
 		instructorid int,
 		jobId int,
 		religionId int,
-		disableflag int
+		disableflag int default 0
 	);
 
 create table subject
 	(
 		id int primary key,
 		description varchar(500),
-		disableflag int
+		disableflag int default 0
 	);
 
 create table religion
@@ -34,21 +34,21 @@ create table religion
 		id int primary key,
 		description varchar(500),
 		subjectid int,
-		disableflag int
+		disableflag int default 0
 	);
 
 create table timetable
 	(
 		id int primary key,
 		validTill date,
-		disableflag int
+		disableflag int default 0
 	);
 
 create table group
 	(
 		id int primary key,
 		description varchar(500),
-		disableflag int
+		disableflag int default 0
 	);
 
 create table guardian
@@ -60,7 +60,7 @@ create table guardian
 		street varchar (100),
 		city varchar (100),
 		plz varchar (100),
-		disableflag int
+		disableflag int default 0
 	);
 
 create table hour2subject
@@ -68,14 +68,14 @@ create table hour2subject
 		subjectid int primary key,
 		hour varchar(100),
 		groupid varchar(100),
-		disableflag int
+		disableflag int default 0
 	);
 
 create table typification
 	(
 		id int primary key,
 		description varchar (500),
-		disableflag int
+		disableflag int default 0
 	);
 
 create table grade
@@ -84,7 +84,7 @@ create table grade
 		description varchar (500),
 		roomId int (100),
 		teacherId int (100),
-		disableflag int
+		disableflag int default 0
 	);
 
 create table exam
@@ -95,15 +95,15 @@ create table exam
 		subjectId int,
 		teacherId int,
 		announceDate date,
-		disableflag int
+		disableflag int default 0
 	);
 
 create table job 
 	(
 		id int primary key,
 		description varchar (500),
-		duration int,
-		disableflag int
+		duration int default 3,
+		disableflag int default 0
 	);
 
 create table company
@@ -114,7 +114,7 @@ create table company
 		city varchar (100),
 		plz varchar (100),
 		phone varchar (100),
-		disableflag int
+		disableflag int default 0
 	);
 
 create table teacher
@@ -127,7 +127,7 @@ create table teacher
 		roomid int,
 		birthday date,
 		workhours dec(2,2),
-		disableflag int
+		disableflag int default 0
 	);
 
 create table room
@@ -135,7 +135,7 @@ create table room
 		id int primary key,
 		number varchar (20),
 		description varchar (500),
-		disableflag int
+		disableflag int default 0
 	);
 
 create table instructor
@@ -146,7 +146,7 @@ create table instructor
 		phone varchar (100),
 		email varchar (100),
 		companyid int,
-		disableflag int
+		disableflag int default 0
 	);
 
 create table mark
@@ -156,7 +156,7 @@ create table mark
 		studentid int,
 		examid int,
 		trend varchar (1),
-		disableflag int
+		disableflag int default 0
 	);
 
 create table marktype
@@ -164,7 +164,7 @@ create table marktype
 		id int primary key,
 		description varchar (500),
 		weight decimal (4,2),
-		disableflag int
+		disableflag int default 0
 	);
 
 
