@@ -61,8 +61,41 @@ public class Teacher extends Person<Teacher>{
 
 	@Override
 	public void addToDb() {
-		// TODO Auto-generated method stub
+		try(Database db = new Database())
+		{
+			int id = db.getInt("SELECT MAX(Id) FROM teacher");
+			if(id == -1)
+			{
+				id = 1;
+			}
+			else
+			{
+				id++;
+			}
+			
+			this.setId(id);
+			/*
+			 	id int primary key,
+				name varchar (100),
+				firstname varchar (100),
+				phone varchar (100),
+				email varchar (100),
+				roomid int,
+				birthday date,
+				workhours dec(2,2),
+				disableflag int default 0
+			 */
+			db.NoQuery("INSERT INTO teacher(Id, Name, Firstname, phone, email, roomid, Birthday, " + "" +
+					   "workhours,disableflag)" +
+					   " values(?,?,?,?,?,?,?,?,0)",
+					   this.getId(), this.getName(), this.getFirstname(),this.getPhone(), this.getEmail(), this.getRoomId(), this.getBirthday(),
+					   this.getWorkhours());
+		}
 		
+		catch(Exception ex)
+		{
+			
+		}
 	}
 
 	@Override

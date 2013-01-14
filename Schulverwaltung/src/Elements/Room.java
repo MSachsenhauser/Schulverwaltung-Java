@@ -41,7 +41,35 @@ public class Room implements IDatabaseObject<Room>{
 
 	@Override
 	public void addToDb() {
-		// TODO Auto-generated method stub
+		try(Database db = new Database())
+		{
+			int id = db.getInt("SELECT MAX(Id) FROM room");
+			if(id == -1)
+			{
+				id = 1;
+			}
+			else
+			{
+				id++;
+			}
+			
+			this.setId(id);
+			/*
+			 	id int primary key,
+				number varchar (20),
+				description varchar (500),
+				disableflag int default 0
+				
+			 */
+			db.NoQuery("INSERT INTO room(Id, number, description, disableflag)" +
+					   " values(?,?,?,0)",
+					   this.getId(), this.getNumber(), this.getDescription());
+		}
+		
+		catch(Exception ex)
+		{
+			
+		}
 		
 	}
 	@Override

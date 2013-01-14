@@ -96,6 +96,31 @@ public class Grade implements IDatabaseObject<Grade>{
 		{
 			ex.printStackTrace();
 		}
+		try(Database db = new Database())
+		{
+			int id = db.getInt("SELECT MAX(Id) FROM grade");
+			if(id == -1)
+			{
+				id = 1;
+			}
+			else
+			{
+				id++;
+			}
+			
+			this.setId(id);
+			/*
+			 * 	id int primary key,
+				description varchar (500),
+				roomId int (100),
+				teacherId int (100),
+				disableflag int default 0
+			 */
+			db.NoQuery("INSERT INTO grade(Id, description, roomId, teacherId, disableflag)" +
+					   " values(?,?,?,?,0)",
+					   this.getId(), this.getDescription(), this.getRoomId(), this.getTeacherId());
+		}
+		
 	}
 	@Override
 	public void removeFromDb() {
