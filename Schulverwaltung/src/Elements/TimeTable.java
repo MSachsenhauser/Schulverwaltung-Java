@@ -6,22 +6,29 @@ import java.util.Date;
 import Database.Database;
 import Database.Error;
 
-public class Timetable implements IDatabaseObject<Timetable>{
+public class TimeTable implements IDatabaseObject<TimeTable>{
 	private int id = -1;
 	private int disableflag = -1;
 	private Date validTill = new Date();
-	
+	private int groupId = -1;
+	public int getGroupId() {
+		return groupId;
+	}
+	public TimeTable setGroupId(int groupId) {
+		this.groupId = groupId;
+		return this;
+	}
 	public int getId() {
 		return id;
 	}
-	public Timetable setId(int id) {
+	public TimeTable setId(int id) {
 		this.id = id;
 		return this;
 	}
 	public Date getValidTill() {
 		return validTill;
 	}
-	public Timetable setValidTill(Date validTill) {
+	public TimeTable setValidTill(Date validTill) {
 		this.validTill = validTill;
 		return this;
 	}
@@ -91,7 +98,7 @@ public class Timetable implements IDatabaseObject<Timetable>{
 		}
 	}
 	@Override
-	public Timetable load() {
+	public TimeTable load() {
 		// TODO Auto-generated method stub
 		
 		try(Database db = new Database())

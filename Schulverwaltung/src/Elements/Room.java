@@ -102,14 +102,11 @@ public class Room implements IDatabaseObject<Room>{
 	}
 	@Override
 	public Room load() {
-		// TODO Auto-generated method stub
-		
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * room raum WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * FROM room WHERE Id=?", this.getId());
 			while(result.next())
 			{
-				
 				this.setDescription(result.getString("description"));
 				this.setNumber(result.getString("number"));
 				this.setDisableflag(result.getInt("disableflag"));

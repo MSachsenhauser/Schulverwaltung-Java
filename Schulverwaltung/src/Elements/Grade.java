@@ -1,6 +1,7 @@
 package Elements;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import Database.Database;
 import Database.Error;
@@ -12,6 +13,25 @@ public class Grade implements IDatabaseObject<Grade>{
 	private int teacherId = -1;
 	private Teacher teacher = null;
 	private int disableflag = -1;
+	private Room room = null;
+	private ArrayList<Group> groups = new ArrayList<Group>();
+	
+	public ArrayList<Group> getGroups() {
+		return groups;
+	}
+
+
+	public void setGroups(ArrayList<Group> groups) {
+		this.groups = groups;
+	}
+
+
+	public Room getRoom()
+	{
+		room = new Room().setId(this.roomId).load();
+		return room;
+	}
+	
 	
 	public int getId() {
 		return id;
@@ -133,7 +153,13 @@ public class Grade implements IDatabaseObject<Grade>{
 				this.setRoomId(result.getInt("roomId"));
 				this.setTeacherId(result.getInt("teacherId"));
 				this.setDisableflag(result.getInt("disableflag"));
-				
+			}
+			
+			result.close();
+			result = db.getDataRows("SELECT * FROM Group2Grade WHERE GradeId=?", this.getId());
+			while(result.next())
+			{
+				this.groups.add(new Group().setId(result.getInt("GroupId")).load());
 			}
 		}
 		catch(Exception ex)

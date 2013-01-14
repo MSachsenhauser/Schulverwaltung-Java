@@ -89,7 +89,6 @@ function onSave()
 
 function loadGroupStudents()
 {
-	alert("test2");
 	var groupId = document.getElementById("lstGroups").value;
 	UseAjax("http://localhost:8080/Schulverwaltung/AjaxServlet?Action=loadGroupStudents&GroupId=" + groupId, insertGroupStudents, false);
 }
@@ -98,7 +97,7 @@ function insertGroupStudents(result)
 {
 	var students = result.split("|");
 	var classMember = document.getElementById("groupStudents");
-	classMember.options.length = -1;
+	classMember.options.length = 0;
 	for(var i = 0; i < students.length; i++)
 	{
 		var student = students[i];

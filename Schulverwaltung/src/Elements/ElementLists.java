@@ -138,7 +138,7 @@ public class ElementLists {
 											  "(SELECT studentId from student2group " +
 											  "LEFT JOIN group2grade ON group2grade.groupId = student2group.groupid " + 
 											  "WHERE group2grade.gradeid <> ?) " +
-											  "ORDER BY Name;", gradeId);
+											  "ORDER BY Name", gradeId);
 			while(result.next())
 			{
 				students.add(new Student().setId(result.getInt(1)).load());

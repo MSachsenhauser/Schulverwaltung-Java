@@ -9,7 +9,13 @@ public class Subject implements IDatabaseObject<Subject>{
 	private int id = -1;
 	private String description ="";
 	private int disableflag = -1;
-	
+	private String shortName = "";
+	public String getShortName() {
+		return shortName;
+	}
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
 	public int getId() {
 		return id;
 	}
@@ -98,7 +104,8 @@ public class Subject implements IDatabaseObject<Subject>{
 			ResultSet result = db.getDataRows("SELECT * FROM subject WHERE Id=?", this.getId());
 			while(result.next())
 			{
-				this.setDescription(result.getString(description));
+				this.setDescription(result.getString("description"));
+				this.setShortName(result.getString("short"));
 				this.setDisableflag(result.getInt("disableflag"));
 			}
 		}

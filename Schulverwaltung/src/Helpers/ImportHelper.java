@@ -1,6 +1,7 @@
 package Helpers;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,14 +17,12 @@ import jxl.*;
 import jxl.read.biff.BiffException;
 
 public class ImportHelper 
-
 {
-	
-	public static void Import (String fileName)
+	public static void Import (InputStream file)
 	{
 		
 		try {
-			Workbook workbook = Workbook.getWorkbook(new File(fileName));
+			Workbook workbook = Workbook.getWorkbook(file);
 			
 			Sheet	sheet = workbook.getSheet(0);
 			

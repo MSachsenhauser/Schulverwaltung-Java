@@ -11,8 +11,16 @@ public class Teacher extends Person<Teacher>{
 	private int roomId = -1;
 	private double workhours = 0.00;
 	private int disableflag = -1;
+	private String shortName ="";
 	
-	
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+
 	public Date getBirthday() {
 			return birthday;
 		}
@@ -140,6 +148,7 @@ public class Teacher extends Person<Teacher>{
 				this.setPhone(result.getString("phone"));
 				this.setWorkhours(result.getDouble("workhours"));
 				this.setDisableflag(result.getInt("disableflag"));
+				this.setShortName(result.getString("short"));
 			}
 		}
 		catch(Exception ex)

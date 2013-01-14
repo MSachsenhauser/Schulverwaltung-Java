@@ -82,7 +82,7 @@
 				<input type="text" id="txtGroupDescription" />
 			</td>
 			<td>
-				<input type="button" value="Hinzufügen" onclick="addGroup()"/>
+				<input type="button" value="Gruppe hinzufügen" onclick="addGroup()"/>
 			</td>
 			<td>
 				<select id="lstGroups" style="width: 100%;" onchange="loadGroupStudents()">
