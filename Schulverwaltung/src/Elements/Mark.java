@@ -56,7 +56,36 @@ public class Mark implements IDatabaseObject<Mark>{
 	}
 	@Override
 	public void addToDb() {
-		// TODO Auto-generated method stub
+		try(Database db = new Database())
+		{
+			int id = db.getInt("SELECT MAX(Id) FROM mark");
+			if(id == -1)
+			{
+				id = 1;
+			}
+			else
+			{
+				id++;
+			}
+			
+			this.setId(id);
+			/*
+				id int primary key,
+				mark int,
+				studentid int,
+				examid int,
+				trend varchar (1),
+				disableflag int default 0
+			 */
+			db.NoQuery("INSERT INTO mark(Id, mark, studentid, examid, trend, disableflag)" +
+					   " values(?,?,?,?,?,0)",
+					   this.getId(), this.getMark(), this.getStudentId(), this.getExamId(), this.getTrend());
+		}
+		
+		catch(Exception ex)
+		{
+			
+		}
 		
 	}
 	@Override

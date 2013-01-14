@@ -85,8 +85,40 @@ public class Exam implements IDatabaseObject<Exam>{
 	}
 	
 	@Override
-	public void addToDb() {
-		// TODO Auto-generated method stub
+	public void addToDb() 
+	{
+		try(Database db = new Database())
+		{
+			int id = db.getInt("SELECT MAX(Id) FROM exam");
+			if(id == -1)
+			{
+				id = 1;
+			}
+			else
+			{
+				id++;
+			}
+			
+			this.setId(id);
+			/*
+			id int primary key,
+			typeId int,
+			executionDate date,
+			subjectId int,
+			teacherId int,
+			announceDate date,
+			disableflag int default 0
+			 * 
+			 */
+			db.NoQuery("INSERT INTO exam(Id,typeid,executionDate, subjectId, teacherId, announceDate,  disableflag)" +
+					   " values(?,?,?,?,?,?,0)",
+					   this.getId(), this.getTypeId(), this.getExecutionDate(), this.getSubjectId(), this.getTeacherId(),this.getAnnounceDate());
+		}
+		
+		catch(Exception ex)
+		{
+			
+		}
 		
 	}
 	@Override

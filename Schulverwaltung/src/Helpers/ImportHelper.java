@@ -49,10 +49,40 @@ public class ImportHelper
 							break;
 					}
 					
+					if (religion.getDescription().isEmpty())
+					{
+						System.out.println("keine Daten");
+					}
+					else
+					{
+						religion.addToDb();
+					}
+					
 			
 				
 					Job job = new Job();
 					job.setDescription(sheet.getCell(75, i).getContents());
+					
+				/*
+					  String duration1 = duration1.setDuration(sheet.getCell(70,i).getContents());
+					  String duration2 = duration2.setDuration(sheet.getCell(71,i).getContents());
+					  long milliseconds1 = duration1.getTimeInMillis();
+					  long milliseconds2 = duration2.getTimeInMillis();
+					  long diff = milliseconds2 - milliseconds1;
+					  long diffSeconds = diff / 1000;
+					  long diffMinutes = diff / (60 * 1000);
+					  long diffHours = diff / (60 * 60 * 1000);
+					  long diffDays = diff / (24 * 60 * 60 * 1000);
+					  */
+					
+					if (job.getDescription().isEmpty())
+					{
+						System.out.println("keine Daten");
+					}
+					else
+					{
+						job.addToDb();
+					}
 					
 					try
 					{
@@ -99,6 +129,24 @@ public class ImportHelper
 						instructor.setEmail(sheet.getCell(105, i).getContents());
 						company.setName(sheet.getCell(102, i).getContents());
 						
+							if (instructor.getName().isEmpty()&&instructor.getFirstname().isEmpty())
+							{
+								System.out.println("keine Daten");
+							}
+							else
+							{
+								instructor.addToDb();
+							}
+						
+							
+							if (company.getName().isEmpty())
+							{
+								System.out.println("keine Daten");
+							}
+							else
+							{
+								company.addToDb();
+							}
 						
 			}
 			catch(Exception ex){

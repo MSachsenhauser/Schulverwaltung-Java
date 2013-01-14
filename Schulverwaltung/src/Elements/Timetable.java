@@ -34,7 +34,33 @@ public class Timetable implements IDatabaseObject<Timetable>{
 	}
 	@Override
 	public void addToDb() {
-		// TODO Auto-generated method stub
+		try(Database db = new Database())
+		{
+			int id = db.getInt("SELECT MAX(Id) FROM timetable");
+			if(id == -1)
+			{
+				id = 1;
+			}
+			else
+			{
+				id++;
+			}
+			
+			this.setId(id);
+			/*
+			 * 	id int primary key,
+				validTill date,
+				disableflag int default 0
+			 */
+			db.NoQuery("INSERT INTO timetable(Id, validtill, disableflag)" +
+					   " values(?,?,0)",
+					   this.getId(), this.getValidTill());
+		}
+		
+		catch(Exception ex)
+		{
+			
+		}
 		
 	}
 	@Override

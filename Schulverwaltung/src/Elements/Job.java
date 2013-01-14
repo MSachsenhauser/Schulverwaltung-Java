@@ -43,7 +43,15 @@ public class Job implements IDatabaseObject<Job>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM job") + 1;
+			int id = db.getInt("SELECT MAX(Id) FROM job");
+			if(id == -1)
+			{
+				id = 1;
+			}
+			else
+			{
+				id++;
+			}
 			this.setId(id);
 			/*
 			 * 	id int primary key,
@@ -51,7 +59,7 @@ public class Job implements IDatabaseObject<Job>{
 				duration int default 3,
 				disableflag int default 0
 			 */
-			db.NoQuery("INSERT INTO student(Id, description, duration, disableflag, )" +
+			db.NoQuery("INSERT INTO job(Id, description, duration, disableflag )" +
 					   " values(?,?,?,0)",
 					   this.getId(), this.getDescription(), this.getDuration());
 		}

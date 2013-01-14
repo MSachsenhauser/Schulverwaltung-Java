@@ -28,7 +28,17 @@ public class Instructor extends Person<Instructor>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM instructor") + 1;
+			
+			int id = db.getInt("SELECT MAX(Id) FROM instructor");
+			if(id == -1)
+			{
+				id = 1;
+			}
+			else
+			{
+				id++;
+			}
+			
 			this.setId(id);
 			/*
 			 * 	id int primary key,
@@ -39,7 +49,7 @@ public class Instructor extends Person<Instructor>{
 				companyid int,
 				disableflag int default 0
 			 */
-			db.NoQuery("INSERT INTO student(Id, Name, Firstname, phone, email, companyid, disableflag)" +
+			db.NoQuery("INSERT INTO instructor(Id, Name, Firstname, phone, email, companyid, disableflag)" +
 					   " values(?,?,?,?,?,?,0)",
 					   this.getId(), this.getName(), this.getFirstname(), this.getPhone(), this.getEmail(), this.getCompanyId());
 		}
