@@ -79,7 +79,17 @@ public class Company implements IDatabaseObject<Company>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM company") + 1;
+			int id = db.getInt("SELECT MAX(Id) FROM company") ;
+								
+			if(id == -1)
+			{
+				id = 1;
+			}
+			else
+			{
+				id++;
+			}
+			
 			this.setId(id);
 			/*
 			 
@@ -92,7 +102,7 @@ public class Company implements IDatabaseObject<Company>{
 				disableflag int default 0
 	
 			 */
-			db.NoQuery("INSERT INTO student(Id, Name, Street, City, Plz, phone, disableflag)" +
+			db.NoQuery("INSERT INTO company(Id, Name, Street, City, Plz, phone, disableflag)" +
 					   " values(?,?,?,?,?,?,0)",
 					   this.getId(), this.getName(), this.getStreet(), this.getCity(),
 					   this.getPlz(), this.getPhone());

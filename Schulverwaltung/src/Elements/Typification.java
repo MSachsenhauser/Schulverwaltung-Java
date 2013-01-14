@@ -14,10 +14,10 @@ public class Typification implements IDatabaseObject<Typification>{
 		return id;
 
 	}
-	public String getBezeichnung() {
+	public String getDescription() {
 		return description;
 	}
-	public Typification setBezeichnung(String description) {
+	public Typification setDescription(String description) {
 		this.description = description;
 		return this;
 	}
@@ -31,7 +31,33 @@ public class Typification implements IDatabaseObject<Typification>{
 	}
 	@Override
 	public void addToDb() {
-		// TODO Auto-generated method stub
+		try(Database db = new Database())
+		{
+			int id = db.getInt("SELECT MAX(Id) FROM student");
+			if(id == -1)
+			{
+				id = 1;
+			}
+			else
+			{
+				id++;
+			}
+			
+			this.setId(id);
+			/*
+			 * 	id int primary key,
+				description varchar (500),
+				disableflag int default 0
+			 */
+			db.NoQuery("INSERT INTO typification(Id, description, disableflag)" +
+					   " values(?,?,0)",
+					   this.getId(),this.getDescription());
+		}
+		
+		catch(Exception ex)
+		{
+			
+		}
 		
 	}
 	@Override
@@ -50,7 +76,7 @@ public class Typification implements IDatabaseObject<Typification>{
 		try(Database db = new Database())
 		{
 			db.NoQuery("update typification set description = ?, disableflag  = ? where id = ?",
-					this.getBezeichnung(),
+					this.getDescription(),
 					this.getDisableflag(),
 					this.getId());
 		}
@@ -69,7 +95,7 @@ public class Typification implements IDatabaseObject<Typification>{
 			while(result.next())
 			{
 				
-				this.setBezeichnung(result.getString("description"));
+				this.setDescription(result.getString("description"));
 				this.setDisableflag(result.getInt("sperrkennzeichen"));
 			}
 		}
