@@ -6,40 +6,22 @@ import java.util.Date;
 import Database.Database;
 import Database.Error;
 
-public class TimeTable implements IDatabaseObject<TimeTable>{
+public class Timetable implements IDatabaseObject<Timetable>{
 	private int id = -1;
 	private int disableflag = -1;
 	private Date validTill = new Date();
-	private int groupId = -1;
-	private Group group = null;
 	
-	public int getGroupId() {
-		return groupId;
-	}
-	public TimeTable setGroupId(int groupId) {
-		this.groupId = groupId;
-		this.group = null;
-		return this;
-	}
-	public Group getGroup() {
-		if(group == null)
-		{
-			group = new Group().setId(this.groupId).load();
-		}
-		return group;
-	}
-
 	public int getId() {
 		return id;
 	}
-	public TimeTable setId(int id) {
+	public Timetable setId(int id) {
 		this.id = id;
 		return this;
 	}
 	public Date getValidTill() {
 		return validTill;
 	}
-	public TimeTable setValidTill(Date validTill) {
+	public Timetable setValidTill(Date validTill) {
 		this.validTill = validTill;
 		return this;
 	}
@@ -52,7 +34,7 @@ public class TimeTable implements IDatabaseObject<TimeTable>{
 	}
 	@Override
 	public void addToDb() {
-		try (Database db = new Database())
+		try(Database db = new Database())
 		{
 			int id = db.getInt("SELECT MAX(Id) FROM timetable");
 			if(id == -1)
@@ -63,16 +45,23 @@ public class TimeTable implements IDatabaseObject<TimeTable>{
 			{
 				id++;
 			}
-		
+			
 			this.setId(id);
-			db.NoQuery("INSERT INTO timetable (id, validTill, disableFlag) VALUES (?, ?, 0)", 
-						this.getId(), 
-						this.getValidTill());
+			/*
+			 * 	id int primary key,
+				validTill date,
+				disableflag int default 0
+			 */
+			db.NoQuery("INSERT INTO timetable(Id, validtill, disableflag)" +
+					   " values(?,?,0)",
+					   this.getId(), this.getValidTill());
 		}
+		
 		catch(Exception ex)
 		{
-			ex.printStackTrace();
+			
 		}
+		
 	}
 	@Override
 	public void removeFromDb() {
@@ -82,7 +71,7 @@ public class TimeTable implements IDatabaseObject<TimeTable>{
 		}
 		catch(Exception ex)
 		{
-			ex.printStackTrace();	
+			
 		}
 	}
 	@Override
@@ -102,7 +91,7 @@ public class TimeTable implements IDatabaseObject<TimeTable>{
 		}
 	}
 	@Override
-	public TimeTable load() {
+	public Timetable load() {
 		// TODO Auto-generated method stub
 		
 		try(Database db = new Database())
@@ -116,7 +105,7 @@ public class TimeTable implements IDatabaseObject<TimeTable>{
 		}
 		catch(Exception ex)
 		{
-			ex.printStackTrace();
+			Error.Out(ex);
 		}
 		return this;
 	}
