@@ -22,11 +22,11 @@ function callback()
 				{
 					if(useResponseXML)
 						{
-							setTimeout("resFunction(" + req.responseXML + ")", 1);
+							setTimeout("resFunction('" + req.responseXML + "')", 1);
 						}
 					else
 						{
-							setTimeout("resFunction(" + req.responseText + ")", 1);	
+							setTimeout("resFunction('" + req.responseText + "')", 1);	
 						}
 				}
 		}

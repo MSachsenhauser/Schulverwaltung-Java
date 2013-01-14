@@ -9,7 +9,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="Scripts/jquery.js"></script>
     <script src="Scripts/jquery-ui.js"></script>	
-    <script type="text/javascript" src="Scripts/StudentDetail.js"></script>
+    <script type="text/javascript" src="Scripts/Detail.js"></script>
 </head>
 <body>
 <%
@@ -22,7 +22,7 @@
 		String readonly = false ? "readonly=readonly" : "";
 	%>
 	<form id="form" method="Post" action="StudentDetailServlet">
-	<input type="hidden" name="StudentId" value="<%= curStudent.getId() %>" />
+	<input type="hidden" name="Id" value="<%= curStudent.getId() %>" />
 	<table>
 		<tr>
 			<td>
@@ -92,8 +92,19 @@
 			</td>
 			<td>
 				<select <%=readonly%> name="company" style="width: 100%">
+					<option value="-1"></option>
 					<%
-						// Hier firmen mit entsprechendem Selected Option
+						for(Company company:ElementLists.getCompanies())
+						{
+							if(curStudent.getCompany().getId() == company.getId())
+							{
+								out.write("<option selected=\"true\" value=\"" + company.getId() + "\">" + company.getName() + "</option>\n");
+							}
+							else
+							{
+								out.write("<option value=\"" + company.getId() + "\">" + company.getName() + "</option>\n");
+							}
+						}
 					%>
 				</select>
 			</td>
@@ -120,8 +131,19 @@
 			</td>
 			<td>
 				<select <%=readonly%> name="religion" style="width: 100%">
+					<option value="-1"></option>
 					<%
-						// Hier religionen mit entsprechendem Selected Option
+						for(Religion religion:ElementLists.getReligions())
+						{
+							if(curStudent.getReligionId() == religion.getId())
+							{
+								out.write("<option selected=\"true\" value=\"" + religion.getId() + "\">" + religion.getDescription() + "</option>\n");
+							}
+							else
+							{
+								out.write("<option value=\"" + religion.getId() + "\">" + religion.getDescription() + "</option>\n");
+							}
+						}
 					%>
 				</select>
 			</td>

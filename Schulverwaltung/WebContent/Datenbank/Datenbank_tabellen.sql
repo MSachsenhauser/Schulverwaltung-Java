@@ -25,6 +25,7 @@ create table student
 create table subject
 	(
 		id int primary key,
+		short varchar(20),
 		description varchar(500),
 		disableflag int default 0
 	);
@@ -44,7 +45,7 @@ create table timetable
 		disableflag int default 0
 	);
 
-create table group
+create table gradeGroup
 	(
 		id int primary key,
 		description varchar(500),
@@ -65,7 +66,7 @@ create table guardian
 
 create table hour2subject
 	(
-		subjectid int primary key,
+		group2subjectId int primary key,
 		hour varchar(100),
 		groupid varchar(100),
 		disableflag int default 0
@@ -122,6 +123,7 @@ create table teacher
 		id int primary key,
 		name varchar (100),
 		firstname varchar (100),
+		short varchar(10),
 		phone varchar (100),
 		email varchar (100),
 		roomid int,
@@ -183,7 +185,7 @@ create table student2guardian
 	);
 
 
-create table student2groop
+create table student2group
 	(
 		studentid int,
 		groupid int,
@@ -202,10 +204,9 @@ create table plan2hour
 	(
 		timetableid int,
 		subjectid int,
-		weekday varchar (100),
-		groupid int,
+		weekday int,
 		hour int,
-		primary key (timetableid, weekday, hour, groupid)
+		primary key (timetableid, weekday, hour)
 	);
 
 create table student2company
@@ -224,11 +225,12 @@ create table student2typification
 
 create table group2subject
 	(
+		id int primary key auto_increment,
 		groupid int,
 		subjectid int,
 		roomid int,
 		teacherid int,
-		primary key (groupid, subjectid)
+		disableflag int
 	);
 
 create table free2subjekt
@@ -261,12 +263,11 @@ AS
 	company.Name, job.description, religion.description, 
 	student.disableflag 
 	FROM Student 
-	INNER JOIN instructor ON instructorid = instructor.id 
-	INNER JOIN religion ON religionId = religion.Id 
-	INNER JOIN company ON instructor.companyId = company.id 
-	INNER JOIN job ON jobId = job.id
-) 
-WITH CHECK OPTION;
+	LEFT JOIN instructor ON instructorid = instructor.id 
+	LEFT JOIN religion ON religionId = religion.Id 
+	LEFT JOIN company ON instructor.companyId = company.id 
+	LEFT JOIN job ON jobId = job.id
+);
 
 CREATE OR REPLACE VIEW qryReligion
 (
@@ -278,9 +279,8 @@ CREATE OR REPLACE VIEW qryReligion
 AS
 (
 	SELECT religion.id, religion.description, subject.description, religion.disableflag 
-	FROM religion INNER JOIN subject on religion.subjectId = subject.id
-)
-WITH CHECK OPTION;
+	FROM religion LEFT JOIN subject on religion.subjectId = subject.id
+);
 
 CREATE OR REPLACE VIEW qryGrade
 (
@@ -295,10 +295,9 @@ AS
 	SELECT grade.id, grade.description, room.number, 
 	       Concat(Concat(teacher.Name, ' '), teacher.Firstname), grade.disableflag
 	FROM grade
-	INNER JOIN room on grade.roomId = room.id  
-	INNER JOIN teacher on grade.teacherId = teacher.id
-)
-WITH CHECK OPTION;
+	LEFT JOIN room on grade.roomId = room.id  
+	LEFT JOIN teacher on grade.teacherId = teacher.id
+);
 
 CREATE OR REPLACE VIEW qryExam
 (	
@@ -312,15 +311,14 @@ CREATE OR REPLACE VIEW qryExam
 )
 AS
 (
-	SELECT exam.id, typification.description, exam.executionDate, 
+	SELECT exam.id, marktype.description, exam.executionDate, 
 		   subject.description, Concat(Concat(teacher.Name, ' '), 
 		   teacher.Firstname), exam.announceDate, exam.disableflag
 	FROM exam
-	INNER JOIN marktype ON exam.typeId = marktype.Id 
-	INNER JOIN subject on exam.subjectId = subject.Id 
-	INNER JOIN teacher on exam.teacherId = teacher.Id 
-)
-WITH CHECK OPTION;
+	LEFT JOIN marktype ON exam.typeId = marktype.Id 
+	LEFT JOIN subject on exam.subjectId = subject.Id 
+	LEFT JOIN teacher on exam.teacherId = teacher.Id 
+);
 
 CREATE OR REPLACE VIEW qryTeacher
 (
@@ -339,9 +337,8 @@ AS
 	SELECT teacher.id, teacher.name, teacher.firstname, teacher.phone, teacher.email, room.number,
 		   teacher.birthday, teacher.workhours, teacher.disableflag
 	FROM teacher
-	INNER JOIN room on teacher.roomid = room.id
-)
-WITH CHECK OPTION;
+	LEFT JOIN room on teacher.roomid = room.id
+);
 
 CREATE OR REPLACE VIEW qryInstructor
 (
@@ -358,16 +355,14 @@ AS
 	SELECT instructor.id, instructor.name, instructor.firstname, instructor.phone, 
 		   instructor.email, company.name, instructor.disableflag
 	FROM instructor
-	INNER JOIN company ON instructor.companyId = company.Id
-)
-WITH CHECK OPTION;
+	LEFT JOIN company ON instructor.companyId = company.Id
+);
 
 CREATE OR REPLACE VIEW qry_mark
 (
 	id,
 	mark,
 	student,
-	exam,
 	trend,
 	disableflag
 )
@@ -376,9 +371,8 @@ AS
 	SELECT mark.id, mark.mark, Concat(Concat(student.Name, ' '), 
 		   student.Firstname), mark.trend, mark.disableflag
 	FROM mark
-	INNER JOIN student on mark.studentId = student.id
-)
-WITH CHECK OPTION;
+	LEFT JOIN student on mark.studentId = student.id
+);
 
 CREATE OR REPLACE VIEW qry_grademaster
 (
@@ -390,10 +384,9 @@ AS
 	SELECT Concat(Concat(student.Name, ' '), 
 		   student.Firstname), grade.description
 	FROM grademaster
-	INNER JOIN grade on grademaster.gradeId = grade.id
-	INNER JOIN student on gradeMaster.studentId = student.id
-)
-WITH CHECK OPTION;
+	LEFT JOIN grade on grademaster.gradeId = grade.id
+	LEFT JOIN student on gradeMaster.studentId = student.id
+);
 
 insert into login
 (login, password, email) values 

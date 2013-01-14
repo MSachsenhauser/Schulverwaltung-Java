@@ -7,17 +7,19 @@ public class Error {
 	
 	public static void Out(Exception ex)
 	{
-		Out(ex.getLocalizedMessage());
+		//Out(ex.getLocalizedMessage());
+		ex.printStackTrace();
 	}
 	
 	public static void Out(Exception ex, String extra)
 	{
-		Out(ex.getLocalizedMessage(), extra);
+		////Out(ex.getLocalizedMessage(), extra);
+		ex.printStackTrace();
 	}
 	
 	public static void Out(String exception)
 	{
-		Out(exception, "");
+		//Out(exception, "");
 	}
 	
 	public static void Out(String exception, String extra)

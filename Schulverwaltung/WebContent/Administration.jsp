@@ -57,8 +57,8 @@
 				        <li><a href="#tab1">Berufe</a></li>
 				        <li><a href="#tab2">Religionen</a></li>
 				        <li><a href="#tab3">Lehrer</a></li>
-				        <li><a href="#tab4">Stundenpläne</a></li>
-				        <li><a href="#tab5">Klassen</a></li>
+				        <li><a href="#tab4">Klassen</a></li>
+				        <li><a href="#tab5">Räume</a></li>
     				</ul>
     				<div id="tab1" style="width: 100%; height: 100%;">
        				 	<iframe src="JobServlet" style="border: none; height: 100%; width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
@@ -71,10 +71,10 @@
 				        <iframe src="TeacherServlet" style="border: none; height: 100%;  width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
 				    </div>
 				    <div id="tab4" style="width: 100%; height: 100%; overflow: auto">
-				        <iframe src="TimeTableServlet" style="border: none; height: 100%; width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
+						<iframe src="GradeServlet" style="border: none; height: 100%; width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
 				    </div>
 				    <div id="tab5" style="width: 100%; height: 100%; overflow: auto">
-						<iframe src="GradeServlet" style="border: none; height: 100%; width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
+						<iframe src="RoomServlet" style="border: none; height: 100%; width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
 				    </div>
 				</div>
 			</td>

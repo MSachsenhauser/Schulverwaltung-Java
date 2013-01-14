@@ -1,6 +1,7 @@
 package Elements;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import Database.Database;
 import Database.Error;
@@ -10,9 +11,23 @@ public class Group implements IDatabaseObject<Group>{
 	private String description = "";
 	private int timetableId = -1;
 	private int disableflag = -1;
-	
+	private int gradeId = -1;
+	private ArrayList<Student> students = new ArrayList<Student>();
+	public ArrayList<Student> getStudents() {
+		return students;
+	}
+	public void setStudents(ArrayList<Student> students) {
+		this.students = students;
+	}
 	public int getId() {
 		return id;
+	}
+	public int getGradeId() {
+		return gradeId;
+	}
+	public Group setGradeId(int gradeId) {
+		this.gradeId = gradeId;
+		return this;
 	}
 	public Group setId(int id) {
 		this.id = id;
@@ -41,8 +56,25 @@ public class Group implements IDatabaseObject<Group>{
 	}
 	@Override
 	public void addToDb() {
-		// TODO Auto-generated method stub
-		
+		try (Database db = new Database())
+		{
+			int id = db.getInt("SELECT MAX(Id) FROM gradeGroup");
+			if(id == -1)
+			{
+				id = 1;
+			}
+			else
+			{
+				id++;
+			}
+			
+			this.setId(id);
+			db.NoQuery("INSERT INTO gradegroup (id, description, disableflag) VALUES (?,?,0)", this.getId(), this.getDescription());
+		}
+		catch(Exception ex)
+		{
+			
+		}
 	}
 	@Override
 	public void removeFromDb() {
@@ -78,12 +110,18 @@ public class Group implements IDatabaseObject<Group>{
 		
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * FROM group WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * FROM gradeGroup WHERE Id=?", this.getId());
 			while(result.next())
 			{
 				this.setDescription(result.getString("description"));
-				this.setTimetableId(result.getInt("timetableId"));
 				this.setDisableflag(result.getInt("disableflag"));
+			}
+			result.close();
+			this.students = new ArrayList<Student>();
+			result = db.getDataRows("SELECT * FROM student2group WHERE GroupId=?", this.getId());
+			while(result.next())
+			{
+				this.students.add(new Student().setId(result.getInt("studentId")).load());
 			}
 		}
 		catch(Exception ex)

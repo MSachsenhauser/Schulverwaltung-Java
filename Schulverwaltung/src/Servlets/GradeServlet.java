@@ -13,10 +13,14 @@ public class GradeServlet extends ListServlet<Grade> {
     public GradeServlet() {
         super();
         ArrayList<String> orderFields = new ArrayList<String>();
-    	orderFields.add("id");
-    	orderFields.add("description");
+    	orderFields.add("Id");
+    	orderFields.add("Description");
+    	orderFields.add("Teacher");
+    	orderFields.add("Room");
     	ArrayList<String> filterFields = new ArrayList<String>();
-    	filterFields.add("description");
-        this.Setup(Grade.class, "Administration/Grades.jsp", "grade", orderFields, filterFields);
+    	filterFields.add("Description");
+    	filterFields.add("Teacher");
+    	filterFields.add("Room");
+        this.Setup(Grade.class, "Administration/Grades.jsp", "qryGrade", orderFields, filterFields);
     }
 }

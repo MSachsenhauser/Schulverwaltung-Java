@@ -78,7 +78,7 @@ public class Room implements IDatabaseObject<Room>{
 		
 		try(Database db = new Database())
 		{
-			ResultSet result = db.getDataRows("SELECT * room raum WHERE Id=?", this.getId());
+			ResultSet result = db.getDataRows("SELECT * FROM room WHERE Id=?", this.getId());
 			while(result.next())
 			{
 				

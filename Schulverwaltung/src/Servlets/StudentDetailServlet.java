@@ -30,7 +30,7 @@ public class StudentDetailServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		this.request = request;
-		int studentId = Integer.parseInt(request.getParameter("StudentId"));
+		int studentId = Integer.parseInt(request.getParameter("Id"));
 		Student curStudent = new Student().setId(studentId);
 		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 		try {
@@ -52,7 +52,7 @@ public class StudentDetailServlet extends HttpServlet {
 			{
 				curStudent.save();
 			}
-			RequestDispatcher view = request.getRequestDispatcher("StudentDetail.jsp?Id=" + 1);
+			RequestDispatcher view = request.getRequestDispatcher("StudentDetail.jsp?Id=" + curStudent.getId());
 			view.forward(request, response);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

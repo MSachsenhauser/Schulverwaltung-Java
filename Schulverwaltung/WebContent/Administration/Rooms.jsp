@@ -15,15 +15,15 @@
     <script language="javascript" type="text/javascript" src="Scripts/Ajax.js"></script>
 	<script language="javascript" type="text/javascript" src="Scripts/List.js"></script>
 	<script language="javascript" type="text/javascript">
-		detailFileName = "Administration/JobDetail.jsp";
-		deleteServlet = "DeleteJobServlet";
-		deleteText = "Möchten Sie die ausgewählten Berufe wirklich entfernen?";
-		elementName = "Beruf";
+		detailFileName = "RoomDetails.jsp";
+		deleteServlet = "DeleteRoomServlet";
+		deleteText = "Möchten Sie die ausgewählten Räume wirklich entfernen?";
+		elementName = "Raum";
 	</script>
 <link href="Styles/Default.css" rel="stylesheet" type="text/css"/>
 </head>
 <body class="TabItem">
-<div id="dialog" title="Jobs" style="display: none; height: 100%; width: 100%">
+<div id="dialog" title="Räume" style="display: none; height: 100%; width: 100%">
    <iframe id="dialogTarget" style="height: 100%; width: 100%; border: none;"></iframe>
 </div>
 <% 
@@ -46,7 +46,7 @@
 							   Boolean.parseBoolean(request.getParameter("ShowDisabled")) : 
 							   false;
 %>
-<form action="JobServlet" method="post">
+<form action="RoomServlet" method="post">
 	<input type="hidden" id="SortKey" name="SortKey" />
 							<div style="background: lightBlue; width: 100%;">
 								<table style="width: 100%;">
@@ -67,7 +67,7 @@
 											<input type="button" value="Neu" id="btnNew"/>
 										</td>
 										<td align="Right" >
-											<input type="button" value="Löschen" id="btnDelete" onClick="deleteEntries();"/>
+											<input type="button" value="Löschen" id="btnDelete" onClick="deleteReligions();"/>
 										</td>
 									</tr>
 								</table>
@@ -75,26 +75,26 @@
 							<br/>
        				 		<div style="background: lightBlue; width: 100%; height: 100%; overflow: auto">
 								<%
-									ArrayList<Job> jobs = (ArrayList<Job>)request.getAttribute("List");
+									ArrayList<Room> rooms = (ArrayList<Room>)request.getAttribute("List");
 									out.write("	<table class=\"DetailList\" border=1>\n");
 									out.write("		<thead style=\"background-color: lightBlue\">");
 									out.write("			<tr>");
 									out.write("				<td>&nbsp;</td>");
 									out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(0)\">Id</td>");
-									out.write("				<td class=\"DetailHeader\" style=\"width: 99%\" onclick=\"SetSortKey(1)\">Bezeichnung</td>");
-									out.write("				<td class=\"DetailHeader\" style=\"width: 99%\" onclick=\"SetSortKey(2)\">Dauer</td>");
+									out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(1)\">Nummer</td>");
+									out.write("				<td class=\"DetailHeader\" style=\"width: 99%\" onclick=\"SetSortKey(2)\">Bezeichnung</td>");
 									out.write("			</tr>");
 									out.write("		</thead>");
 									out.write("		<tbody>");
-									if(jobs != null && jobs.size() > 0)
+									if(rooms != null && rooms.size() > 0)
 									{
-										for(Job job:jobs)
+										for(Room room:rooms)
 										{
-											out.write("		<tr class=\"DetailEntry\" id=\"" + job.getId() + "\">\n");
+											out.write("		<tr class=\"DetailEntry\" id=\"" + room.getId() + "\">\n");
 											out.write("			<td style=\"width: 50px\"><input type=\"checkbox\" onclick=\"checkDeleteEnty(this);\"/></td>\n");
-											out.write("			<td style=\"width: 100px\" onclick=\"openDetails=true;\">" + job.getId() + "</td>\n");
-											out.write("			<td style=\"width: 100%\" onclick=\"openDetails=true;\">" + job.getDescription() + "</td>\n");
-											out.write("			<td style=\"width: 100%\" onclick=\"openDetails=true;\">" + job.getDuration() + "</td>\n");
+											out.write("			<td style=\"width: 100px\" onclick=\"openDetails=true;\">" + room.getId() + "</td>\n");
+											out.write("			<td style=\"width: 100%\" onclick=\"openDetails=true;\">" + room.getNumber() + "</td>\n");
+											out.write("			<td style=\"width: 100%\" onclick=\"openDetails=true;\">" + room.getDescription() + "</td>\n");
 											out.write("		</tr>\n");
 										}
 									}

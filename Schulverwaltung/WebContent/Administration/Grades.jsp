@@ -15,10 +15,10 @@
     <script language="javascript" type="text/javascript" src="Scripts/Ajax.js"></script>
 	<script language="javascript" type="text/javascript" src="Scripts/List.js"></script>
 	<script language="javascript" type="text/javascript">
-		detailFileName = "Administration/JobDetail.jsp";
-		deleteServlet = "DeleteJobServlet";
-		deleteText = "Möchten Sie die ausgewählten Berufe wirklich entfernen?";
-		elementName = "Beruf";
+		detailFileName = "Administration/GradeDetail.jsp";
+		deleteServlet = "DeleteGradeServlet";
+		deleteText = "Möchten Sie die ausgewählten Klassen wirklich entfernen?";
+		elementName = "Klasse";
 	</script>
 <link href="Styles/Default.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -46,7 +46,7 @@
 							   Boolean.parseBoolean(request.getParameter("ShowDisabled")) : 
 							   false;
 %>
-<form action="JobServlet" method="post">
+<form action="GradeServlet" method="post">
 	<input type="hidden" id="SortKey" name="SortKey" />
 							<div style="background: lightBlue; width: 100%;">
 								<table style="width: 100%;">
@@ -75,26 +75,28 @@
 							<br/>
        				 		<div style="background: lightBlue; width: 100%; height: 100%; overflow: auto">
 								<%
-									ArrayList<Job> jobs = (ArrayList<Job>)request.getAttribute("List");
+									ArrayList<Grade> grades = (ArrayList<Grade>)request.getAttribute("List");
 									out.write("	<table class=\"DetailList\" border=1>\n");
 									out.write("		<thead style=\"background-color: lightBlue\">");
 									out.write("			<tr>");
 									out.write("				<td>&nbsp;</td>");
 									out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(0)\">Id</td>");
 									out.write("				<td class=\"DetailHeader\" style=\"width: 99%\" onclick=\"SetSortKey(1)\">Bezeichnung</td>");
-									out.write("				<td class=\"DetailHeader\" style=\"width: 99%\" onclick=\"SetSortKey(2)\">Dauer</td>");
+									out.write("				<td class=\"DetailHeader\" style=\"width: 99%\" onclick=\"SetSortKey(2)\">Lehrer</td>");
+									out.write("				<td class=\"DetailHeader\" style=\"width: 99%\" onclick=\"SetSortKey(3)\">Raum</td>");
 									out.write("			</tr>");
 									out.write("		</thead>");
 									out.write("		<tbody>");
-									if(jobs != null && jobs.size() > 0)
+									if(grades != null && grades.size() > 0)
 									{
-										for(Job job:jobs)
+										for(Grade grade:grades)
 										{
-											out.write("		<tr class=\"DetailEntry\" id=\"" + job.getId() + "\">\n");
+											out.write("		<tr class=\"DetailEntry\" id=\"" + grade.getId() + "\">\n");
 											out.write("			<td style=\"width: 50px\"><input type=\"checkbox\" onclick=\"checkDeleteEnty(this);\"/></td>\n");
-											out.write("			<td style=\"width: 100px\" onclick=\"openDetails=true;\">" + job.getId() + "</td>\n");
-											out.write("			<td style=\"width: 100%\" onclick=\"openDetails=true;\">" + job.getDescription() + "</td>\n");
-											out.write("			<td style=\"width: 100%\" onclick=\"openDetails=true;\">" + job.getDuration() + "</td>\n");
+											out.write("			<td style=\"width: 100px\" onclick=\"openDetails=true;\">" + grade.getId() + "</td>\n");
+											out.write("			<td style=\"width: 100%\" onclick=\"openDetails=true;\">" + grade.getDescription() + "</td>\n");
+											out.write("			<td style=\"width: 100%\" onclick=\"openDetails=true;\">" + grade.getTeacher().getName() + "</td>\n");
+											out.write("			<td style=\"width: 100%\" onclick=\"openDetails=true;\">" + grade.getRoom().getNumber() + "</td>\n");
 											out.write("		</tr>\n");
 										}
 									}

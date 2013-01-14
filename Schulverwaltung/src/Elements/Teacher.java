@@ -11,12 +11,23 @@ public class Teacher extends Person<Teacher>{
 	private int roomId = -1;
 	private double workhours = 0.00;
 	private int disableflag = -1;
+	private String shortName = "";
 	
-	
-	public Date getBirthday() {
+		public Date getBirthday() {
 			return birthday;
 		}
-
+		
+		public String getShortName()
+		{
+			return this.shortName;
+		}
+		
+		public Teacher setShortName(String shortName)
+		{
+			this.shortName = shortName;
+			return this;
+		}
+		
 		public Teacher setBirthday(Date birthday) {
 			this.birthday = birthday;
 			return this;
@@ -70,11 +81,12 @@ public class Teacher extends Person<Teacher>{
 	public void save() {
 		try(Database db = new Database())
 		{
-			db.NoQuery("update teacher set birthday = ?,email = ?,firstname = ?, name = ?, roomId = ?,phone = ?,workhours = ?, disableflag  = ? where id = ?",
+			db.NoQuery("update teacher set birthday = ?,email = ?,firstname = ?, name = ?, short= ?, roomId = ?,phone = ?,workhours = ?, disableflag  = ? where id = ?",
 					this.getBirthday(),
 					this.getEmail(),
 					this.getFirstname(),
 					this.getName(),
+					this.getShortName(),
 					this.getRoomId(),
 					this.getPhone(),
 					this.getWorkhours(),
@@ -102,6 +114,7 @@ public class Teacher extends Person<Teacher>{
 				this.setEmail(result.getString("email"));
 				this.setFirstname(result.getString("firstname"));
 				this.setName(result.getString("name"));
+				this.setShortName(result.getString("short"));
 				this.setRoomId(result.getInt("roomId"));
 				this.setPhone(result.getString("phone"));
 				this.setWorkhours(result.getDouble("workhours"));
