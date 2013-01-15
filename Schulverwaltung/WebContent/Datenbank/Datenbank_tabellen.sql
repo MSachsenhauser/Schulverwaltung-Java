@@ -68,7 +68,7 @@ create table hour2subject
 	(
 		group2subjectId int primary key,
 		hour varchar(100),
-		groupid varchar(100),
+		groupid int,
 		disableflag int default 0
 	);
 
@@ -103,7 +103,7 @@ create table job
 	(
 		id int primary key,
 		description varchar (500),
-		duration int default 3,
+		duration int,
 		disableflag int default 0
 	);
 

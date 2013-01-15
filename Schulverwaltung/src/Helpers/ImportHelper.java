@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import Elements.Company;
@@ -62,17 +63,26 @@ public class ImportHelper
 					Job job = new Job();
 					job.setDescription(sheet.getCell(75, i).getContents());
 					
-				/*
-					  String duration1 = duration1.setDuration(sheet.getCell(70,i).getContents());
-					  String duration2 = duration2.setDuration(sheet.getCell(71,i).getContents());
-					  long milliseconds1 = duration1.getTimeInMillis();
-					  long milliseconds2 = duration2.getTimeInMillis();
+				
+					  String duration1 = sheet.getCell(71,i).getContents();
+					  String duration2 = sheet.getCell(72,i).getContents();
+					  Date start = ParseExcelDate(duration1);
+					  Date end = ParseExcelDate(duration2);
+					  					    
+					  Calendar calendar1 = Calendar.getInstance();
+					  Calendar calendar2 = Calendar.getInstance();
+					    
+					  calendar1.set(start.getYear(), start.getMonth(), start.getDate());
+					  calendar2.set(end.getYear(), end.getMonth(), end.getDate());
+					    		
+					  long milliseconds1 = calendar1.getTimeInMillis();
+					  long milliseconds2 = calendar2.getTimeInMillis();
 					  long diff = milliseconds2 - milliseconds1;
-					  long diffSeconds = diff / 1000;
-					  long diffMinutes = diff / (60 * 1000);
-					  long diffHours = diff / (60 * 60 * 1000);
 					  long diffDays = diff / (24 * 60 * 60 * 1000);
-					  */
+					  double diffYear = diffDays / 365;
+					  
+					  job.setDuration(diffYear);
+					  
 					
 					if (job.getDescription().isEmpty())
 					{
