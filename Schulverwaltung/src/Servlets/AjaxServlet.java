@@ -120,18 +120,49 @@ public class AjaxServlet extends HttpServlet {
 		
 		if(action.equals("savePlanHour"))
 		{
-			String timeTableId = request.getParameter("TimeTableId");
-			String subjectId = request.getParameter("SubjectId");
-			String weekday = request.getParameter("Weekday");
-			String hour = request.getParameter("Hour");
-			try (Database db = new Database())
+			try
 			{
-				db.NoQuery("INSERT INTO plan2hour(timetableid, subjectid, weekday, hour) VALUES (?,?,?,?)",
-						timeTableId, subjectId, weekday,  hour);
+				String timeTableId = request.getParameter("TimeTableId");
+				String hours = request.getParameter("Hours");
+				if(hours != null && !hours.isEmpty())
+				{
+					String[] planHours = hours.split("|");
+					System.out.println(planHours.toString());
+					if(planHours != null && planHours.length > 0)
+					{
+						Database db = new Database();
+						for(int i = 0; i < planHours.length; i++)
+						{
+							if(planHours[i] != null && !planHours[i].isEmpty())
+							{
+								String[] curHour = planHours[i].split(";");
+								
+								/*if(curHour != null && curHour.length == 3)
+								{
+									String weekDay = curHour[0];
+									System.out.println(curHour[0]);
+									String hour = curHour[1];
+									String subjectId = curHour[2];
+									System.out.println(weekDay + ";" + subjectId);
+									try
+									{
+										/*db.NoQuery("INSERT INTO plan2hour(timetableid, subjectid, weekday, hour) VALUES (?,?,?,?)",
+												timeTableId, subjectId, weekDay,  hour);
+									}
+									catch(Exception ex)
+									{
+										ex.printStackTrace();
+									}
+								}*/
+							}
+							resultText = "";
+						}
+						db.closeConnection();
+					}
+				}
 			}
 			catch(Exception ex)
 			{
-		
 				ex.printStackTrace();
 			}
 		}
@@ -190,9 +221,7 @@ public class AjaxServlet extends HttpServlet {
 				resultText += student.getId() + ";" + student.getName() + " " + student.getFirstname() + " - " + new SimpleDateFormat("dd.MM.yyyy").format(student.getBirthday()) + "|";
 			}
 		}
-		
 		System.out.println(action);
-		System.out.println(resultText);
 		response.setContentType("text/plain");
 		response.getWriter().write(resultText);
 	}

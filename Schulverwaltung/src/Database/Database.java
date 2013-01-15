@@ -260,11 +260,17 @@ public class Database implements AutoCloseable{
     	
     	try
     	{
+    		Object retVal = null;
     		preparedStatement = conn.prepareStatement(command);
     		this.addParamsToStatement(params);
     		ResultSet result = preparedStatement.executeQuery();
-    		result.first();
-    		Object retVal = result.getObject(1);
+    		if(!result.wasNull())
+    		{
+    			if(result.next())
+    			{
+    				retVal = result.getObject(1);
+    			}
+    		}
     		this.closeConnection();
     		return retVal;
     	}

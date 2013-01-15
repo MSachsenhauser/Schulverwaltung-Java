@@ -61,7 +61,7 @@ public class Group implements IDatabaseObject<Group>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM group");
+			int id = db.getInt("SELECT MAX(Id) FROM gradeGroup");
 			if(id == -1)
 			{
 				id = 1;
@@ -77,7 +77,7 @@ public class Group implements IDatabaseObject<Group>{
 				description varchar(500),
 				disableflag int default 0
 			 */
-			db.NoQuery("INSERT INTO group(Id, description, disableflag)" +
+			db.NoQuery("INSERT INTO gradeGroup(Id, description, disableflag)" +
 					   " values(?,?,0)",
 					   this.getId(),this.getDescription());
 		}
@@ -92,7 +92,7 @@ public class Group implements IDatabaseObject<Group>{
 	public void removeFromDb() {
 		try (Database db = new Database())
 		{
-			db.NoQuery("UPDATE Group SET Disableflag = 1 WHERE Id = ?", this.getId());
+			db.NoQuery("UPDATE gradeGroup SET Disableflag = 1 WHERE Id = ?", this.getId());
 		}
 		catch(Exception ex)
 		{
@@ -103,7 +103,7 @@ public class Group implements IDatabaseObject<Group>{
 	public void save() {
 		try(Database db = new Database())
 		{
-			db.NoQuery("update group set description = ?,timetableId = ?,disableflag = ? where id = ?",
+			db.NoQuery("update gradeGroup set description = ?,timetableId = ?,disableflag = ? where id = ?",
 					this.getDescription(),
 					this.getTimetableId(),
 					this.getDisableflag(),

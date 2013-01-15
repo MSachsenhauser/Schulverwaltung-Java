@@ -147,22 +147,25 @@ function generateTimeTable(result)
 		var subjectId = hour[0];
 		var row = hour[2];
 		var column = hour[1];
-		timeTable[column][row] = subjectId;
-		var html = "<table style=\"width: 100%; font-size: smaller\" cellspacing=\"0\" cellpadding=\"0\">";
-		html += "<tr>";
-		html += "<td align=\"center\"><b>" + hour[3] + "</b></td>";
-		html += "<td align=\"right\"><img src=\"Images/delete.gif\" onclick=\"removeHour(" + column + ", " + row + ")\"/></td>";
-		html += "</tr>";
-		html += "<tr>";
-		html += "<td align=\"center\">&nbsp;&nbsp;<b>" + hour[4] + "</b></td>";
-		html += "</tr>";
-		html += "<tr>";
-		html += "<td align=\"center\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + hour[5] + "</td>";
-		html += "</tr>";
-		html += "<tr>";
-		html += "</tr>";
-		html += "</table>";
-		document.getElementById("hour_" + column + "_" + row).innerHTML = html;
+		if(subjectId != null && subjectId != "")
+		{
+			timeTable[column][row] = subjectId;
+			var html = "<table style=\"width: 100%; font-size: smaller\" cellspacing=\"0\" cellpadding=\"0\">";
+			html += "<tr>";
+			html += "<td align=\"center\"><b>" + hour[3] + "</b></td>";
+			html += "<td align=\"right\"><img src=\"Images/delete.gif\" onclick=\"removeHour(" + column + ", " + row + ")\"/></td>";
+			html += "</tr>";
+			html += "<tr>";
+			html += "<td align=\"center\">&nbsp;&nbsp;<b>" + hour[4] + "</b></td>";
+			html += "</tr>";
+			html += "<tr>";
+			html += "<td align=\"center\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + hour[5] + "</td>";
+			html += "</tr>";
+			html += "<tr>";
+			html += "</tr>";
+			html += "</table>";
+			document.getElementById("hour_" + column + "_" + row).innerHTML = html;
+		}
 	}
 }
 
@@ -183,6 +186,7 @@ function saveHours(result)
 	}
 	else
 	{
+		var insertHours = "";
 		for (var i = 0; i < timeTable.length; i++)
 		{
 			for(var j = 0; j < timeTable[i].length; j++)
@@ -190,13 +194,24 @@ function saveHours(result)
 				var subjectId = timeTable[i][j];
 				if(subjectId != null && subjectId != "" && subjectId != "-1")
 				{
-					UseAjax("http://localhost:8080/Schulverwaltung/AjaxServlet?Action=savePlanHour&TimeTableId=" + result + "&Weekday=" + (i +1) + "&Hour=" + (j +1) + "&SubjectId=" + subjectId, null, false);
+					//				Wochentag	   Stunde		Fach
+					insertHours += (i +1) + ";" + (j +1) + ";" + subjectId + "|";
 				}
 			}
 		}
 		
-		document.location.href = document.location.href;
+		if(insertHours.length > 0)
+		{
+			insertHours = insertHours.substring(0, insertHours.length -1);
+			alert(insertHours);
+			UseAjax("http://localhost:8080/Schulverwaltung/AjaxServlet?Action=savePlanHour&TimeTableId=" + result + "&Hours=" + insertHours, planHoursSaved, false);
+		}
 	}
+}
+
+function planHoursSaved(result)
+{
+	document.location.href = document.location.href;
 }
 
 function loadGroups(ctrl)
