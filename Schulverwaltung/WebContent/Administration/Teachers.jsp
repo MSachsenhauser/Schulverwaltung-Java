@@ -15,7 +15,7 @@
     <script language="javascript" type="text/javascript" src="Scripts/Ajax.js"></script>
 	<script language="javascript" type="text/javascript" src="Scripts/List.js"></script>
 	<script language="javascript" type="text/javascript">
-		detailFileName = "TeacherDetails.jsp";
+		detailFileName = "Administration/TeacherDetail.jsp";
 		deleteServlet = "DeleteTeacherServlet";
 		deleteText = "Möchten Sie die ausgewählten Lehrer wirklich entfernen?";
 		elementName = "Lehrer";

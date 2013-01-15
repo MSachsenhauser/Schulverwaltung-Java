@@ -17,8 +17,9 @@ public class Teacher extends Person<Teacher>{
 		return shortName;
 	}
 
-	public void setShortName(String shortName) {
+	public Teacher setShortName(String shortName) {
 		this.shortName = shortName;
+		return this;
 	}
 
 	public Date getBirthday() {

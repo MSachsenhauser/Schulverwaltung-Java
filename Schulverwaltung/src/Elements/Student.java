@@ -70,9 +70,17 @@ public class Student extends Person<Student>{
 	
 	public Company getCompany()
 	{
-		if(this.company == null)
+		if(this.company == null )
 		{
-			this.company = new Company().setId(this.instructor.getCompanyId()).load();
+			if(this.instructor != null)
+			{
+				this.company = new Company().setId(this.instructor.getCompanyId()).load();
+			}
+			
+			if (this.company == null)
+			{
+				this.company = new Company();
+			}
 		}
 		return this.company;
 	}

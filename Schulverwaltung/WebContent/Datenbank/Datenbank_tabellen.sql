@@ -168,6 +168,25 @@ create table marktype
 		weight decimal (4,2),
 		disableflag int default 0
 	);
+	
+create table delay
+	(
+		id int primary key,
+		studentId int,
+		startdate datetime,
+		enddate	datetime,
+		description varchar(500)		
+	);
+	
+create table absence
+	(
+		id int primary key,
+		studentID int,
+		startdate datetime,
+		enddate datetime,
+		attestation bool,
+		befreiung bool
+	);
 
 
 create table group2grade
