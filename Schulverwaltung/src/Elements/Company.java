@@ -79,34 +79,42 @@ public class Company implements IDatabaseObject<Company>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM company") ;
-								
-			if(id == -1)
+			int companyId = db.getInt("SELECT id FROM company WHERE name=? AND street = ? AND city = ? AND plz = ? AND phone = ?", 
+					this.getName(), this.getStreet(), this.getCity(), this.getPlz(), this.getPhone());
+			if(companyId == -1)
 			{
-				id = 1;
+				int id = db.getInt("SELECT MAX(Id) FROM company") ;
+									
+				if(id == -1)
+				{
+					id = 1;
+				}
+				else
+				{
+					id++;
+				}
+				
+				this.setId(id);
+				/*
+				 
+					id int primary key,
+					name varchar (100),
+					street varchar (100),
+					city varchar (100),
+					plz varchar (100),
+					phone varchar (100),
+					disableflag int default 0
+		
+				 */
+				db.NoQuery("INSERT INTO company(Id, Name, Street, City, Plz, phone, disableflag)" +
+						   " values(?,?,?,?,?,?,0)",
+						   this.getId(), this.getName(), this.getStreet(), this.getCity(),
+						   this.getPlz(), this.getPhone());
 			}
 			else
 			{
-				id++;
+				this.setId(companyId);
 			}
-			
-			this.setId(id);
-			/*
-			 
-				id int primary key,
-				name varchar (100),
-				street varchar (100),
-				city varchar (100),
-				plz varchar (100),
-				phone varchar (100),
-				disableflag int default 0
-	
-			 */
-			db.NoQuery("INSERT INTO company(Id, Name, Street, City, Plz, phone, disableflag)" +
-					   " values(?,?,?,?,?,?,0)",
-					   this.getId(), this.getName(), this.getStreet(), this.getCity(),
-					   this.getPlz(), this.getPhone());
-					   
 		}
 		
 		catch(Exception ex)

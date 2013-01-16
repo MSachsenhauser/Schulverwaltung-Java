@@ -61,25 +61,33 @@ public class Group implements IDatabaseObject<Group>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM gradeGroup");
-			if(id == -1)
+			int gradeId = db.getInt("SELECT id FROM gradeGroup WHERE Description=? ", this.getDescription());
+			if(gradeId == -1)
 			{
-				id = 1;
+				int id = db.getInt("SELECT MAX(Id) FROM gradeGroup");
+				if(id == -1)
+				{
+					id = 1;
+				}
+				else
+				{
+					id++;
+				}
+				
+				this.setId(id);
+				/*
+				 * 	id int primary key,
+					description varchar(500),
+					disableflag int default 0
+				 */
+				db.NoQuery("INSERT INTO gradeGroup(Id, description, disableflag)" +
+						   " values(?,?,0)",
+						   this.getId(),this.getDescription());
 			}
 			else
 			{
-				id++;
+				this.setId(gradeId);
 			}
-			
-			this.setId(id);
-			/*
-			 * 	id int primary key,
-				description varchar(500),
-				disableflag int default 0
-			 */
-			db.NoQuery("INSERT INTO gradeGroup(Id, description, disableflag)" +
-					   " values(?,?,0)",
-					   this.getId(),this.getDescription());
 		}
 		
 		catch(Exception ex)

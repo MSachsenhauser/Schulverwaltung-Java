@@ -80,27 +80,37 @@ public class Grade implements IDatabaseObject<Grade>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM grade");
-			if(id == -1)
+			int gradeId = db.getInt("SELECT id FROM grade WHERE Description=? AND roomId = ? AND teacherId = ? ", 
+					this.getDescription(), this.getRoomId(), this.getTeacherId());
+			if(gradeId == -1)
 			{
-				id = 1;
+				int id = db.getInt("SELECT MAX(Id) FROM grade");
+				if(id == -1)
+				{
+					id = 1;
+				}
+				else
+				{
+					id++;
+				}
+				
+				this.setId(id);
+				/*
+				 * 	id int primary key,
+					description varchar (500),
+					roomId int (100),
+					teacherId int (100),
+					disableflag int default 0
+				 */
+				db.NoQuery("INSERT INTO grade(Id, description, roomId, teacherId, disableflag)" +
+						   " values(?,?,?,?,0)",
+						   this.getId(), this.getDescription(), this.getRoomId(), this.getTeacherId());
 			}
 			else
 			{
-				id++;
+				this.setId(gradeId);
 			}
 			
-			this.setId(id);
-			/*
-			 * 	id int primary key,
-				description varchar (500),
-				roomId int (100),
-				teacherId int (100),
-				disableflag int default 0
-			 */
-			db.NoQuery("INSERT INTO grade(Id, description, roomId, teacherId, disableflag)" +
-					   " values(?,?,?,?,0)",
-					   this.getId(), this.getDescription(), this.getRoomId(), this.getTeacherId());
 		}
 		
 		catch(Exception ex)

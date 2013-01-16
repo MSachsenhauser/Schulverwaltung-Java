@@ -150,41 +150,52 @@ public class Student extends Person<Student>{
 	public void addToDb()
 	{
 		try(Database db = new Database())
-		{
-			int id = db.getInt("SELECT MAX(Id) FROM student");
-			if(id == -1)
-			{
-				id = 1;
+			{	
+				int studentId = db.getInt("SELECT id FROM student WHERE name=? AND Firstname =? AND  Street=? AND City=? AND Plz=? AND Birthday=? AND " +
+						"" + "" + "Entry=? AND Shortened=? AND Phone=? AND Email=? AND InstructorId=? AND JobId=? AND ReligionId=? ",
+						this.getName(), this.getFirstname(), this.getStreet(), this.getCity(), this.getPlz(), this.getBirthday(),
+						this.getEntry(), this.getShortened(),this.getPhone(),this.getEmail(), this.getIntructorId(), this.getJob(), this.getReligionId());
+				if(studentId == -1)
+				{
+					int id = db.getInt("SELECT MAX(Id) FROM student");
+					if(id == -1)
+					{
+						id = 1;
+					}
+					else
+					{
+						id++;
+					}
+					
+					this.setId(id);
+					/*
+					 * id int primary key,
+						name varchar(100),
+						firstname varchar(100),
+						street varchar (100),
+						city varchar (100),
+						plz varchar (100),
+						birthday date,
+						entry date,
+						shortened boolean,
+						phone varchar(100),
+						email varchar (100),
+						instructorid int,
+						jobId int,
+						religionId int,
+						disableflag int
+					 */
+					db.NoQuery("INSERT INTO student(Id, Name, Firstname, Street, City, Plz, Birthday, " + "" +
+							   "Entry, Shortened, Phone, Email, InstructorId, JobId, ReligionId, disableflag)" +
+							   " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)",
+							   this.getId(), this.getName(), this.getFirstname(), this.getStreet(), this.getCity(),
+							   this.getPlz(), this.getBirthday(), this.getEntry(), this.getShortened(), this.getPhone(),
+							   this.getEmail(), this.getIntructorId(), this.getJobId(), this.getReligionId());
 			}
 			else
 			{
-				id++;
+				this.setId(studentId);
 			}
-			
-			this.setId(id);
-			/*
-			 * id int primary key,
-				name varchar(100),
-				firstname varchar(100),
-				street varchar (100),
-				city varchar (100),
-				plz varchar (100),
-				birthday date,
-				entry date,
-				shortened boolean,
-				phone varchar(100),
-				email varchar (100),
-				instructorid int,
-				jobId int,
-				religionId int,
-				disableflag int
-			 */
-			db.NoQuery("INSERT INTO student(Id, Name, Firstname, Street, City, Plz, Birthday, " + "" +
-					   "Entry, Shortened, Phone, Email, InstructorId, JobId, ReligionId, disableflag)" +
-					   " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)",
-					   this.getId(), this.getName(), this.getFirstname(), this.getStreet(), this.getCity(),
-					   this.getPlz(), this.getBirthday(), this.getEntry(), this.getShortened(), this.getPhone(),
-					   this.getEmail(), this.getIntructorId(), this.getJobId(), this.getReligionId());
 		}
 		
 		catch(Exception ex)

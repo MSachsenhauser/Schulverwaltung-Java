@@ -28,30 +28,39 @@ public class Instructor extends Person<Instructor>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			
-			int id = db.getInt("SELECT MAX(Id) FROM instructor");
-			if(id == -1)
+			int instructorId = db.getInt("SELECT id FROM instructor WHERE name=? AND firstname = ? AND phone = ? AND email = ? AND companyid = ?", 
+				this.getName(), this.getFirstname(), this.getPhone(), this.getEmail(), this.getCompanyId());
+			if(instructorId == -1)
 			{
-				id = 1;
+			
+				int id = db.getInt("SELECT MAX(Id) FROM instructor");
+				if(id == -1)
+				{
+					id = 1;
+				}
+				else
+				{
+					id++;
+				}
+				
+				this.setId(id);
+				/*
+				 * 	id int primary key,
+					name varchar (100),
+					firstname varchar (100),
+					phone varchar (100),
+					email varchar (100),
+					companyid int,
+					disableflag int default 0
+				 */
+				db.NoQuery("INSERT INTO instructor(Id, Name, Firstname, phone, email, companyid, disableflag)" +
+						   " values(?,?,?,?,?,?,0)",
+						   this.getId(), this.getName(), this.getFirstname(), this.getPhone(), this.getEmail(), this.getCompanyId());
 			}
 			else
 			{
-				id++;
+				this.setId(instructorId);
 			}
-			
-			this.setId(id);
-			/*
-			 * 	id int primary key,
-				name varchar (100),
-				firstname varchar (100),
-				phone varchar (100),
-				email varchar (100),
-				companyid int,
-				disableflag int default 0
-			 */
-			db.NoQuery("INSERT INTO instructor(Id, Name, Firstname, phone, email, companyid, disableflag)" +
-					   " values(?,?,?,?,?,?,0)",
-					   this.getId(), this.getName(), this.getFirstname(), this.getPhone(), this.getEmail(), this.getCompanyId());
 		}
 		
 		catch(Exception ex)

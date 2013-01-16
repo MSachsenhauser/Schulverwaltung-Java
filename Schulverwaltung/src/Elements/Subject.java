@@ -41,25 +41,34 @@ public class Subject implements IDatabaseObject<Subject>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM subject");
-			if(id == -1)
+			int subjectId = db.getInt("SELECT id FROM subject WHERE Description=? ", this.getDescription());
+			if(subjectId == -1)
 			{
-				id = 1;
+
+				int id = db.getInt("SELECT MAX(Id) FROM subject");
+				if(id == -1)
+				{
+					id = 1;
+				}
+				else
+				{
+					id++;
+				}
+				
+				this.setId(id);
+				/*
+				 *	 id int primary key,
+					description varchar(500),
+					disableflag int default 0
+				 */
+				db.NoQuery("INSERT INTO subject(Id, description, disableflag)" +
+						   " values(?,?,0)",
+						   this.getId(),this.getDescription());
 			}
 			else
 			{
-				id++;
+				this.setId(subjectId);
 			}
-			
-			this.setId(id);
-			/*
-			 *	 id int primary key,
-				description varchar(500),
-				disableflag int default 0
-			 */
-			db.NoQuery("INSERT INTO subject(Id, description, disableflag)" +
-					   " values(?,?,0)",
-					   this.getId(),this.getDescription());
 		}
 		
 		catch(Exception ex)
