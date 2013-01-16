@@ -48,6 +48,7 @@ create table timetable
 create table gradeGroup
 	(
 		id int primary key,
+		gradeId int,
 		description varchar(500),
 		disableflag int default 0
 	);
@@ -93,9 +94,13 @@ create table exam
 		id int primary key,
 		typeId int,
 		executionDate date,
-		subjectId int,
-		teacherId int,
+		group2SubjectId int,
 		announceDate date,
+		minPoints1 int,
+		minPoints2 int,
+		minPoints3 int,
+		minPoints4 int,
+		minPoints5,
 		disableflag int default 0
 	);
 
@@ -167,14 +172,6 @@ create table marktype
 		description varchar (500),
 		weight decimal (4,2),
 		disableflag int default 0
-	);
-
-
-create table group2grade
-	(
-		groupid int ,
-		gradeid int,
-		primary key (groupid, gradeid)
 	);
 
 create table student2guardian
@@ -306,6 +303,9 @@ CREATE OR REPLACE VIEW qryExam
 	executionDate,
 	subject,
 	teacher,
+	room,
+	gradeGroup,
+	grade,
 	announceDate,
 	disableflag
 )
@@ -313,11 +313,15 @@ AS
 (
 	SELECT exam.id, marktype.description, exam.executionDate, 
 		   subject.description, Concat(Concat(teacher.Name, ' '), 
-		   teacher.Firstname), exam.announceDate, exam.disableflag
+		   teacher.Firstname), room.number, gradeGroup.description, grade.Description, exam.announceDate, exam.disableflag
 	FROM exam
 	LEFT JOIN marktype ON exam.typeId = marktype.Id 
-	LEFT JOIN subject on exam.subjectId = subject.Id 
-	LEFT JOIN teacher on exam.teacherId = teacher.Id 
+	LEFT JOIN group2subject on exam.group2subjectId = group2subject.Id 
+	LEFT JOIN teacher on group2subject.teacherId = teacher.Id 
+	LEFT JOIN subject on group2subject.subjectId = subject.Id 
+	LEFT JOIN room on group2subject.roomid = teacher.roomid 
+	LEFT JOIN gradeGroup on group2subject.groupId = gradeGroup.id 
+	LEFT JOIN grade on gradeGroup.gradeId = grade.id 
 );
 
 CREATE OR REPLACE VIEW qryTeacher
@@ -358,7 +362,7 @@ AS
 	LEFT JOIN company ON instructor.companyId = company.Id
 );
 
-CREATE OR REPLACE VIEW qry_mark
+CREATE OR REPLACE VIEW qrymark
 (
 	id,
 	mark,
@@ -374,7 +378,7 @@ AS
 	LEFT JOIN student on mark.studentId = student.id
 );
 
-CREATE OR REPLACE VIEW qry_grademaster
+CREATE OR REPLACE VIEW qrygrademaster
 (
 	student,
 	grade
@@ -393,3 +397,10 @@ insert into login
 ("Michael", "asdfg", "m.sachsenhauser@googlemail.com"),
 ("Nicole", "123", "nicole.uhb@googlemail.com"), 
 ("Administrator", "Administrator", "");
+
+INSERT INTO MarkType
+(id, description, weight, disableflag) VALUES 
+(1, "Stegreifaufgabe", 1, 0),
+(2, "Schulaufgabe", 2, 0),
+(3, "Mündlich", 1, 0),
+(4, "Kurzarbeit", 1, 0);

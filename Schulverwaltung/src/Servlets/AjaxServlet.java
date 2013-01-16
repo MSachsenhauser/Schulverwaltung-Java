@@ -201,14 +201,6 @@ public class AjaxServlet extends HttpServlet {
 			String description = request.getParameter("Description");
 			Group group = new Group().setDescription(description).setGradeId(Integer.parseInt(gradeId));
 			group.addToDb();
-			try(Database db = new Database())
-			{
-				db.NoQuery("INSERT INTO group2grade (GroupId, GradeId) VALUES (?, ?)", group.getId(), gradeId);
-			}
-			catch(Exception ex)
-			{
-				ex.printStackTrace();
-			}
 			resultText = group.getId() + ";" + group.getDescription();
 		}
 		

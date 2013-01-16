@@ -99,8 +99,10 @@
 						out.write("			<tr>");
 						out.write("				<td class=\"DetailHeader\">&nbsp;</td>");
 						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(0)\">Id</td>");
-						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(1)\">Fach</td>");
-						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(2)\">Lehrer</td>");
+						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(1)\">Klasse</td>");
+						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(2)\">Fach</td>");
+						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(3)\">Lehrer</td>");
+						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(4)\">Art</td>");
 						out.write("				<td class=\"DetailHeader\">&nbsp; </td>");
 						out.write("			</tr>");
 						out.write("		</thead>");
@@ -111,9 +113,10 @@
 							{
 								out.write("		<tr class=\"DetailEntry\" id=\"" + exam.getId() + "\">\n");
 								out.write("			<td style=\"width: 50px\"><input type=\"checkbox\" onclick=\"checkDeleteEnty(this);\"/></td>\n");
-								out.write("			<td style=\"width: 100px\" onclick=\"openDetails=true;\">" + exam.getId() + "</td>\n");
-								out.write("			<td onclick=\"openDetails=true;\">" + exam.getSubject().getShortName() + "</td>\n");
-								out.write("			<td onclick=\"openDetails=true;\">" + exam.getTeacher().getName() + "</td>\n");
+								out.write("			<td style=\"width: 100px\" onclick=\"openDetails=true;\">" + exam.getGroupSubject().getGroup().getGradeId() + "</td>\n");
+								out.write("			<td style=\"width: 100px\" onclick=\"openDetails=true;\">" + exam.getDisableflag() + "</td>\n");
+								out.write("			<td onclick=\"openDetails=true;\">" + exam.getGroupSubject().getSubject() + "</td>\n");
+								out.write("			<td onclick=\"openDetails=true;\">" + exam.getGroupSubject().getTeacher().getName() + "</td>\n");
 								out.write("			<td style=\"width: 100%\" onclick=\"openDetails=true;\">&nbsp;</td>\n");
 								out.write("		</tr>\n");
 							}

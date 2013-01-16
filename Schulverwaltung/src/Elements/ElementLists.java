@@ -14,6 +14,7 @@ public class ElementLists {
 	private static ArrayList<Company> companies;
 	private static ArrayList<Grade> grades;
 	private static ArrayList<Student> students;
+	private static ArrayList<MarkType> markTypes;
 	public static ArrayList<Job> getJobs() {
 		jobs = new ArrayList<Job>();
 		try(Database db = new Database())
@@ -149,5 +150,23 @@ public class ElementLists {
 			ex.printStackTrace();
 		}
 		return students;
+	}
+	
+	public static ArrayList<MarkType> getMarkTypes()
+	{
+		markTypes = new ArrayList<MarkType>();
+		try(Database db = new Database())
+		{
+			ResultSet result = db.getDataRows("SELECT id FROM MarkType Order By Weight, Description" );
+			while(result.next())
+			{
+				markTypes.add(new MarkType().setId(result.getInt(1)).load());
+			}
+		}
+		catch(Exception ex)	
+		{
+			ex.printStackTrace();
+		}
+		return markTypes;
 	}
 }

@@ -10,26 +10,28 @@ public class Exam implements IDatabaseObject<Exam>{
 	private int id = -1;
 	private int typeid = -1;
 	private Date executionDate = new Date();
-	private int teacherId = -1;
-	private Teacher teacher = null;
-	private int subjectId = -1;
-	private Subject subject = new Subject();
+	private int groupSubjectId = -1;
+	private GroupSubject groupSubject = new GroupSubject();
 	private int disableflag = -1;
 	private Date announceDate = new Date();
-
-	public Teacher getTeacher() {
-		if(teacher == null)
+	private MarkType type = null;
+	
+	public MarkType getMarkType()
+	{
+		if(this.type == null)
 		{
-			teacher = new Teacher().setId(this.teacherId).load();
+			this.type = new MarkType().setId(this.typeid).load();
 		}
-		return teacher;
+		
+		return this.type;
 	}
-	public Subject getSubject() {
-		if(this.subject == null)
+	
+	public GroupSubject getGroupSubject() {
+		if(this.groupSubject == null)
 		{
-			this.subject = new Subject().setId(this.subjectId).load();
+			this.groupSubject = new GroupSubject().setId(this.groupSubjectId).load();
 		}
-		return subject;
+		return groupSubject;
 	}
 	public int getId() {
 		return id;
@@ -39,6 +41,7 @@ public class Exam implements IDatabaseObject<Exam>{
 		return this;
 	}
 	public int getTypeId() {
+		this.type = null;
 		return typeid;
 	}
 	public Exam setTypeId(int typeId) {
@@ -52,20 +55,12 @@ public class Exam implements IDatabaseObject<Exam>{
 		this.executionDate = string;
 		return this;
 	}
-	public int getTeacherId() {
-		return teacherId;
+	public int getGroupSubjectId() {
+		return groupSubjectId;
 	}
-	public Exam setTeacherId(int string) {
-		this.teacherId = string;
-		this.teacher = null;
-		return this;
-	}
-	public int getSubjectId() {
-		return subjectId;
-	}
-	public Exam setSubjectId(int string) {
-		this.subjectId = string;
-		this.subject = null;
+	public Exam setGroupSubjectId(int id) {
+		this.groupSubjectId = id;
+		this.groupSubject = null;
 		return this;
 	}
 	
@@ -110,16 +105,15 @@ public class Exam implements IDatabaseObject<Exam>{
 			disableflag int default 0
 			 * 
 			 */
-			db.NoQuery("INSERT INTO exam(Id,typeid,executionDate, subjectId, teacherId, announceDate,  disableflag)" +
+			db.NoQuery("INSERT INTO exam(Id,typeid,executionDate, subjectId, announceDate,  disableflag)" +
 					   " values(?,?,?,?,?,?,0)",
-					   this.getId(), this.getTypeId(), this.getExecutionDate(), this.getSubjectId(), this.getTeacherId(),this.getAnnounceDate());
+					   this.getId(), this.getTypeId(), this.getExecutionDate(), this.getGroupSubjectId(), this.getAnnounceDate());
 		}
 		
 		catch(Exception ex)
 		{
-			
+			ex.printStackTrace();
 		}
-		
 	}
 	@Override
 	public void removeFromDb() {
@@ -136,11 +130,10 @@ public class Exam implements IDatabaseObject<Exam>{
 	public void save() {
 		try(Database db = new Database())
 		{
-			db.NoQuery("update exam set executionDate = ?, announceDate = ?,subjectId = ?,teacherId = ?, typeId = ?, disableflag  = ? where id = ?",
+			db.NoQuery("update exam set executionDate = ?, announceDate = ?,subjectId = ?, typeId = ?, disableflag  = ? where id = ?",
 					this.getExecutionDate(),
 					this.getAnnounceDate(),
-					this.getSubjectId(),
-					this.getTeacherId(),
+					this.getGroupSubjectId(),
 					this.getTypeId(),
 					this.getDisableflag(),
 					this.getId());
@@ -161,8 +154,7 @@ public class Exam implements IDatabaseObject<Exam>{
 			{
 				this.setExecutionDate(result.getDate("executionDate"));
 				this.setAnnounceDate(result.getDate("announceDate"));
-				this.setSubjectId(result.getInt("subjectId"));
-				this.setTeacherId(result.getInt("teacherId"));
+				this.setGroupSubjectId(result.getInt("subjectId"));
 				this.setTypeId(result.getInt("typeId"));
 				this.setDisableflag(result.getInt("disableflag"));
 			}
