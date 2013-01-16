@@ -17,8 +17,9 @@ public class Teacher extends Person<Teacher>{
 		return shortName;
 	}
 
-	public void setShortName(String shortName) {
+	public Teacher setShortName(String shortName) {
 		this.shortName = shortName;
+		return this;
 	}
 
 	public Date getBirthday() {
@@ -60,33 +61,44 @@ public class Teacher extends Person<Teacher>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM teacher");
-			if(id == -1)
+			int teacherId = db.getInt("SELECT id FROM teacher WHERE name=? AND firstname = ? and short = ?and phone = ? and email = ? and roomid=? and birthday = ? and workhours = ?",
+				this.getName(), this.getFirstname(), this.getShortName(), this.getPhone(), 
+				this.getEmail(), this.getRoomId(), this.getBirthday(), this.getWorkhours());
+			if(teacherId == -1)
 			{
-				id = 1;
+			
+				int id = db.getInt("SELECT MAX(Id) FROM teacher");
+				if(id == -1)
+				{
+					id = 1;
+				}
+				else
+				{
+					id++;
+				}
+				
+				this.setId(id);
+				/*
+				 	id int primary key,
+					name varchar (100),
+					firstname varchar (100),
+					phone varchar (100),
+					email varchar (100),
+					roomid int,
+					birthday date,
+					workhours dec(2,2),
+					disableflag int default 0
+				 */
+				db.NoQuery("INSERT INTO teacher(Id, Name, Firstname, short, phone, email, roomid, Birthday, " + "" +
+						   "workhours,disableflag)" +
+						   " values(?,?,?,?,?,?,?,?,?,0)",
+						   this.getId(), this.getName(), this.getFirstname(),this.getShortName(), this.getPhone(), this.getEmail(), this.getRoomId(), this.getBirthday(),
+						   this.getWorkhours());
 			}
 			else
 			{
-				id++;
+				this.setId(teacherId);
 			}
-			
-			this.setId(id);
-			/*
-			 	id int primary key,
-				name varchar (100),
-				firstname varchar (100),
-				phone varchar (100),
-				email varchar (100),
-				roomid int,
-				birthday date,
-				workhours dec(2,2),
-				disableflag int default 0
-			 */
-			db.NoQuery("INSERT INTO teacher(Id, Name, Firstname, phone, email, roomid, Birthday, " + "" +
-					   "workhours,disableflag)" +
-					   " values(?,?,?,?,?,?,?,?,0)",
-					   this.getId(), this.getName(), this.getFirstname(),this.getPhone(), this.getEmail(), this.getRoomId(), this.getBirthday(),
-					   this.getWorkhours());
 		}
 		
 		catch(Exception ex)
@@ -112,7 +124,7 @@ public class Teacher extends Person<Teacher>{
 	public void save() {
 		try(Database db = new Database())
 		{
-			db.NoQuery("update teacher set birthday = ?,email = ?,firstname = ?, name = ?, roomId = ?,phone = ?,workhours = ?, disableflag  = ? where id = ?",
+			db.NoQuery("update teacher set birthday = ?,email = ?,firstname = ?, name = ?, roomId = ?,phone = ?,workhours = ?, disableflag  = ?, short = ? where id = ?",
 					this.getBirthday(),
 					this.getEmail(),
 					this.getFirstname(),
@@ -121,6 +133,7 @@ public class Teacher extends Person<Teacher>{
 					this.getPhone(),
 					this.getWorkhours(),
 					this.getDisableflag(),
+					this.getShortName(),
 					this.getId());
 			
 			

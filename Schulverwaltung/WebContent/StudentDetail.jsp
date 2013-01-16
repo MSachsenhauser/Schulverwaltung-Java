@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="UTF-8"%>
 <%@ page import="Elements.*" %>
 <%@ page import="java.text.*" %>
 <%@ page import="Servlets.StudentDetailServlet" %>
@@ -46,7 +46,7 @@
 		</tr>
 		<tr>
 			<td>
-				<label>Straﬂe: </label>
+				<label>Stra√üe: </label>
 			</td>
 			<td>
 				<input <%=readonly%> type="text" name="street" value="<%=curStudent.getStreet()%>"/>
@@ -110,7 +110,7 @@
 			</td>
 			<td colspan="2">
 				<input <%=readonly%> type="checkbox" name="shortened" value="<%=curStudent.getShortened()%>" />
-				 <label>Verk¸rzt</label>
+				 <label>Verk√ºrzt</label>
 			</td>
 		</tr>
 		<tr>

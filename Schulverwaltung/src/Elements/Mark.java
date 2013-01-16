@@ -58,28 +58,37 @@ public class Mark implements IDatabaseObject<Mark>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM mark");
-			if(id == -1)
+			int markId = db.getInt("SELECT id FROM mark WHERE mark=? AND studentid = ? and examid = ? and trend = ? ",
+				this.getMark(), this.getStudentId(), this.getExamId(), this.getTrend());
+			if(markId == -1)
 			{
-				id = 1;
+				int id = db.getInt("SELECT MAX(Id) FROM mark");
+				if(id == -1)
+				{
+					id = 1;
+				}
+				else
+				{
+					id++;
+				}
+				
+				this.setId(id);
+				/*
+					id int primary key,
+					mark int,
+					studentid int,
+					examid int,
+					trend varchar (1),
+					disableflag int default 0
+				 */
+				db.NoQuery("INSERT INTO mark(Id, mark, studentid, examid, trend, disableflag)" +
+						   " values(?,?,?,?,?,0)",
+						   this.getId(), this.getMark(), this.getStudentId(), this.getExamId(), this.getTrend());
 			}
 			else
 			{
-				id++;
+				this.setId(markId);
 			}
-			
-			this.setId(id);
-			/*
-				id int primary key,
-				mark int,
-				studentid int,
-				examid int,
-				trend varchar (1),
-				disableflag int default 0
-			 */
-			db.NoQuery("INSERT INTO mark(Id, mark, studentid, examid, trend, disableflag)" +
-					   " values(?,?,?,?,?,0)",
-					   this.getId(), this.getMark(), this.getStudentId(), this.getExamId(), this.getTrend());
 		}
 		
 		catch(Exception ex)

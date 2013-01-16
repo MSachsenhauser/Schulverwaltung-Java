@@ -44,32 +44,41 @@ public class Guardian extends Person<Guardian>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM guardian");
-			if(id == -1)
+			int guardianId = db.getInt("SELECT id FROM guardian WHERE name=? AND firstname=? AND phone=? AND street=? AND city=? AND plz=? ",
+				this.getName(), this.getFirstname(), this.getPhone(), this.getStreet(), this.getCity(), this.getPlz());
+			if(guardianId == -1)
 			{
-				id = 1;
+				int id = db.getInt("SELECT MAX(Id) FROM guardian");
+				if(id == -1)
+				{
+					id = 1;
+				}
+				else
+				{
+					id++;
+				}
+				
+				this.setId(id);
+				/*
+					id int primary key,
+					name varchar (100),
+					firstname varchar(100),
+					phone varchar (100),
+					street varchar (100),
+					city varchar (100),
+					plz varchar (100),
+					disableflag int default 0
+				 */
+				db.NoQuery("INSERT INTO guardian(Id, Name, Firstname, phone, street, city, plz, " + "" +
+						   "disableflag)" +
+						   " values(?,?,?,?,?,?,?,0)",
+						   this.getId(), this.getName(), this.getFirstname(),this.getPhone(), this.getStreet(), this.getCity(),
+						   this.getPlz());
 			}
 			else
 			{
-				id++;
+				this.setId(guardianId);
 			}
-			
-			this.setId(id);
-			/*
-				id int primary key,
-				name varchar (100),
-				firstname varchar(100),
-				phone varchar (100),
-				street varchar (100),
-				city varchar (100),
-				plz varchar (100),
-				disableflag int default 0
-			 */
-			db.NoQuery("INSERT INTO guardian(Id, Name, Firstname, phone, street, city, plz, " + "" +
-					   "disableflag)" +
-					   " values(?,?,?,?,?,?,?,0)",
-					   this.getId(), this.getName(), this.getFirstname(),this.getPhone(), this.getStreet(), this.getCity(),
-					   this.getPlz());
 		}
 		
 		catch(Exception ex)

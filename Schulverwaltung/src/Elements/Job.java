@@ -43,25 +43,35 @@ public class Job implements IDatabaseObject<Job>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM job");
-			if(id == -1)
+			int jobId = db.getInt("SELECT id FROM job WHERE description=? AND duration = ?", this.getDescription(), this.getDuration());
+			if(jobId == -1)
 			{
-				id = 1;
+				
+			
+				int id = db.getInt("SELECT MAX(Id) FROM job");
+				if(id == -1)
+				{
+					id = 1;
+				}
+				else
+				{
+					id++;
+				}
+				this.setId(id);
+				/*
+				 * 	id int primary key,
+					description varchar (500),
+					duration int default 3,
+					disableflag int default 0
+				 */
+				db.NoQuery("INSERT INTO job(Id, description, duration, disableflag )" +
+						   " values(?,?,?,0)",
+						   this.getId(), this.getDescription(), this.getDuration());
 			}
 			else
 			{
-				id++;
+				this.setId(jobId);
 			}
-			this.setId(id);
-			/*
-			 * 	id int primary key,
-				description varchar (500),
-				duration int default 3,
-				disableflag int default 0
-			 */
-			db.NoQuery("INSERT INTO job(Id, description, duration, disableflag )" +
-					   " values(?,?,?,0)",
-					   this.getId(), this.getDescription(), this.getDuration());
 		}
 		
 		catch(Exception ex)

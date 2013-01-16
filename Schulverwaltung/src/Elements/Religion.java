@@ -44,25 +44,35 @@ public class Religion implements IDatabaseObject<Religion>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM religion");			
-			if(id == -1)
+			int religionId = db.getInt("SELECT id FROM Religion WHERE Description=? AND SubjectId = ?", this.getDescription(), this.getSubjectId());
+			if(religionId == -1)
 			{
-				id = 1;
+				int id = db.getInt("SELECT MAX(Id) FROM religion");	
+				if(id == -1)
+				{
+					id = 1;
+				}
+				else
+				{
+					id++;
+				}
+				this.setId(id);
+				/*
+				 id int primary key,
+				description varchar(500),
+				subjectid int,
+				disableflag int default 0
+				 */
+				
+				
+				db.NoQuery("INSERT INTO religion(Id, Description, Subjectid, disableflag)" +
+						   " values(?,?,?,0)",
+						   this.getId(), this.getDescription(), this.getSubjectId());
 			}
 			else
 			{
-				id++;
+				this.setId(religionId);
 			}
-			this.setId(id);
-			/*
-			 id int primary key,
-			description varchar(500),
-			subjectid int,
-			disableflag int default 0
-			 */
-			db.NoQuery("INSERT INTO religion(Id, Description, Subjectid, disableflag)" +
-					   " values(?,?,?,0)",
-					   this.getId(), this.getDescription(), this.getSubjectId());
 		}
 		
 		catch(Exception ex)

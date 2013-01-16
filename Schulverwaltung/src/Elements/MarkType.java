@@ -49,26 +49,34 @@ public class MarkType implements IDatabaseObject<MarkType> {
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM marktype");
-			if(id == -1)
+			int marktypeId = db.getInt("SELECT id FROM marktype WHERE Description=? AND weight = ?", this.getDescription(), this.getWeight());
+			if(marktypeId == -1)
 			{
-				id = 1;
+				int id = db.getInt("SELECT MAX(Id) FROM marktype");
+				if(id == -1)
+				{
+					id = 1;
+				}
+				else
+				{
+					id++;
+				}
+				
+				this.setId(id);
+				/*
+				 	id int primary key,
+					description varchar (500),
+					weight decimal (4,2),
+					disableflag int default 0
+				 */
+				db.NoQuery("INSERT INTO marktype(Id, description, weight, disableflag)" +
+						   " values(?,?,?,0)",
+						   this.getId(), this.getDescription(), this.getWeight());
 			}
 			else
 			{
-				id++;
+				this.setId(marktypeId);
 			}
-			
-			this.setId(id);
-			/*
-			 	id int primary key,
-				description varchar (500),
-				weight decimal (4,2),
-				disableflag int default 0
-			 */
-			db.NoQuery("INSERT INTO marktype(Id, description, weight, disableflag)" +
-					   " values(?,?,?,0)",
-					   this.getId(), this.getDescription(), this.getWeight());
 		}
 		
 		catch(Exception ex)
