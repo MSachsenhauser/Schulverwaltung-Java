@@ -59,15 +59,18 @@ public class GradeDetailServlet extends HttpServlet {
 			for(int i = 0; i < studentGroup.length; i++)
 			{
 				String[] ids = studentGroup[i].split(";");
-				db.NoQuery("INSERT INTO student2group(groupid, studentid) values (?, ?)", ids[0], ids[1]); 
+				if(ids != null && ids.length > 0)
+				{
+					db.NoQuery("INSERT INTO student2group(groupid, studentid) values (?, ?)", ids[0], ids[1]);
+				}
 			}
-			
-			RequestDispatcher view = request.getRequestDispatcher("Administration/GradeDetail.jsp?Id=" + curGrade.getId());
-			view.forward(request, response);
 		} catch (Exception ex) {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		}
+		
+		RequestDispatcher view = request.getRequestDispatcher("Administration/GradeDetail.jsp?Id=" + curGrade.getId());
+		view.forward(request, response);
 	}
 
 	private String getParamValue(String name)

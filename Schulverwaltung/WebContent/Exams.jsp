@@ -21,12 +21,14 @@
 		deleteServlet = "DeleteExamServlet";
 		deleteText = "Möchten Sie die ausgewählten Prüfungen wirklich entfernen?";
 		elementName = "Prüfung";
+		dialogHeight = 470;
+		dialogWidth = 950;
 	</script>
 <link href="Styles/Default.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div id="dialog" title="Prüfung" style="display: none; height: 100%; width: 100%">
-   <iframe id="dialogTarget" style="height: 100%; width: 100%; border: none;"></iframe>
+<div id="dialog" title="Prüfung" style="display: none; height: 100%; width: 100%; overflow: hidden;">
+   <iframe id="dialogTarget" style="height: 100%; width: 106%; border: none; margin-left: -15px; margin-top: -5px"></iframe>
 </div>
 <% 
 		try

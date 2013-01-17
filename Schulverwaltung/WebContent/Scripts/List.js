@@ -5,6 +5,8 @@ var elementName = "";
 var $k = jQuery.noConflict();
 var curRow = null;
 var openDetails = true;
+var dialogHeight = 300;
+var dialogWidth = 850;
 $k(document).ready(function(){
 	$k("tr.DetailEntry").click(function()
 			{
@@ -15,7 +17,7 @@ $k(document).ready(function(){
 					$k("#dialog").dialog({
 				        autoOpen: true,
 				        title: elementName + " bearbeiten",
-				        modal: false, width: 850, height: 300        });
+				        modal: false, width: dialogWidth, height: dialogHeight        });
 					$k("#dialogTarget").attr("src", detailFileName + "?Id=" + studentId); 
 				}
 			});
@@ -24,7 +26,7 @@ $k(document).ready(function(){
 				$k("#dialog").dialog({
 			        autoOpen: true,
 			        title: elementName + " anlegen",
-			        modal: false, width: 850, height: 300        });
+			        modal: false, width: dialogWidth, height: dialogHeight        });
 				$k("#dialogTarget").attr("src",detailFileName + "?Id=-1"); 
 			});
 	});

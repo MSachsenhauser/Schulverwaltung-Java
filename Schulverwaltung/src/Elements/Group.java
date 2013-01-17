@@ -80,9 +80,9 @@ public class Group implements IDatabaseObject<Group>{
 					description varchar(500),
 					disableflag int default 0
 				 */
-				db.NoQuery("INSERT INTO gradeGroup(Id, description, disableflag)" +
-						   " values(?,?,0)",
-						   this.getId(),this.getDescription());
+				db.NoQuery("INSERT INTO gradeGroup(Id, description, gradeId, disableflag)" +
+						   " values(?,?, ?,0)",
+						   this.getId(),this.getDescription(), this.getGradeId());
 			}
 			else
 			{

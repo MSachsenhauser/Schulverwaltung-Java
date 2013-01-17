@@ -133,7 +133,7 @@ create table teacher
 		email varchar (100),
 		roomid int,
 		birthday date,
-		workhours dec(2,2),
+		workhours dec(4,2),
 		disableflag int default 0
 	);
 

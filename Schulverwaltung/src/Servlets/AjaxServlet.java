@@ -35,8 +35,8 @@ public class AjaxServlet extends HttpServlet {
 			String grade = request.getParameter("GradeId");
 			try(Database db = new Database())
 			{
-				ResultSet result = db.getDataRows("SELECT GroupId FROM group2grade " +
-						"INNER JOIN gradeGroup ON id = groupId WHERE Disableflag=0 " +
+				ResultSet result = db.getDataRows("SELECT id FROM gradeGroup " +
+						"WHERE Disableflag=0 " +
 						"AND GradeId=? ORDER BY Description", grade);
 				while(result.next())
 				{
@@ -199,6 +199,8 @@ public class AjaxServlet extends HttpServlet {
 		{
 			String gradeId = request.getParameter("GradeId");
 			String description = request.getParameter("Description");
+			System.out.println(gradeId);
+			System.out.println(description);
 			Group group = new Group().setDescription(description).setGradeId(Integer.parseInt(gradeId));
 			group.addToDb();
 			resultText = group.getId() + ";" + group.getDescription();

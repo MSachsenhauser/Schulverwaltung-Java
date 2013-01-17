@@ -20,6 +20,7 @@ function numberValidation(ctrl)
 
 function dateValidation(ctrl)
 {
+	var result = true;
 	if(ctrl.value != "")
 	{
 		try
@@ -30,32 +31,30 @@ function dateValidation(ctrl)
 				if(!isNaN(date[0]) && !isNaN(date[1]) && !isNaN(date[2]))
 				{
 					date = new Date(date[2], (date[1] -1), date[0]);
-					markControl(ctrl, false);
-					enableSubmitButton(true);
+					result = true;
 				}
 				else
 				{
-					markControl(ctrl, true);
-					enableSubmitButton(false);
+					result = false;
 				}
 			}
 			else
 			{
-				markControl(ctrl, true);
-				enableSubmitButton(false);
+				result = false;
 			}
 		}
 		catch(err)
 		{
-			markControl(ctrl, true);
-			enableSubmitButton(false);
+			result = false;
 		}
 	}
 	else
 	{
-		markControl(ctrl, false);
-		enableSubmitButton(true);
+		result = true;
 	}
+	
+	markControl(ctrl, !result);
+	enableSubmitButton(result);
 }
 
 function markControl(ctrl, needMark)

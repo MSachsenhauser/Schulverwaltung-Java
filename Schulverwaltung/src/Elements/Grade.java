@@ -166,10 +166,10 @@ public class Grade implements IDatabaseObject<Grade>{
 			}
 			
 			result.close();
-			result = db.getDataRows("SELECT * FROM Group2Grade WHERE GradeId=?", this.getId());
+			result = db.getDataRows("SELECT * FROM gradeGroup WHERE GradeId=?", this.getId());
 			while(result.next())
 			{
-				this.groups.add(new Group().setId(result.getInt("GroupId")).load());
+				this.groups.add(new Group().setId(result.getInt("Id")).load());
 			}
 		}
 		catch(Exception ex)
