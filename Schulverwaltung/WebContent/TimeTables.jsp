@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@page import="Database.*" %>
-    <%@page import="Helpers.*" %>
-    <%@page import="Elements.*" %>
+    <%@page import="database.*" %>
+    <%@page import="helpers.*" %>
+    <%@page import="elements.*" %>
 <!DOCTYPE>
 <html>
 <head>
@@ -18,25 +18,25 @@
 <script src="Scripts/TimeTable.js" type="text/javascript" language="javascript"></script>
 </head>
 <body onload="init();">
-<% 
-		try
+<%
+	try
 		{
-			Login curLogin = (Login)request.getSession().getAttribute("Login");
-			curLogin.DoLogin();
-			if(curLogin.getState() != LoginState.LoggedIn)
-			{
-				out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>"); 
-			}
+	Login curLogin = (Login)request.getSession().getAttribute("Login");
+	curLogin.doLogin();
+	if(curLogin.getState() != LoginState.LoggedIn)
+	{
+		out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>"); 
+	}
 		}
 		catch(Exception ex)
 		{
-			out.write(ex.getMessage());
-			out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>");
+	out.write(ex.getMessage());
+	out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>");
 		}
 		String filter = request.getParameter("Filter") != null ? request.getParameter("Filter") : "";
 		Boolean showDisabled = request.getParameter("ShowDisabled") != null ? 
-							   Boolean.parseBoolean(request.getParameter("ShowDisabled")) : 
-							   false;
+					   Boolean.parseBoolean(request.getParameter("ShowDisabled")) : 
+					   false;
 %>
 	<form action="TimeTableServlet" method="post">
 		<div id="dialog" title="Stunde" style="display: none; height: 100%; width: 100%">

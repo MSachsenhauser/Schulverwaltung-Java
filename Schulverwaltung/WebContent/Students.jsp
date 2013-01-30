@@ -1,10 +1,10 @@
 <%@page import="org.apache.catalina.Session"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@page import="Database.*" %>
+    <%@page import="database.*" %>
     <%@page import="java.util.*" %>
-    <%@page import="Elements.*" %>
-     <%@page import="Helpers.*" %>
+    <%@page import="elements.*" %>
+     <%@page import="helpers.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,38 +18,41 @@
 	<script language="javascript" type="text/javascript" src="Scripts/List.js"></script>
 	<script language="javascript" type="text/javascript">
 		detailFileName = "StudentDetail.jsp";
-		deleteServlet = "DeleteStudentServlet";
+		deleteServlet = "deleteStudents";
 		deleteText = "Möchten Sie die ausgewählten Schüler wirklich entfernen?";
 		elementName = "Schüler";
+		dialogHeight = 450;
+		dialogWidth = 1000;
 	</script>
 <link href="Styles/Default.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div id="dialog" title="Schüler" style="display: none; height: 100%; width: 100%">
-   <iframe id="dialogTarget" style="height: 100%; width: 100%; border: none;"></iframe>
+<div id="dialog" title="Schüler" style="display: none; padding:0px;">
+   <iframe id="dialogTarget" style="height: 98%; width: 100%; border: none"></iframe>
 </div>
-<% 
-		try
+<%
+	try
 		{
-			Login curLogin = (Login)request.getSession().getAttribute("Login");
-			curLogin.DoLogin();
-			if(curLogin.getState() != LoginState.LoggedIn)
-			{
-				out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>"); 
-			}
+	Login curLogin = (Login)request.getSession().getAttribute("Login");
+	curLogin.doLogin();
+	if(curLogin.getState() != LoginState.LoggedIn)
+	{
+		out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>"); 
+	}
 		}
 		catch(Exception ex)
 		{
-			out.write(ex.getMessage());
-			out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>");
+	out.write(ex.getMessage());
+	out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>");
 		}
 		String filter = request.getParameter("Filter") != null ? request.getParameter("Filter") : "";
 		Boolean showDisabled = request.getParameter("ShowDisabled") != null ? 
-							   Boolean.parseBoolean(request.getParameter("ShowDisabled")) : 
-							   false;
+					   Boolean.parseBoolean(request.getParameter("ShowDisabled")) : 
+					   false;
 %>
 <form method="post" action="StudentServlet">
 <input type="hidden" id="SortKey" name="SortKey" />
+<input type="hidden" id="NeedSort" name="NeedSort" value="0" />
 <center>
 	<table>
 		<tr>

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%@page import="Helpers.*" %>
-    <%@page import="Database.*" %>
+    <%@page import="helpers.*" %>
+    <%@page import="database.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,25 +10,25 @@
 <title>Import</title>
 </head>
 <body>
-<% 
-		try
+<%
+	try
 		{
-			Login curLogin = (Login)request.getSession().getAttribute("Login");
-			curLogin.DoLogin();
-			if(curLogin.getState() != LoginState.LoggedIn)
-			{
-				out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>"); 
-			}
+	Login curLogin = (Login)request.getSession().getAttribute("Login");
+	curLogin.doLogin();
+	if(curLogin.getState() != LoginState.LoggedIn)
+	{
+		out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>"); 
+	}
 		}
 		catch(Exception ex)
 		{
-			out.write(ex.getMessage());
-			out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>");
+	out.write(ex.getMessage());
+	out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>");
 		}
 		String filter = request.getParameter("Filter") != null ? request.getParameter("Filter") : "";
 		Boolean showDisabled = request.getParameter("ShowDisabled") != null ? 
-							   Boolean.parseBoolean(request.getParameter("ShowDisabled")) : 
-							   false;
+					   Boolean.parseBoolean(request.getParameter("ShowDisabled")) : 
+					   false;
 %>
 	<form action="ImportServlet" method="post" enctype="multipart/form-data">
 		<center>

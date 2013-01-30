@@ -1,7 +1,7 @@
 ###Erstellung der Datenbank Schulverwaltung
 
 create database schulverwaltung;
-use schulverwaltung
+use schulverwaltung;
 
 create table student 
 	(
@@ -21,6 +21,27 @@ create table student
 		religionId int,
 		disableflag int default 0
 	);
+
+create table absence
+(
+	id int primary key,
+	studentId int,
+	start	date,
+	end		date,
+	excusedByPhone int,
+	excusedByEmail int,
+	certificate	int
+);
+	
+create table delay
+(
+	id int primary key,
+	studentId int,
+	start	date,
+	end		date,
+	description varchar(200),
+	valid	int
+);
 
 create table subject
 	(
@@ -96,11 +117,12 @@ create table exam
 		executionDate date,
 		group2SubjectId int,
 		announceDate date,
-		minPoints1 int,
-		minPoints2 int,
-		minPoints3 int,
-		minPoints4 int,
-		minPoints5,
+		maxPoints double,
+		minPoints1 double,
+		minPoints2 double,
+		minPoints3 double,
+		minPoints4 double,
+		minPoints5 double,
 		disableflag int default 0
 	);
 
@@ -160,6 +182,7 @@ create table mark
 	(
 		id int primary key,
 		mark int,
+		points double,
 		studentid int,
 		examid int,
 		trend varchar (1),
@@ -227,7 +250,8 @@ create table group2subject
 		subjectid int,
 		roomid int,
 		teacherid int,
-		disableflag int
+		disableflag int,
+		description varchar(200)
 	);
 
 create table free2subjekt
@@ -296,33 +320,34 @@ AS
 	LEFT JOIN teacher on grade.teacherId = teacher.id
 );
 
-CREATE OR REPLACE VIEW qryExam
-(	
-	id,
-	type,
-	executionDate,
-	subject,
-	teacher,
-	room,
-	gradeGroup,
-	grade,
-	announceDate,
-	disableflag
-)
-AS
-(
-	SELECT exam.id, marktype.description, exam.executionDate, 
-		   subject.description, Concat(Concat(teacher.Name, ' '), 
-		   teacher.Firstname), room.number, gradeGroup.description, grade.Description, exam.announceDate, exam.disableflag
-	FROM exam
-	LEFT JOIN marktype ON exam.typeId = marktype.Id 
-	LEFT JOIN group2subject on exam.group2subjectId = group2subject.Id 
-	LEFT JOIN teacher on group2subject.teacherId = teacher.Id 
-	LEFT JOIN subject on group2subject.subjectId = subject.Id 
-	LEFT JOIN room on group2subject.roomid = teacher.roomid 
-	LEFT JOIN gradeGroup on group2subject.groupId = gradeGroup.id 
-	LEFT JOIN grade on gradeGroup.gradeId = grade.id 
-);
+	CREATE OR REPLACE VIEW qryExam
+	(	
+		id,
+		type,
+		executionDate,
+		subject,
+		teacher,
+		room,
+		gradeGroup,
+		grade,
+		announceDate,
+		disableflag
+	)
+	AS
+	(
+		SELECT exam.id, marktype.description, exam.executionDate, 
+			   subject.description, Concat(Concat(teacher.Name, ' '), 
+			   teacher.Firstname), room.number, gradeGroup.description, grade.Description, exam.announceDate, exam.disableflag
+		FROM exam
+		INNER JOIN marktype ON exam.typeId = marktype.Id 
+		INNER JOIN group2subject on exam.group2subjectId = group2subject.Id 
+		INNER JOIN teacher on group2subject.teacherId = teacher.Id 
+		INNER JOIN subject on group2subject.subjectId = subject.Id 
+		INNER JOIN room on group2subject.roomid = teacher.roomid 
+		INNER JOIN gradeGroup on group2subject.groupId = gradeGroup.id 
+		INNER JOIN grade on gradeGroup.gradeId = grade.id 
+		GROUP BY exam.id
+	);
 
 CREATE OR REPLACE VIEW qryTeacher
 (
@@ -404,3 +429,12 @@ INSERT INTO MarkType
 (2, "Schulaufgabe", 2, 0),
 (3, "Mündlich", 1, 0),
 (4, "Kurzarbeit", 1, 0);
+
+INSERT INTO room (id, number, description, disableflag) values (1, '1A1', 'Programmierraum', 0);
+INSERT INTO teacher (id, name, firstname, short, email, roomid, workhours) VALUES (1, 'Mustermann', 'Max', 'MM', 'max@mustermann.de', 1, 40.0);
+INSERT INTO grade (id, description, roomid, teacherId) VALUES (1, "IT12A", 1, 1);
+INSERT INTO gradeGroup (id, gradeId, description) VALUES (1, 1, 'FIAE');
+INSERT INTO gradeGroup (id, gradeId, description) VALUES (2, 1, 'FISI');
+INSERT INTO subject (id, short, description) VALUES (1, 'AEP', 'Anwendungsentwicklung und -programmierung');
+INSERT INTO group2subject (groupid, subjectid, roomid, teacherid, disableflag, description) values (1,1,1,1,0, '');
+

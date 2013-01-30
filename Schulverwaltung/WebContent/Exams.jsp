@@ -1,10 +1,10 @@
 <%@page import="org.apache.catalina.Session"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@page import="Database.*" %>
+    <%@page import="database.*" %>
     <%@page import="java.util.*" %>
-    <%@page import="Elements.*" %>
-     <%@page import="Helpers.*" %>
+    <%@page import="elements.*" %>
+     <%@page import="helpers.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +21,7 @@
 		deleteServlet = "DeleteExamServlet";
 		deleteText = "Möchten Sie die ausgewählten Prüfungen wirklich entfernen?";
 		elementName = "Prüfung";
-		dialogHeight = 470;
+		dialogHeight = 500;
 		dialogWidth = 950;
 	</script>
 <link href="Styles/Default.css" rel="stylesheet" type="text/css"/>
@@ -30,28 +30,29 @@
 <div id="dialog" title="Prüfung" style="display: none; height: 100%; width: 100%; overflow: hidden;">
    <iframe id="dialogTarget" style="height: 100%; width: 106%; border: none; margin-left: -15px; margin-top: -5px"></iframe>
 </div>
-<% 
-		try
+<%
+	try
 		{
-			Login curLogin = (Login)request.getSession().getAttribute("Login");
-			curLogin.DoLogin();
-			if(curLogin.getState() != LoginState.LoggedIn)
-			{
-				out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>"); 
-			}
+	Login curLogin = (Login)request.getSession().getAttribute("Login");
+	curLogin.doLogin();
+	if(curLogin.getState() != LoginState.LoggedIn)
+	{
+		out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>"); 
+	}
 		}
 		catch(Exception ex)
 		{
-			out.write(ex.getMessage());
-			out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>");
+	out.write(ex.getMessage());
+	out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>");
 		}
 		String filter = request.getParameter("Filter") != null ? request.getParameter("Filter") : "";
 		Boolean showDisabled = request.getParameter("ShowDisabled") != null ? 
-							   Boolean.parseBoolean(request.getParameter("ShowDisabled")) : 
-							   false;
+					   Boolean.parseBoolean(request.getParameter("ShowDisabled")) : 
+					   false;
 %>
 <form method="post" action="ExamServlet">
 <input type="hidden" id="SortKey" name="SortKey" />
+<input type="hidden" id="NeedSort" name="NeedSort" value="0" />
 <center>
 	<table>
 		<tr>
@@ -105,7 +106,6 @@
 						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(2)\">Fach</td>");
 						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(3)\">Lehrer</td>");
 						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(4)\">Art</td>");
-						out.write("				<td class=\"DetailHeader\">&nbsp; </td>");
 						out.write("			</tr>");
 						out.write("		</thead>");
 						out.write("		<tbody>");
@@ -115,11 +115,11 @@
 							{
 								out.write("		<tr class=\"DetailEntry\" id=\"" + exam.getId() + "\">\n");
 								out.write("			<td style=\"width: 50px\"><input type=\"checkbox\" onclick=\"checkDeleteEnty(this);\"/></td>\n");
-								out.write("			<td style=\"width: 100px\" onclick=\"openDetails=true;\">" + exam.getGroupSubject().getGroup().getGradeId() + "</td>\n");
-								out.write("			<td style=\"width: 100px\" onclick=\"openDetails=true;\">" + exam.getDisableflag() + "</td>\n");
-								out.write("			<td onclick=\"openDetails=true;\">" + exam.getGroupSubject().getSubject() + "</td>\n");
-								out.write("			<td onclick=\"openDetails=true;\">" + exam.getGroupSubject().getTeacher().getName() + "</td>\n");
-								out.write("			<td style=\"width: 100%\" onclick=\"openDetails=true;\">&nbsp;</td>\n");
+								out.write("			<td style=\"width: 100px\" onclick=\"openDetails=true;\">" + exam.getId() + "</td>\n");
+								out.write("			<td style=\"width: 100px\" onclick=\"openDetails=true;\">" + exam.getGroupSubject().getGroup().getGrade().getDescription() + "</td>\n");
+								out.write("			<td style=\"width: 100px\" onclick=\"openDetails=true;\">" + exam.getGroupSubject().getSubject().getShortName() + "</td>\n");
+								out.write("			<td onclick=\"openDetails=true;\">" + exam.getGroupSubject().getTeacher().getName() + " " + exam.getGroupSubject().getTeacher().getFirstname() + "</td>\n");
+								out.write("			<td onclick=\"openDetails=true;\">" + exam.getMarkType().getDescription() + "</td>\n");
 								out.write("		</tr>\n");
 							}
 						}

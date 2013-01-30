@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="Elements.*" %>
+<%@ page import="elements.*" %>
 <%@ page import="java.text.*" %>
 <!DOCTYPE html>
 <html>
@@ -8,7 +8,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="Scripts/jquery.js"></script>
     <script src="Scripts/jquery-ui.js"></script>	
-    <script type="text/javascript" src="Scripts/Detail.js"></script>
+    <script type="text/javascript" src="../Scripts/Detail.js"></script>
+    <script type="text/javascript" src="../Scripts/Validation.js"></script>
 </head>
 <body>
 <%
@@ -18,11 +19,11 @@
 		{
 			curReligion.load();
 		}
-		String readonly = false ? "readonly=readonly" : "";
+		String readonly = curReligion.getDisableflag()  > 0 ? "readonly=readonly" : "";
 	%>
 	<form id="form" method="Post" action="../RoomDetailServlet">
 	<input type="hidden" name="Id" value="<%= curReligion.getId() %>" />
-	<input type="hidden" name="Disableflag" value="<%= curReligion.getDisableflag() %>" />
+	<input type="hidden" name="DisableFlag" value="<%= curReligion.getDisableflag() %>" />
 	<table>
 		<tr>
 			<td>

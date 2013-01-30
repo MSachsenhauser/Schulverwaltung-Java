@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="Elements.*" %>
+<%@ page import="elements.*" %>
 <%@ page import="java.text.*" %>
-<%@ page import="Servlets.StudentDetailServlet" %>
+<%@ page import="servlets.StudentDetailServlet" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,8 +11,9 @@
     <script src="Scripts/jquery-ui.js"></script>	
     <script type="text/javascript" src="../Scripts/GradeDetail.js"></script>
      <script type="text/javascript" src="../Scripts/Ajax.js"></script>
+     <script type="text/javascript" src="../Scripts/Validation.js"></script>
 </head>
-<body>
+<body onload="onLoad()">
 <%
 		int gradeId = Integer.parseInt(request.getParameter("Id"));
 		Grade curGrade = new Grade().setId(gradeId);
@@ -20,10 +21,11 @@
 		{
 			curGrade.load();
 		}
-		String readonly = false ? "readonly=readonly" : "";
+		String readonly = curGrade.getDisableflag()  > 0 ? "readonly=readonly" : "";
 	%>
 	<form id="form" method="Post" action="../GradeDetailServlet">
 	<input type="hidden" name="Id" id="Id" value="<%= curGrade.getId() %>" />
+	<input type="hidden" name="DisableFlag" value="<%= curGrade.getDisableflag() %>" />
 	<input type="hidden" name="groupStudents" id="groupStudents"/>
 	<table>
 		<tr>

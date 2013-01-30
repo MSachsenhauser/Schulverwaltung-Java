@@ -16,6 +16,7 @@ $k(document).ready(function(){
 					curRow = this;
 					$k("#dialog").dialog({
 				        autoOpen: true,
+				        resizable: false,
 				        title: elementName + " bearbeiten",
 				        modal: false, width: dialogWidth, height: dialogHeight        });
 					$k("#dialogTarget").attr("src", detailFileName + "?Id=" + studentId); 
@@ -25,6 +26,7 @@ $k(document).ready(function(){
 			{
 				$k("#dialog").dialog({
 			        autoOpen: true,
+			        resizable: false,
 			        title: elementName + " anlegen",
 			        modal: false, width: dialogWidth, height: dialogHeight        });
 				$k("#dialogTarget").attr("src",detailFileName + "?Id=-1"); 
@@ -62,17 +64,19 @@ function deleteEntries()
 {
 	if(window.confirm(unescape(deleteText)))
 		{
-			UseAjax("http://localhost:8080/Schulverwaltung/" + deleteServlet + "?Ids=" + deletableIds.join(";"), reload, false);
+			UseAjax("http://localhost:8080/Schulverwaltung/AjaxServlet?Action=" + deleteServlet + "&Ids=" + deletableIds.join(";"), reload, false);
 		}
 }
 
 function reload(result)
 {
 	document.forms[0].submit();
+	document.getElementById("NeedSort").value = 0;
 }
 
 function SetSortKey(sortIndex)
 {
 	document.getElementById("SortKey").value = sortIndex;
+	document.getElementById("NeedSort").value = 1;
 	reload(null);
 }

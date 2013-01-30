@@ -1,8 +1,8 @@
 <%@page import="org.apache.catalina.Session"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@page import="Database.*" %>
-    <%@page import="Helpers.*" %>
+    <%@page import="database.*" %>
+    <%@page import="helpers.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,14 +14,14 @@
 
 </head>
 <body>
-<% 
+<%
 	try
 	{
 		Login curLogin = (Login)request.getSession().getAttribute("Login");
-		curLogin.DoLogin();
+		curLogin.doLogin();
 		if(curLogin.getState() != LoginState.LoggedIn)
 		{
-			out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>"); 
+	out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>"); 
 		}
 	}
 	catch(Exception ex)

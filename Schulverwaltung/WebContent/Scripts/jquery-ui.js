@@ -5189,7 +5189,7 @@ $.extend( $.effects, {
 
 		element.wrap( wrapper );
 
-		// Fixes #7595 - Elements lose focus when wrapped.
+		// Fixes #7595 - elements lose focus when wrapped.
 		if ( element[ 0 ] === active || $.contains( element[ 0 ], active ) ) {
 			$( active ).focus();
 		}
@@ -5230,7 +5230,7 @@ $.extend( $.effects, {
 		if ( element.parent().is( ".ui-effects-wrapper" ) ) {
 			element.parent().replaceWith( element );
 
-			// Fixes #7595 - Elements lose focus when wrapped.
+			// Fixes #7595 - elements lose focus when wrapped.
 			if ( element[ 0 ] === active || $.contains( element[ 0 ], active ) ) {
 				$( active ).focus();
 			}

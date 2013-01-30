@@ -6052,7 +6052,7 @@ function cloneCopyEvent( src, dest ) {
 function cloneFixAttributes( src, dest ) {
 	var nodeName;
 
-	// We do not need to do anything for non-Elements
+	// We do not need to do anything for non-elements
 	if ( dest.nodeType !== 1 ) {
 		return;
 	}

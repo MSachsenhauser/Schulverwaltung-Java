@@ -81,6 +81,20 @@ function removeStudents()
 	}
 }
 
+function onLoad()
+{
+	var classMember = document.getElementById("lstClassMember");
+	var selectedGroup = document.getElementById("lstGroups").value;
+	if(!markElement(selectedGroup == null || selectedGroup == "" || selectedGroup == "-1", "lstGroups"))
+	{
+		for(var i = 0; i < classMember.options.length; i++)
+		{
+			var option = classMember.options[i];
+			groupStudents.push(selectedGroup + ";" + option.value);
+		}
+	}
+}
+
 function onSave()
 {
 	document.getElementById("groupStudents").value = groupStudents.toString();
@@ -96,11 +110,14 @@ function loadGroupStudents()
 function insertGroupStudents(result)
 {
 	var students = result.split("|");
-	var classMember = document.getElementById("groupStudents");
+	var classMember = document.getElementById("lstClassMember");
 	classMember.options.length = 0;
 	for(var i = 0; i < students.length; i++)
 	{
-		var student = students[i];
-		classMember.options.add(new Option(student[1], student[0]));
+		var student = students[i].split(";");
+		if(student[0] != null && student[1] != null)
+		{
+			classMember.options.add(new Option(student[0] + ": " + student[1], student[0]));
+		}
 	}
 }

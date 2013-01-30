@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="Elements.*" %>
+<%@ page import="elements.*" %>
 <%@ page import="java.text.*" %>
 <!DOCTYPE html>
 <html>
@@ -8,7 +8,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="Scripts/jquery.js"></script>
     <script src="Scripts/jquery-ui.js"></script>	
-    <script type="text/javascript" src="Scripts/Detail.js"></script>
+    <script type="text/javascript" src="../Scripts/Detail.js"></script>
+    <script type="text/javascript" src="../Scripts/Validation.js"></script>
 </head>
 <body>
 <%
@@ -18,11 +19,11 @@
 		{
 			curTeacher.load();
 		}
-		String readonly = false ? "readonly=readonly" : "";
+		String readonly = curTeacher.getDisableflag()  > 0 ? "readonly=readonly" : "";
 	%>
 	<form id="form" method="Post" action="../TeacherDetailServlet">
 	<input type="hidden" name="Id" value="<%= curTeacher.getId() %>" />
-	<input type="hidden" name="disableflag" value="<%= curTeacher.getDisableflag() %>" />
+	<input type="hidden" name="DisableFlag" value="<%= curTeacher.getDisableflag() %>" />
 	<table>
 		<tr>
 			<td>
@@ -85,7 +86,7 @@
 				<label>Arbeitsstunden: </label>
 			</td>
 			<td>
-				<input <%=readonly%> style="width: 230px" type="text" name="workhours" value="<%=curTeacher.getWorkhours() %>"/>
+				<input <%=readonly%> style="width: 230px" type="text" name="workhours" value="<%=curTeacher.getWorkhours() %>" onblur="numberValidation(this)"/>
 			</td>
 		</tr>
 			

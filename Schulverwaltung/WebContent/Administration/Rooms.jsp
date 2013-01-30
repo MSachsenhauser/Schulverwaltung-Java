@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@page import="java.util.*" %>
-    <%@page import="Elements.*" %>
-    <%@page import="Database.*" %>
+    <%@page import="elements.*" %>
+    <%@page import="database.*" %>
 <!DOCTYPE>
 <html>
 <head>
@@ -16,7 +16,7 @@
 	<script language="javascript" type="text/javascript" src="Scripts/List.js"></script>
 	<script language="javascript" type="text/javascript">
 		detailFileName = "Administration/RoomDetail.jsp";
-		deleteServlet = "DeleteRoomServlet";
+		deleteServlet = "deleteRooms";
 		deleteText = "Möchten Sie die ausgewählten Räume wirklich entfernen?";
 		elementName = "Raum";
 	</script>
@@ -26,28 +26,29 @@
 <div id="dialog" title="Räume" style="display: none; height: 100%; width: 100%">
    <iframe id="dialogTarget" style="height: 100%; width: 100%; border: none;"></iframe>
 </div>
-<% 
-		try
+<%
+	try
 		{
-			Login curLogin = (Login)request.getSession().getAttribute("Login");
-			curLogin.DoLogin();
-			if(curLogin.getState() != LoginState.LoggedIn)
-			{
-				out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>"); 
-			}
+	Login curLogin = (Login)request.getSession().getAttribute("Login");
+	curLogin.doLogin();
+	if(curLogin.getState() != LoginState.LoggedIn)
+	{
+		out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>"); 
+	}
 		}
 		catch(Exception ex)
 		{
-			out.write(ex.getMessage());
-			out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>");
+	out.write(ex.getMessage());
+	out.write("<script language='javascript' type='text/javascript'>document.location = 'Start.jsp';</script>");
 		}
 		String filter = request.getParameter("Filter") != null ? request.getParameter("Filter") : "";
 		Boolean showDisabled = request.getParameter("ShowDisabled") != null ? 
-							   Boolean.parseBoolean(request.getParameter("ShowDisabled")) : 
-							   false;
+					   Boolean.parseBoolean(request.getParameter("ShowDisabled")) : 
+					   false;
 %>
 <form action="RoomServlet" method="post">
 	<input type="hidden" id="SortKey" name="SortKey" />
+	<input type="hidden" id="NeedSort" name="NeedSort" value="0" />
 							<div style="background: lightBlue; width: 100%;">
 								<table style="width: 100%;">
 									<tr>
@@ -67,7 +68,7 @@
 											<input type="button" value="Neu" id="btnNew"/>
 										</td>
 										<td align="Right" >
-											<input type="button" value="Löschen" id="btnDelete" onClick="deleteReligions();"/>
+											<input type="button" value="Löschen" id="btnDelete" onClick="deleteEntries();"/>
 										</td>
 									</tr>
 								</table>
