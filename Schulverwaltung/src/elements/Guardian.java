@@ -92,9 +92,8 @@ public class Guardian extends Person<Guardian>{
 	public void save() {
 		try(Database db = new Database())
 		{
-			db.NoQuery("update guardian set city = ?,email = ?,firstname = ?, name = ?, plz  = ?,street = ?, phone = ?, disableflag = ? where id = ?",
+			db.NoQuery("update guardian set city = ?,firstname = ?, name = ?, plz  = ?,street = ?, phone = ?, disableflag = ? where id = ?",
 					this.getCity(),
-					this.getEmail(),
 					this.getFirstname(),
 					this.getName(),
 					this.getPlz(),
@@ -112,15 +111,13 @@ public class Guardian extends Person<Guardian>{
 
 	@Override
 	public Guardian load() {
-		// TODO Auto-generated method stub
-		
+
 		try(Database db = new Database())
 		{
 			ResultSet result = db.getDataRows("SELECT * FROM guardian WHERE Id=?", this.getId());
 			while(result.next())
 			{
 				this.setCity(result.getString("city"));
-				this.setEmail(result.getString("email"));
 				this.setFirstname(result.getString("firstname"));
 				this.setName(result.getString("name"));
 				this.setPlz(result.getString("plz"));

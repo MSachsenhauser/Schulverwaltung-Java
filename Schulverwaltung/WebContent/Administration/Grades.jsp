@@ -19,6 +19,7 @@
 		deleteServlet = "deleteGrades";
 		deleteText = "Möchten Sie die ausgewählten Klassen wirklich entfernen?";
 		elementName = "Klasse";
+		dialogHeight = 480;
 	</script>
 <link href="Styles/Default.css" rel="stylesheet" type="text/css"/>
 </head>

@@ -45,15 +45,6 @@ public class Instructor extends Person<Instructor>{
 				}
 				
 				this.setId(id);
-				/*
-				 * 	id int primary key,
-					name varchar (100),
-					firstname varchar (100),
-					phone varchar (100),
-					email varchar (100),
-					companyid int,
-					disableflag int default 0
-				 */
 				db.NoQuery("INSERT INTO instructor(Id, Name, Firstname, phone, email, companyid, disableflag)" +
 						   " values(?,?,?,?,?,?,0)",
 						   this.getId(), this.getName(), this.getFirstname(), this.getPhone(), this.getEmail(), this.getCompanyId());

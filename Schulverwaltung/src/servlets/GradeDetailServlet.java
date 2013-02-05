@@ -34,7 +34,8 @@ public class GradeDetailServlet extends HttpServlet {
     }
     private HttpServletRequest request;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.request = request;
+    	request.setCharacterEncoding("UTF-8");
+    	this.request = request;
 		int gradeId = Integer.parseInt(request.getParameter("Id"));
 		Grade curGrade = new Grade().setId(gradeId);
 		try (Database db = new Database()) {
@@ -61,7 +62,7 @@ public class GradeDetailServlet extends HttpServlet {
 			for(int i = 0; i < studentGroup.length; i++)
 			{
 				String[] ids = studentGroup[i].split(";");
-				if(ids != null && ids.length > 0)
+				if(ids != null && ids.length == 2)
 				{
 					db.NoQuery("INSERT INTO student2group(groupid, studentid) values (?, ?)", ids[0], ids[1]);
 				}

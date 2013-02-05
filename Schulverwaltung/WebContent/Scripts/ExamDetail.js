@@ -156,7 +156,6 @@ function insertSubjects(result)
 			subjectList.options.add(new Option(subject[1], subject[0]));
 		}
 	}
-	
 	var subjectId = document.getElementById("SubjectId").value;
 	document.getElementById("lstSubjects").value = subjectId;
 	loadStudents(document.getElementById("lstSubjects"));

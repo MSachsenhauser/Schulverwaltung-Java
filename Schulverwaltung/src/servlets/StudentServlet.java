@@ -19,18 +19,15 @@ public class StudentServlet extends ListServlet<Student> {
      */
     public StudentServlet() {
         super();
-        /*
-         * Id, Name, Firstname, Street, City, plz, birthday, 
-         * entry, shortened, phone, email, Instructor, Company, 
-         * Job, Religion, disableflag
-         */
         ArrayList<String> orderFields = new ArrayList<String>();
     	orderFields.add("id");
     	orderFields.add("Firstname");
     	orderFields.add("Name");
+    	orderFields.add("Grade");
     	ArrayList<String> filterFields = new ArrayList<String>();
     	filterFields.add("Firstname");
     	filterFields.add("Name");
+    	filterFields.add("Grade");
         this.Setup(Student.class, "Students.jsp", "qryStudent", orderFields, filterFields);
     }
 }

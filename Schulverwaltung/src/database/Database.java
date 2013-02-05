@@ -53,22 +53,23 @@ public class Database implements AutoCloseable{
             } 
     	catch (ClassNotFoundException cnfe)
     	 	{
-        	System.out.println("Klasse nicht gefunden");
-            System.out.println(cnfe.toString());            
+	        	Error.out(cnfe);         
             } 
     	catch (SQLException ex){
-            System.out.println(ex.toString());
-            System.out.println(" SQL-Fehler ");        
+            Error.out(ex);      
         }
     }
     
     public void closeConnection() 
     {
-        try {
-            conn.close();
-	        } catch (Exception e) {
-	            System.out.println(e.toString());
-	        }
+    	if(conn != null)
+    	{
+	        try {
+	            conn.close();
+		        } catch (Exception e) {
+		            Error.out(e);
+		        }
+    	}
     }
     
     /**
@@ -86,7 +87,7 @@ public class Database implements AutoCloseable{
     	}
     	catch(Exception ex)
     	{
-    		ex.printStackTrace();
+    		Error.out(ex);
     		return null;
     	}
     }
@@ -103,7 +104,7 @@ public class Database implements AutoCloseable{
     	}
     	catch(Exception ex)
     	{
-    		ex.printStackTrace();
+    		Error.out(ex);
     		return null;
     	}
     }
@@ -155,7 +156,7 @@ public class Database implements AutoCloseable{
         			}
         			catch(Exception ex)
         			{
-        				ex.printStackTrace();
+        				Error.out(ex);
         			}
         			paramIndex++;
     			}
@@ -205,7 +206,7 @@ public class Database implements AutoCloseable{
     			}
     			catch(Exception ex)
     			{
-    				ex.printStackTrace();
+    				Error.out(ex);
     			}
     			paramIndex++;
     		}
@@ -225,7 +226,7 @@ public class Database implements AutoCloseable{
 				while(conn.isClosed() && trys < 4);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Error.out(e);
 		}
     }
     
@@ -249,7 +250,7 @@ public class Database implements AutoCloseable{
     	}
     	catch(SQLException ex)
     	{
-    		ex.printStackTrace();
+    		Error.out(ex);
     		return null;
     	}
     }
@@ -276,7 +277,7 @@ public class Database implements AutoCloseable{
     	}
     	catch(SQLException ex)
     	{
-    		ex.printStackTrace();
+    		Error.out(ex);
     		return null;
     	}
     }
@@ -415,7 +416,7 @@ public class Database implements AutoCloseable{
     	}
     	catch(SQLException ex)
     	{
-    		ex.printStackTrace();
+    		Error.out(ex);
     		return -1;
     	}
     }
@@ -431,22 +432,13 @@ public class Database implements AutoCloseable{
     	}
     	catch(SQLException ex)
     	{
-    		ex.printStackTrace();
+    		Error.out(ex);
     		return -1;
     	}
-    }
-    
-    /**
-     * Schließt die offene Datenbankconnection beim auflösen des Objekts
-     * */
-    protected void finalize()
-    {
-    	this.closeConnection();
     }
 
 	@Override
 	public void close() throws Exception {
-		// TODO Auto-generated method stub
 		this.closeConnection();
 	}
 }

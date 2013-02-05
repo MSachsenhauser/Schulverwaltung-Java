@@ -31,6 +31,7 @@ public class ReligionDetailServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		this.request = request;
 		int Id = Integer.parseInt(request.getParameter("Id"));
 		Religion curReligion = new Religion().setId(Id);

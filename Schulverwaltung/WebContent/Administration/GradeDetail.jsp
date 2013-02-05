@@ -27,6 +27,7 @@
 	<input type="hidden" name="Id" id="Id" value="<%= curGrade.getId() %>" />
 	<input type="hidden" name="DisableFlag" value="<%= curGrade.getDisableflag() %>" />
 	<input type="hidden" name="groupStudents" id="groupStudents"/>
+	<input type="hidden" name="groupSubjects" id="groupSubjects" />
 	<table>
 		<tr>
 			<td>
@@ -67,11 +68,11 @@
 						{
 							if(curGrade.getTeacherId() == teacher.getId())
 							{
-								out.write("<option selected=\"true\" value=\"" + teacher.getId() + "\">" + teacher.getName() + " " + teacher.getFirstname() + "</option>\n");
+								out.write("<option selected=\"true\" value=\"" + teacher.getId() + "\">" + teacher.getFullName() + "</option>\n");
 							}
 							else
 							{
-								out.write("<option value=\"" + teacher.getId() + "\">" + teacher.getName() + " " + teacher.getFirstname() + "</option>\n");
+								out.write("<option value=\"" + teacher.getId() + "\">" + teacher.getFullName() + "</option>\n");
 							}
 						}
 					%>
@@ -106,7 +107,7 @@
 								<%
 									for(Student student:ElementLists.getStudents(curGrade.getId()))
 									{
-										out.write("<option value=\"" + student.getId() + "\">" + student.getId() + ": " + student.getName() + " " + student.getFirstname() + " - " + new SimpleDateFormat("dd.MM.yyyy").format(student.getBirthday()) +  "</option>\n");
+										out.write("<option value=\"" + student.getId() + "\">" + student.getId() + ": " + student.getFullName() + " - " + new SimpleDateFormat("dd.MM.yyyy").format(student.getBirthday()) +  "</option>\n");
 									}
 								%>
 							</select>
@@ -122,12 +123,78 @@
 									{
 										for(Student student:curGrade.getGroups().get(0).getStudents())
 										{
-											out.write("<option value=\"" + student.getId() + "\">" + student.getId() + ": " + student.getName() + " " + student.getFirstname() + " - " + new SimpleDateFormat("dd.MM.yyyy").format(student.getBirthday()) +  "</option>\n");
+											out.write("<option value=\"" + student.getId() + "\">" + student.getId() + ": " + student.getFullName() + " - " + new SimpleDateFormat("dd.MM.yyyy").format(student.getBirthday()) +  "</option>\n");
 										}
 									}
 								%>
 							</select>
 						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="6" style="width: 100%">
+				<table style="width: 100%">
+					<tr>
+					<td><label>Fach: </label></td>
+					<td>
+						<select id="lstSubjects">
+						<option value="-1" selected="selected"> - </option>
+						<%
+							for(Subject subject:ElementLists.getSubjects())
+							{
+								out.write("<option value=\"" + subject.getId() +"\">" + subject.getShortName() + "</option>");
+							}
+						%>
+						</select>
+					</td>
+					<td><label>Lehrer: </label></td>
+					<td>
+						<select id="lstTeachers">
+						<option value="-1" selected="selected"> - </option>
+						<%
+							for(Teacher teacher:ElementLists.getTeachers())
+							{
+								out.write("<option value=\"" + teacher.getId() +"\">" + teacher.getFullName() + "</option>");
+							}
+						%>
+						</select>
+					</td>
+					<td><label>Raum: </label></td>
+					<td>
+						<select id="lstRooms">
+						<option value="-1" selected="selected"> - </option>
+						<%
+							for(Room room:ElementLists.getRooms())
+							{
+								out.write("<option value=\"" + room.getId() +"\">" + room.getNumber() + "</option>");
+							}
+						%>
+						</select>
+					</td>
+					<td><label>Beschreibung:</label></td>
+					<td>
+						<input type="text" id="txtDescription" /> 
+					</td>
+					<td>
+						<input type="button" value="Hinzufügen" onclick="addSubject()"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="9">
+						<select multiple="multiple" style="width: 100%; height: 150px" id="lstGroupSubjects">
+						<%
+						if(curGrade.getGroups() != null && curGrade.getGroups().size() > 0)
+						{
+							for(GroupSubject subject:curGrade.getGroups().get(0).getSubjects())
+							{
+								out.write("<option value=\"" + subject.getId() + "\">" + subject.getSubject().getShortName() + " - " + subject.getTeacher().getFullName() + " - " + subject.getRoom().getNumber() + (!subject.getDescription().isEmpty() ? " - " + subject.getDescription() : "") +  "</option>\n");
+							}
+						}
+						%>
+						</select>
+					</td>
 					</tr>
 				</table>
 			</td>

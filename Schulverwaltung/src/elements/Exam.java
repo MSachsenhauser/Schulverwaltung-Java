@@ -221,7 +221,14 @@ public class Exam implements IDatabaseObject<Exam>{
 			for(Mark mark:this.getMarks())
 			{
 				mark.setExamId(this.getId());
-				mark.save();
+				if(mark.getId() > 0)
+				{
+					mark.save();
+				}
+				else
+				{
+					mark.addToDb();
+				}
 			}
 		}
 		catch(Exception ex)

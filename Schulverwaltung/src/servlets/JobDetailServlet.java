@@ -28,6 +28,7 @@ public class JobDetailServlet extends HttpServlet {
     
     private HttpServletRequest request;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		this.request = request;
 		int id = Integer.parseInt(request.getParameter("Id"));
 		Job curJob = new Job().setId(id);

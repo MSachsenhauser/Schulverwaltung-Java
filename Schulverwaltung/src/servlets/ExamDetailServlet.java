@@ -26,6 +26,7 @@ public class ExamDetailServlet extends HttpServlet {
 
     private HttpServletRequest request;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		this.request = request;
 		int id = Integer.parseInt(request.getParameter("Id"));
 		Exam curExam = new Exam().setId(id);
@@ -64,12 +65,16 @@ public class ExamDetailServlet extends HttpServlet {
 						markId = "-1";
 						studentId = splittedMark[0];
 					}
-					mark.setId(Integer.parseInt(markId));
-					mark.setStudentId(Integer.parseInt(studentId));
-					mark.setPoints(Double.parseDouble(splittedMark[1]));
-					mark.setMark(Integer.parseInt(splittedMark[2]));
-					mark.setTrend(splittedMark[3]);
-					curExam.getMarks().add(mark);
+					
+					if(studentId != "")
+					{
+						mark.setId(Integer.parseInt(markId));
+						mark.setStudentId(Integer.parseInt(studentId));
+						mark.setPoints(Double.parseDouble(splittedMark[1]));
+						mark.setMark(Integer.parseInt(splittedMark[2]));
+						mark.setTrend(splittedMark[3]);
+						curExam.getMarks().add(mark);
+					}
 				}
 				catch (Exception ex)
 				{

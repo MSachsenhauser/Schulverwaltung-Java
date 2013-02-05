@@ -34,7 +34,7 @@ public class Typification implements IDatabaseObject<Typification>{
 	public void addToDb() {
 		try(Database db = new Database())
 		{
-			int id = db.getInt("SELECT MAX(Id) FROM student");
+			int id = db.getInt("SELECT MAX(Id) FROM typification");
 			if(id == -1)
 			{
 				id = 1;

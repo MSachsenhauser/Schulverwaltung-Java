@@ -3,6 +3,7 @@
 <%@ page import="elements.*" %>
 <%@ page import="java.text.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="helpers.*" %>
 <%@ page import="servlets.StudentDetailServlet" %>
 <!DOCTYPE html>
 <html>
@@ -10,6 +11,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="Scripts/jquery.js"></script>
     <script src="Scripts/jquery-ui.js"></script>	
+    <script src="Scripts/jquery-cookie.js"></script>
     <link rel="stylesheet" href="Styles/Themes/redmond/jquery-ui.css" />
     <script type="text/javascript" src="Scripts/Detail.js"></script>
     <script type="text/javascript" src="Scripts/Validation.js"></script>
@@ -17,7 +19,7 @@
     <script type="text/javascript">
     	$(document).ready(function()
     	{
-    		$("#tabControl").tabs();
+    		$("#tabControl").tabs({ cookie: { expires: 7 } });
     	});
     	
     	function expandDetails(ctrl, id)
@@ -36,6 +38,11 @@
     		}
     	}
     	
+    	function onLoad()
+    	{
+    		lstCompanyChange(document.getElementById("lstCompany"));
+    	}
+    	
     	function lstCompanyChange(ctrl)
     	{
     		UseAjax("http://localhost:8080/Schulverwaltung/AjaxServlet?Action=loadInstructors&CompanyId=" + ctrl.value, GotInstructors, false);
@@ -43,38 +50,55 @@
     	
     	function GotInstructors(result)
     	{
+    		var instructorId = document.getElementById("InstructorId").value;
     		var lstInstructors = document.getElementById("lstInstructors");
     		lstInstructors.options.length = 0;
     		var instructors = result.split('|');
     		for(var i = 0; i < instructors.length; i++)
    			{
    				var instructor = instructors[i].split(";");
-   				if(instructor[1] != "")
+   				if(instructor[0] != null && instructor[1] != null)
 				{
 					lstInstructors.options.add(new Option(instructor[1], instructor[0]));
 				}
    			}
+    		
+    		lstInstructors.value = instructorId;
+    	}
+    	
+    	function copyGuardianAdress()
+    	{
+    		document.getElementById("txtGuardianStreet2").value = document.getElementById("txtGuardianStreet1").value;
+    		document.getElementById("txtGuardianPLZ2").value = document.getElementById("txtGuardianPLZ1").value;
+    		document.getElementById("txtGuardianCity2").value = document.getElementById("txtGuardianCity1").value;
+    		document.getElementById("txtGuardianPhone2").value = document.getElementById("txtGuardianPhone1").value;
     	}
     </script>
 </head>
-<body>
-<%
+<body onload="onLoad();">
+	<%
 		int studentId = Integer.parseInt(request.getParameter("Id"));
 		Student curStudent = new Student().setId(studentId);
 		if(curStudent.getId() != -1)
 		{
 			curStudent.load();
 		}
+		
 		String readonly = curStudent.getDisableflag()  > 0 ? "readonly=readonly" : "";
 	%>
 	<form id="form" method="Post" action="StudentDetailServlet">
 	<input type="hidden" name="Id" value="<%= curStudent.getId() %>" />
 	<input type="hidden" name="DisableFlag" value="<%= curStudent.getDisableflag() %>" />
+	<input type="hidden" id="InstructorId" value="<%= curStudent.getInstructorId() %>" />
+	<input type="hidden" name="GuardianId1" value="<%= curStudent.getGuardianId1() %>" />
+	<input type="hidden" name="GuardianId2" value="<%= curStudent.getGuardianId2() %>" />
 		<div id="tabControl" style="heigth: 100%; overflow: hidden">
 			<ul style="font-size: 70%">
 		        <li><a href="#tab1">Allgemein</a></li>
+		        <li><a href="#tab5">Eltern</a></li>
 		        <li><a href="#tab2">Noten</a></li>
-		        <li><a href="#tab3">Fehlzeiten</a></li>
+		        <li><a href="#tab3">Krankheit</a></li>
+		        <li><a href="#tab4">Fehlzeiten</a></li>
 			</ul>
 			<div id="tab1" style="heigth: 100%">
 				<table style="heigth: 100%">
@@ -145,7 +169,7 @@
 							<label>Firma: </label>
 						</td>
 						<td>
-							<select <%=readonly%> name="company" style="width: 100%" onchange="lstCompanyChange(this)">
+							<select <%=readonly%> name="company" id="lstCompany" style="width: 100%" onchange="lstCompanyChange(this)">
 								<option value="-1"></option>
 								<%
 									for(Company company:ElementLists.getCompanies())
@@ -166,7 +190,7 @@
 							<label>Ausbilder: </label>
 						</td>
 						<td colspan="2">
-							<select <%=readonly%> name="instructor" id="lstInstructors" style="width: 100%">
+							<select <%=readonly%> name="Instructor" id="lstInstructors" style="width: 100%">
 							 </select>
 						</td>
 					</tr>
@@ -206,18 +230,80 @@
 						</td>
 					</tr>
 					<tr>
-						<td colspan="4">
-							<input <%=readonly%> type="checkbox" id="shortened" name="shortened" value="<%=curStudent.getShortened()%>" />
-							<label for="shortened">Verkürzt</label>
+						<td colspan="6">
+							<table>
+								<tr>
+									<td colspan="2">
+										<input <%=readonly%> type="checkbox" id="shortened" name="shortened" value="<%=curStudent.getShortened() %>" />
+										<label for="shortened">Verkürzt</label>
+									</td>
+									<td>&nbsp;</td>
+									<td colspan="2">
+										<input <%=readonly%> type="checkbox" id="sportFree" name="sportFree" value="<%=curStudent.getIsSportFree() %>" />
+										<label for="sportFree">Sport befreit</label>
+									</td>
+									<td>&nbsp;</td>
+									<td colspan="2">
+										<input <%=readonly%> type="checkbox" id="germanFree" name="germanFree" value="<%=curStudent.getIsGermanFree() %>" />
+										<label for="germanFree">Deutsch befreit</label>
+									</td>
+									<td>&nbsp;</td>
+									<td colspan="2">
+										<input <%=readonly%> type="checkbox" id="religonFree" name="religonFree" value="<%=curStudent.getIsReligionFree() %>" />
+										<label for="religonFree">Religion befreit</label>
+									</td>
+								</tr>
+							</table>
 						</td>
 					</tr>
 					<tr style="height: 100%">
 						<td style="heigth: 100%">&nbsp;</td>
 					</tr>
+					
 					<tr>
 						<td>
 							<input <%=readonly != "" ? "disabled=disabled" : ""%> type="submit" value="speichern" />
 						</td>
+					</tr>
+				</table>
+			</div>
+			<div id="tab5" style="width: 100%">
+				<table style="width: 100%">
+					<tr>
+						<td>Name: </td>
+						<td><input <%=readonly%> type="text" id="txtGuardianName1" name="guardianName1" value="<%= curStudent.getGuardian1().getName() %>"/></td>
+						<td>Vorname: </td>
+						<td><input <%=readonly%> type="text" id="txtGuardianFirstName1" name="guardianFirstName1"  value="<%= curStudent.getGuardian1().getFirstname() %>"/></td>
+						<td>Telefon: </td>
+						<td><input <%=readonly%> type="text" id="txtGuardianPhone1" name="guardianPhone1"  value="<%= curStudent.getGuardian1().getPhone() %>"/></td>
+					</tr>
+					<tr>
+						<td>Straße: </td>
+						<td><input <%=readonly%> type="text" id="txtGuardianStreet1" name="guardianStreet1" value="<%= curStudent.getGuardian1().getStreet() %>"/></td>
+						<td>PLZ: </td>
+						<td><input <%=readonly%> type="text" id="txtGuardianPLZ1" name="guardianPLZ1" value="<%= curStudent.getGuardian1().getPlz() %>"/></td>
+						<td>Stadt: </td>
+						<td><input <%=readonly%> type="text" id="txtGuardianCity1" name="guardianCity1" value="<%= curStudent.getGuardian1().getCity() %>"/></td>
+					</tr>
+					<tr><td>&nbsp;</td></tr>
+										<tr>
+						<td>Name: </td>
+						<td><input <%=readonly%> type="text" id="txtGuardianName2" name="guardianName2"  value="<%= curStudent.getGuardian2().getName() %>"/></td>
+						<td>Vorname: </td>
+						<td><input <%=readonly%> type="text" id="txtGuardianFirstName2" name="guardianFirstName2" value="<%= curStudent.getGuardian2().getFirstname() %>" /></td>
+						<td>Telefon: </td>
+						<td><input <%=readonly%> type="text" id="txtGuardianPhone2" name="guardianPhone2" value="<%= curStudent.getGuardian2().getPhone() %>" /></td>
+					</tr>
+					<tr>
+						<td>Straße: </td>
+						<td><input <%=readonly%> type="text" id="txtGuardianStreet2" name="guardianStreet2" value="<%= curStudent.getGuardian2().getStreet() %>"/></td>
+						<td>PLZ: </td>
+						<td><input <%=readonly%> type="text" id="txtGuardianPLZ2" name="guardianPLZ2"  value="<%= curStudent.getGuardian2().getPlz() %>"/></td>
+						<td>Stadt: </td>
+						<td><input <%=readonly%> type="text" id="txtGuardianCity2" name="guardianCity2"  value="<%= curStudent.getGuardian2().getCity() %>"/></td>
+					</tr>
+					<tr>
+						<td colspan="6"><input <%= !readonly.isEmpty() ? "disabled=disabled" : "" %> type="button" value="Adresse übernehmen" onClick="copyGuardianAdress()"/></td>
 					</tr>
 				</table>
 			</div>
@@ -273,8 +359,76 @@
 					%>
 				</table>
 			</div>
-			<div id="tab3">
-			
+			<div id="tab3" style="width: 90%">
+				<table style="width: 90%;" border="1">
+					<tr>
+						<th>Beginn</th>
+						<th>Ende</th>
+						<th>Dauer (Tage)</th>
+						<th>Entschuldigt(Telefon)</th>
+						<th>Entschuldigt(Schriftlich)</th>
+						<th>Attest</th>
+					</tr>
+					<%
+						SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+						for(Absence absence:curStudent.getAbsence())
+						{
+							out.write("<tr>\n");
+							out.write("	<td>\n");
+							out.write("		<label><nobr>" + formatter.format(absence.getStart()) + "</nobr></label>");
+							out.write("	</td>\n");
+							out.write("	<td>\n");
+							out.write("		<label><nobr>" + formatter.format(absence.getEnd()) + "</nobr></label>");
+							out.write("	</td>\n");
+							out.write("	<td align=\"center\">\n");
+							out.write("		<label>" + DateHelper.DateDiffDays(absence.getStart(), absence.getEnd()) + "</label>");
+							out.write("	</td>\n");
+							out.write("	<td align=\"center\">\n");
+							out.write("		<input  disabled=disabled type=\"checkbox\" " + (absence.getExcusedByPhone() ? "checked=\"checked\"" : "") + " />");
+							out.write("	</td>\n");
+							out.write("	<td align=\"center\">\n");
+							out.write("		<input  disabled=disabled type=\"checkbox\" " + (absence.getExcusedByEmail() ? "checked=\"checked\"" : "") + " />");
+							out.write("	</td>\n");
+							out.write("	<td align=\"center\">\n");
+							out.write("		<input disabled=disabled type=\"checkbox\" " + (absence.getCertificate() ? "checked=\"checked\"" : "") + " />");
+							out.write("	</td>\n");
+							out.write("</tr>");
+						}
+					%>
+				</table>
+			</div>
+			<div id="tab4" style="width: 90%">
+				<table style="width: 90%;" border="1">
+					<tr>
+						<th>Beginn</th>
+						<th>Ende</th>
+						<th>Dauer</th>
+						<th>Beschreibung</th>
+						<th>Zählt</th>
+					</tr>
+					<%
+						for(Delay delay:curStudent.getDelays())
+						{
+							out.write("<tr>\n");
+							out.write("	<td>\n");
+							out.write("		<label><nobr>" + formatter.format(delay.getStart()) + "</nobr></label>");
+							out.write("	</td>\n");
+							out.write("	<td>\n");
+							out.write("		<label><nobr>" + formatter.format(delay.getEnd()) + "</nobr></label>");
+							out.write("	</td>\n");
+							out.write("	<td align=\"center\">\n");
+							out.write("		<label>" + DateHelper.DateDiffDays(delay.getStart(), delay.getEnd()) + "</label>");
+							out.write("	</td>\n");
+							out.write("	<td align=\"center\">\n");
+							out.write("		<label>" + delay.getDescription() + "</label>");
+							out.write("	</td>\n");
+							out.write("	<td align=\"center\">\n");
+							out.write("		<input  disabled=disabled type=\"checkbox\" " + (delay.getValid() ? "checked=\"checked\"" : "") + " />");
+							out.write("	</td>\n");
+							out.write("</tr>");
+						}
+					%>
+				</table>
 			</div>
 		</div>
 	</form>

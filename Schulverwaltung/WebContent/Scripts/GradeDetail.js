@@ -1,5 +1,5 @@
 var groupStudents = new Array();
-
+var groupSubjects = new Array();
 function addGroup()
 {
 	var description = document.getElementById("txtGroupDescription").value;
@@ -119,5 +119,56 @@ function insertGroupStudents(result)
 		{
 			classMember.options.add(new Option(student[0] + ": " + student[1], student[0]));
 		}
+	}
+	
+	loadGroupSubjects();
+}
+
+function loadGroupSubjects()
+{
+	var groupId = document.getElementById("lstGroups").value;
+	UseAjax("http://localhost:8080/Schulverwaltung/AjaxServlet?Action=loadGroupSubjects&GroupId=" + groupId, insertGroupSubjects, false);
+}
+
+function insertGroupSubjects(result)
+{
+	var groupSubjects = document.getElementById("lstGroupSubjects");
+	groupSubjects.options.length = 0;
+	var subjects = result.split("|");
+	for(var i = 0; i < subjects.length; i++)
+	{
+		var subject = subjects[i].split(";");
+		if(subject[0] != null && subject[1] != null)
+		{
+			groupSubjects.options.add(new Option(subject[1], subject[0]));
+		}
+	}
+}
+
+function addSubject()
+{
+	var lstSubject = document.getElementById("lstSubjects");
+	var lstTeachers = document.getElementById("lstTeachers");
+	var lstRooms = document.getElementById("lstRooms");
+	var txtDescription = document.getElementById("txtDescription");
+	var subject = lstSubject.value;
+	lstSubject.value = -1;
+	var teacher = lstTeachers.value;
+	lstTeachers.value = -1;
+	var room = lstRooms.value;
+	lstRooms.value = -1;
+	var description = txtDescription.value;
+	txtDescription.value = "";
+	var groupId = document.getElementById("lstGroups").value;
+	UseAjax("http://localhost:8080/Schulverwaltung/AjaxServlet?Action=addGroupSubject&Subject=" + subject + "&Teacher=" + teacher + "&Room=" + room + "&Description=" + description + "&GroupId=" + groupId, insertGroupSubject, false);
+}
+
+function insertGroupSubject(result)
+{
+	var groupSubjects = document.getElementById("lstGroupSubjects");
+	var subject = result.split(";");
+	if(subject[0] != null && subject[1] != null)
+	{
+		groupSubjects.options.add(new Option(subject[1], subject[0]));
 	}
 }

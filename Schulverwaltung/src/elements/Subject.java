@@ -59,9 +59,9 @@ public class Subject implements IDatabaseObject<Subject>{
 				
 				this.setId(id);
 
-				db.NoQuery("INSERT INTO subject(Id, description, disableflag)" +
-						   " values(?,?,0)",
-						   this.getId(),this.getDescription());
+				db.NoQuery("INSERT INTO subject(Id, description, short, disableflag)" +
+						   " values(?,?,?,0)",
+						   this.getId(),this.getDescription(), this.getShortName());
 			}
 			else
 			{
@@ -89,9 +89,10 @@ public class Subject implements IDatabaseObject<Subject>{
 	public void save() {
 		try(Database db = new Database())
 		{
-			db.NoQuery("update subject set description = ?, disableflag  = ? where id = ?",
+			db.NoQuery("update subject set description = ?, disableflag  = ?, short = ? where id = ?",
 					this.getDescription(),
 					this.getDisableflag(),
+					this.getShortName(),
 					this.getId());
 		}
 		catch(Exception ex)

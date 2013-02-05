@@ -56,7 +56,9 @@ public class ImportServlet extends HttpServlet {
 				 int startPos = ((file.substring(0, pos)).getBytes()).length;
 				 int endPos = ((file.substring(0, boundaryLocation)).getBytes()).length;
 		
-				 ImportHelper.Import(new ByteArrayInputStream(dataBytes, startPos, (endPos-startPos)));
+				 ByteArrayInputStream stream = new ByteArrayInputStream(dataBytes, startPos, (endPos-startPos));
+				 ImportHelper.Import(stream);
+				 stream.close();
 				 
 				 request.setAttribute("State", "Import erfolgreich abgeschlossen");
 			 }

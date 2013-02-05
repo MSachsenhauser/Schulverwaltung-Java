@@ -30,13 +30,13 @@
 				<label>Bezeichnung: </label>
 			</td>
 			<td>
-				<input <%=readonly%> type="text" name="Description" style="width: 200px" value="<%= curSubject.getDescription() %>"/>
+				<input <%=readonly%> type="text" name="Description" style="width: 200px" value="<%= curSubject.getDescription() != null ? curSubject.getDescription() : "" %>"/>
 			</td>
 			<td>
 				<label>Kürzel: </label>
 			</td>
 			<td>
-				<input <%=readonly%> type="text" name="Short" style="width: 100px" value="<%= curSubject.getShortName() %>"/>
+				<input <%=readonly%> type="text" name="Short" style="width: 100px" value="<%= curSubject.getShortName() != null ? curSubject.getShortName() : "" %>"/>
 			</td>
 		</tr>
 		<tr>

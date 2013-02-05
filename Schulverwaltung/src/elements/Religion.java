@@ -80,7 +80,7 @@ public class Religion implements IDatabaseObject<Religion>{
 		}
 		catch(Exception ex)
 		{
-			
+			Error.out(ex);
 		}
 	}
 	@Override
@@ -102,8 +102,6 @@ public class Religion implements IDatabaseObject<Religion>{
 	}
 	@Override
 	public Religion load() {
-		// TODO Auto-generated method stub
-		System.out.println("religionLoad");
 		try(Database db = new Database())
 		{
 			ResultSet result = db.getDataRows("SELECT * FROM religion WHERE Id=?", this.getId());

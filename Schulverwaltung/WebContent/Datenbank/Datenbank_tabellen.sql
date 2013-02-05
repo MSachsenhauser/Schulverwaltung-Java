@@ -2,7 +2,8 @@
 
 create database schulverwaltung;
 use schulverwaltung;
-
+alter database schulverwaltung charset=utf8;
+ 
 create table student 
 	(
 		id int primary key,
@@ -273,7 +274,7 @@ CREATE OR REPLACE VIEW qryStudent
 (
 	Id, Name, Firstname, Street, City, plz, birthday, 
 	entry, shortened, phone, email, Instructor, Company, 
-	Job, Religion, disableflag
+	Job, Religion, Grade, disableflag
 )
 AS 
 (
@@ -281,13 +282,16 @@ AS
 	student.Street, student.City, student.plz, student.birthday, 
 	entry, shortened, student.phone, student.email, 
 	Concat(Concat(instructor.Name, ' '), instructor.Firstname), 
-	company.Name, job.description, religion.description, 
+	company.Name, job.description, religion.description, grade.Description,
 	student.disableflag 
 	FROM Student 
 	LEFT JOIN instructor ON instructorid = instructor.id 
 	LEFT JOIN religion ON religionId = religion.Id 
 	LEFT JOIN company ON instructor.companyId = company.id 
 	LEFT JOIN job ON jobId = job.id
+	LEFT JOIN student2group ON student.Id = student2group.studentId
+	LEFT JOIN gradeGroup ON student2group.groupId = gradeGroup.id
+	LEFT JOIN grade ON grade.id = gradeGroup.gradeId
 );
 
 CREATE OR REPLACE VIEW qryReligion
@@ -320,34 +324,34 @@ AS
 	LEFT JOIN teacher on grade.teacherId = teacher.id
 );
 
-	CREATE OR REPLACE VIEW qryExam
-	(	
-		id,
-		type,
-		executionDate,
-		subject,
-		teacher,
-		room,
-		gradeGroup,
-		grade,
-		announceDate,
-		disableflag
-	)
-	AS
-	(
-		SELECT exam.id, marktype.description, exam.executionDate, 
-			   subject.description, Concat(Concat(teacher.Name, ' '), 
-			   teacher.Firstname), room.number, gradeGroup.description, grade.Description, exam.announceDate, exam.disableflag
-		FROM exam
-		INNER JOIN marktype ON exam.typeId = marktype.Id 
-		INNER JOIN group2subject on exam.group2subjectId = group2subject.Id 
-		INNER JOIN teacher on group2subject.teacherId = teacher.Id 
-		INNER JOIN subject on group2subject.subjectId = subject.Id 
-		INNER JOIN room on group2subject.roomid = teacher.roomid 
-		INNER JOIN gradeGroup on group2subject.groupId = gradeGroup.id 
-		INNER JOIN grade on gradeGroup.gradeId = grade.id 
-		GROUP BY exam.id
-	);
+CREATE OR REPLACE VIEW qryExam
+(	
+	id,
+	type,
+	executionDate,
+	subject,
+	teacher,
+	room,
+	gradeGroup,
+	grade,
+	announceDate,
+	disableflag
+)
+AS
+(
+	SELECT exam.id, marktype.description, exam.executionDate, 
+		   subject.description, Concat(Concat(teacher.Name, ' '), 
+		   teacher.Firstname), room.number, gradeGroup.description, grade.Description, exam.announceDate, exam.disableflag
+	FROM exam
+	INNER JOIN marktype ON exam.typeId = marktype.Id 
+	INNER JOIN group2subject on exam.group2subjectId = group2subject.Id 
+	INNER JOIN teacher on group2subject.teacherId = teacher.Id 
+	INNER JOIN subject on group2subject.subjectId = subject.Id 
+	INNER JOIN room on group2subject.roomid = teacher.roomid 
+	INNER JOIN gradeGroup on group2subject.groupId = gradeGroup.id 
+	INNER JOIN grade on gradeGroup.gradeId = grade.id 
+	GROUP BY exam.id
+);
 
 CREATE OR REPLACE VIEW qryTeacher
 (

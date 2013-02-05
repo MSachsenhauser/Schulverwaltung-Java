@@ -130,7 +130,6 @@ public class AjaxServlet extends HttpServlet {
 				if(hours != null && !hours.isEmpty())
 				{
 					String[] planHours = hours.split("|");
-					System.out.println(planHours.toString());
 					if(planHours != null && planHours.length > 0)
 					{
 						Database db = new Database();
@@ -422,7 +421,7 @@ public class AjaxServlet extends HttpServlet {
 										"INNER JOIN gradeGroup ON groupId = gradeGroup.id WHERE subjectId = ? " +
 										"AND roomId = ? AND teacherId = ? AND group2subject.description = ? " +
 										"AND gradeGroup.gradeId = ?))" +
-										"AND student.disableflag = 0", subjectId, 
+										"AND student.disableflag = 0", subject.getSubjectId(), 
 										subject.getRoomId(), subject.getTeacherId(), 
 								 		subject.getDescription(), gradeId);
 				while(result.next())
@@ -454,7 +453,49 @@ public class AjaxServlet extends HttpServlet {
 			}
 		}
 		
-		System.out.println(action);
+		if(action.equals("loadGroupSubjects"))
+		{
+			String groupId = request.getParameter("GroupId");
+			Group group = new Group().setId(Integer.parseInt(groupId)).load();
+			for(GroupSubject subject:group.getSubjects())
+			{
+				resultText += subject.getId() + ";" + 
+							subject.getSubject().getShortName() + " - " + 
+							subject.getTeacher().getShortName() + " - " + 
+							subject.getRoom().getNumber() + " - " + 
+							subject.getDescription() + "|";
+			}
+		}
+		
+		if(action.equals("addGroupSubject"))
+		{	
+			String groupId = request.getParameter("GroupId");
+			String teacherId = request.getParameter("Teacher");
+			String roomId = request.getParameter("Room");
+			String subjectId = request.getParameter("Subject");
+			String description = request.getParameter("Description");
+			try
+			{
+				GroupSubject subject = new GroupSubject();
+				subject.setDescription(description);
+				subject.setRoomId(Integer.parseInt(roomId));
+				subject.setSubjectId(Integer.parseInt(subjectId));
+				subject.setTeacherId(Integer.parseInt(teacherId));
+				subject.setGroupId(Integer.parseInt(groupId));
+				subject.addToDb();
+				
+				resultText += subject.getId() + ";" + 
+						subject.getSubject().getShortName() + " - " + 
+						subject.getTeacher().getShortName() + " - " + 
+						subject.getRoom().getNumber() + " - " + 
+						subject.getDescription();
+			}
+			catch(Exception ex)
+			{
+				Error.out(ex);
+			}
+		}
+
 		response.setContentType("text/plain");
 		response.getWriter().write(resultText);
 	}

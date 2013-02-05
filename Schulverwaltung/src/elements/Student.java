@@ -11,7 +11,7 @@ import database.Error;
 public class Student extends Person<Student>{
 	private Date birthday = new Date();
 	private Date entry = new Date();
-	private int intructorId = -1;
+	private int instructorId = -1;
 	private int jobId = -1;
 	private int religionId = -1;
 	private Boolean shortened = false;
@@ -24,6 +24,148 @@ public class Student extends Person<Student>{
 	private Company company = null;
 	private Instructor instructor = null;
 	private ArrayList<ArrayList<Mark>> marks = null;
+	private ArrayList<Absence> absence = null;
+	private ArrayList<Delay> delays = null;
+	private int gradeId = -1;
+	private int guardianId1 = -1;
+	private int guardianId2 = -1;
+	private Guardian guardian1 = null;
+	private Guardian guardian2 = null;
+	private Boolean isGermanFree = false;
+	private Boolean isSportFree = false;
+	private Boolean isReligionFree = false;
+	
+	
+	public Boolean getIsGermanFree() {
+		return isGermanFree;
+	}
+
+	public Student setIsGermanFree(Boolean isGermanFree) {
+		this.isGermanFree = isGermanFree;
+		return this;
+	}
+
+	public Boolean getIsSportFree() {
+		return isSportFree;
+	}
+
+	public Student setIsSportFree(Boolean isSportFree) {
+		this.isSportFree = isSportFree;
+		return this;
+	}
+
+	public Boolean getIsReligionFree() {
+		return isReligionFree;
+	}
+
+	public Student setIsReligionFree(Boolean isReligionFree) {
+		this.isReligionFree = isReligionFree;
+		return this;
+	}
+
+	public Guardian getGuardian1()
+	{
+		if(this.guardian1 == null)
+		{
+			this.guardian1 = new Guardian().setId(this.getGuardianId1()).load();
+		}
+		
+		return this.guardian1;
+	}
+	
+	public Guardian getGuardian2()
+	{
+		if(this.guardian2 == null)
+		{
+			this.guardian2 = new Guardian().setId(this.getGuardianId2()).load();
+		}
+		
+		return this.guardian2;
+	}
+	
+	public int getGuardianId1() {
+		return guardianId1;
+	}
+
+	public Student setGuardianId1(int guardianId1) {
+		this.guardianId1 = guardianId1;
+		this.guardian1 = null;
+		return this;
+	}
+
+	public int getGuardianId2() {
+		return guardianId2;
+	}
+
+	public Student setGuardianId2(int guardianId2) {
+		this.guardianId2 = guardianId2;
+		this.guardian2 = null;
+		return this;
+	}
+
+	public int getGradeId() {
+		return gradeId;
+	}
+
+	public Student setGradeId(int gradeId) {
+		this.gradeId = gradeId;
+		this.grade = null;
+		return this;
+	}
+
+	public Grade getGrade() {
+		if(grade == null)
+		{
+			grade = new Grade().setId(this.gradeId).load();
+		}
+		
+		return grade;
+	}
+	private Grade grade = null;
+	
+	public ArrayList<Delay> getDelays()
+	{
+		if(this.delays == null)
+		{
+			this.delays = new ArrayList<Delay>();
+			try(Database db = new Database())
+			{
+				ResultSet result = db.getDataRows("SELECT id FROM delay WHERE StudentId =?", this.getId());
+				while(result.next())
+				{
+					this.delays.add(new Delay().setId(result.getInt("id")).load());
+				}
+			}
+			catch(Exception ex)
+			{
+				Error.out(ex);
+			}
+		}
+		
+		return this.delays;
+	}
+	
+	public ArrayList<Absence> getAbsence()
+	{
+		if(this.absence == null)
+		{
+			this.absence = new ArrayList<Absence>();
+			try(Database db = new Database())
+			{
+				ResultSet result = db.getDataRows("SELECT id FROM absence WHERE StudentId =?", this.getId());
+				while(result.next())
+				{
+					this.absence.add(new Absence().setId(result.getInt("id")).load());
+				}
+			}
+			catch(Exception ex)
+			{
+				Error.out(ex);
+			}
+		}
+		
+		return this.absence;
+	}
 	
 	public ArrayList<ArrayList<Mark>> getMarks()
 	{
@@ -124,13 +266,28 @@ public class Student extends Person<Student>{
 		return this;
 	}
 	
+	public Instructor getInstructor()
+	{
+		if(this.instructor == null)
+		{
+			this.instructor = new Instructor().setId(this.getInstructorId()).load();
+		}
+		
+		return this.instructor;
+	}
+	
+	public int getInstructorId()
+	{
+		return this.instructorId;
+	}
+	
 	public Company getCompany()
 	{
 		if(this.company == null )
 		{
-			if(this.instructor != null)
+			if(this.getInstructor() != null)
 			{
-				this.company = new Company().setId(this.instructor.getCompanyId()).load();
+				this.company = new Company().setId(this.getInstructor().getCompanyId()).load();
 			}
 			
 			if (this.company == null)
@@ -191,14 +348,12 @@ public class Student extends Person<Student>{
 	public void setDisableflag(int disableflag) {
 		this.disableflag = disableflag;
 	}
-	public int getIntructorId() {
-		return intructorId;
-	}
 
-	public void setIntructorId(int intructorId) {
+	public Student setInstructorId(int intructorId) {
 		this.instructor = null;
 		this.company = null;
-		this.intructorId = intructorId;
+		this.instructorId = intructorId;
+		return this;
 	}
 
 	@Override
@@ -209,27 +364,72 @@ public class Student extends Person<Student>{
 				int studentId = db.getInt("SELECT id FROM student WHERE name=? AND Firstname =? AND  Street=? AND City=? AND Plz=? AND Birthday=? AND " +
 						"" + "" + "Entry=? AND Shortened=? AND Phone=? AND Email=? AND InstructorId=? AND JobId=? AND ReligionId=? ",
 						this.getName(), this.getFirstname(), this.getStreet(), this.getCity(), this.getPlz(), this.getBirthday(),
-						this.getEntry(), this.getShortened(),this.getPhone(),this.getEmail(), this.getIntructorId(), this.getJob(), this.getReligionId());
-				if(studentId == -1)
+						this.getEntry(), this.getShortened(),this.getPhone(),this.getEmail(), this.getInstructorId(), this.getJobId(), this.getReligionId());
+			if(studentId == -1)
+			{
+				int id = db.getInt("SELECT MAX(Id) FROM student");
+				if(id == -1)
 				{
-					int id = db.getInt("SELECT MAX(Id) FROM student");
-					if(id == -1)
+					id = 1;
+				}
+				else
+				{
+					id++;
+				}
+				
+				this.setId(id);
+				
+				db.NoQuery("INSERT INTO student(Id, Name, Firstname, Street, City, Plz, Birthday, " + "" +
+						   "Entry, Shortened, Phone, Email, InstructorId, JobId, ReligionId, disableflag)" +
+						   " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)",
+						   this.getId(), this.getName(), this.getFirstname(), this.getStreet(), this.getCity(),
+						   this.getPlz(), this.getBirthday(), this.getEntry(), this.getShortened(), this.getPhone(),
+						   this.getEmail(), this.getInstructorId(), this.getJobId(), this.getReligionId());
+				ArrayList<Subject> subjects = ElementLists.getSubjects();
+				if(this.getIsGermanFree())
+				{
+					int subjectId = -1;
+					for(Subject subject:subjects)
 					{
-						id = 1;
-					}
-					else
-					{
-						id++;
+						if(subject.getShortName().equalsIgnoreCase("D") || subject.getDescription().equalsIgnoreCase("Deutsch"))
+						{
+							subjectId = subject.getId();
+							break;
+						}
 					}
 					
-					this.setId(id);
+					db.NoQuery("INSERT INTO free2subjekt (subjectId, studentId, freeDate) VALUES (?,?, SYSDATE())", subjectId, this.getId());
+				}
+				
+				if(this.getIsReligionFree())
+				{
+					int subjectId = -1;
+					for(Subject subject:subjects)
+					{
+						if(subject.getShortName().equalsIgnoreCase("Rel") || subject.getDescription().equalsIgnoreCase("Religion"))
+						{
+							subjectId = subject.getId();
+							break;
+						}
+					}
 					
-					db.NoQuery("INSERT INTO student(Id, Name, Firstname, Street, City, Plz, Birthday, " + "" +
-							   "Entry, Shortened, Phone, Email, InstructorId, JobId, ReligionId, disableflag)" +
-							   " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)",
-							   this.getId(), this.getName(), this.getFirstname(), this.getStreet(), this.getCity(),
-							   this.getPlz(), this.getBirthday(), this.getEntry(), this.getShortened(), this.getPhone(),
-							   this.getEmail(), this.getIntructorId(), this.getJobId(), this.getReligionId());
+					db.NoQuery("INSERT INTO free2subjekt (subjectId, studentId, freeDate) VALUES (?,?, SYSDATE())", subjectId, this.getId());
+				}
+				
+				if(this.getIsSportFree())
+				{
+					int subjectId = -1;
+					for(Subject subject:subjects)
+					{
+						if(subject.getShortName().equalsIgnoreCase("Sp") || subject.getDescription().equalsIgnoreCase("Sport"))
+						{
+							subjectId = subject.getId();
+							break;
+						}
+					}
+					
+					db.NoQuery("INSERT INTO free2subjekt (subjectId, studentId, freeDate) VALUES (?,?, SYSDATE())", subjectId, this.getId());
+				}
 			}
 			else
 			{
@@ -274,6 +474,106 @@ public class Student extends Person<Student>{
 				this.getPhone(),
 				this.getDisableflag(),
 				this.getId());
+		
+		ArrayList<Subject> subjects = ElementLists.getSubjects();
+		if(this.getIsGermanFree())
+		{
+			int subjectId = -1;
+			for(Subject subject:subjects)
+			{
+				if(subject.getShortName().equalsIgnoreCase("Deu") || subject.getDescription().equalsIgnoreCase("Deutsch"))
+				{
+					subjectId = subject.getId();
+					break;
+				}
+			}
+			
+			int count = db.getInt("SELECT COUNT(*) FROM free2subjekt WHERE subjectId = ? AND studentId = ?", subjectId, this.getId());
+			if(count == 0)
+			{
+				db.NoQuery("INSERT INTO free2subjekt (subjectId, studentId, freeDate) VALUES (?,?, SYSDATE())", subjectId, this.getId());
+			}
+		}
+		else
+		{
+			int subjectId = -1;
+			for(Subject subject:subjects)
+			{
+				if(subject.getShortName().equalsIgnoreCase("Deu") || subject.getDescription().equalsIgnoreCase("Deutsch"))
+				{
+					subjectId = subject.getId();
+					break;
+				}
+			}
+			
+			db.NoQuery("DELETE FROM free2subjekt WHERE subjectId = ? AND studentId = ?", subjectId, this.getId());
+		}
+		
+		if(this.getIsReligionFree())
+		{
+			int subjectId = -1;
+			for(Subject subject:subjects)
+			{
+				if(subject.getShortName().equalsIgnoreCase("Rel") || subject.getDescription().equalsIgnoreCase("Religion"))
+				{
+					subjectId = subject.getId();
+					break;
+				}
+			}
+			
+			int count = db.getInt("SELECT COUNT(*) FROM free2subjekt WHERE subjectId = ? AND studentId = ?", subjectId, this.getId());
+			if(count == 0)
+			{
+				db.NoQuery("INSERT INTO free2subjekt (subjectId, studentId, freeDate) VALUES (?,?, SYSDATE())", subjectId, this.getId());
+			}
+		}
+		else
+		{
+			int subjectId = -1;
+			for(Subject subject:subjects)
+			{
+				if(subject.getShortName().equalsIgnoreCase("Rel") || subject.getDescription().equalsIgnoreCase("Religion"))
+				{
+					subjectId = subject.getId();
+					break;
+				}
+			}
+			
+			db.NoQuery("DELETE FROM free2subjekt WHERE subjectId = ? AND studentId = ?", subjectId, this.getId());
+		}
+		
+		if(this.getIsSportFree())
+		{
+			int subjectId = -1;
+			for(Subject subject:subjects)
+			{
+				if(subject.getShortName().equalsIgnoreCase("Sp") || subject.getDescription().equalsIgnoreCase("Sport"))
+				{
+					subjectId = subject.getId();
+					break;
+				}
+			}
+			
+			int count = db.getInt("SELECT COUNT(*) FROM free2subjekt WHERE subjectId = ? AND studentId = ?", subjectId, this.getId());
+			if(count == 0)
+			{
+				db.NoQuery("INSERT INTO free2subjekt (subjectId, studentId, freeDate) VALUES (?,?, SYSDATE())", subjectId, this.getId());
+			}
+		}
+		else
+		{
+			int subjectId = -1;
+			for(Subject subject:subjects)
+			{
+				if(subject.getShortName().equalsIgnoreCase("Sp") || subject.getDescription().equalsIgnoreCase("Sport"))
+				{
+					subjectId = subject.getId();
+					break;
+				}
+			}
+			
+			db.NoQuery("DELETE FROM free2subjekt WHERE subjectId = ? AND studentId = ?", subjectId, this.getId());
+		}
 	}
 	catch(Exception ex)
 	{
@@ -294,11 +594,39 @@ public class Student extends Person<Student>{
 				this.setJobId(result.getInt("jobId"));
 				this.setName(result.getString("name"));
 				this.setPlz(result.getString("plz"));
+				this.setInstructorId(result.getInt("instructorId"));
+				this.setStreet(result.getString("street"));
 				this.setReligionId(result.getInt("religionId"));
 				this.setShortened(result.getBoolean("shortened"));
 				this.setPhone(result.getString("phone"));
 				this.setDisableflag(result.getInt("disableflag"));
 			}
+			
+			this.setGradeId(db.getInt("SELECT gradeId FROM grade " +
+					"LEFT JOIN gradeGroup ON gradeId = grade.Id " +
+					"LEFT JOIN student2Group ON student2group.groupId = gradeGroup.Id " +
+					"WHERE student2group.studentId = ?", this.getId()));
+			
+			result.close();
+			result = db.getDataRows("SELECT guardianId FROM student2guardian WHERE studentId = ?", this.getId());
+			int i = 1;
+			while(result.next())
+			{
+				if(i == 1)
+				{
+					this.setGuardianId1(result.getInt(1));
+				}
+				else
+				{
+					this.setGuardianId2(result.getInt(1));
+				}
+				i++;
+			}
+			result.close();
+			
+			this.setIsGermanFree(db.getInt("SELECT COUNT(*) FROM free2subjekt WHERE studentId=? AND subjectId IN (SELECT id FROM subject WHERE UPPER(short)='D' OR description='Deutsch')", this.getId()) > 0);
+			this.setIsSportFree(db.getInt("SELECT COUNT(*) FROM free2subjekt WHERE studentId=? AND subjectId IN (SELECT id FROM subject WHERE description='Sport')", this.getId()) > 0);
+			this.setIsReligionFree(db.getInt("SELECT COUNT(*) FROM free2subjekt WHERE studentId=? AND subjectId IN (SELECT id FROM subject WHERE description='Religion' OR UPPER(short)='REL')", this.getId()) > 0);
 		}
 		catch(Exception ex)
 		{

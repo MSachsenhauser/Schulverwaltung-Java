@@ -27,7 +27,7 @@ public class DateHelper {
 	
 	public static double DateDiffYear(Date start, Date end)
 	{
-		return DateDiff(start, end) / 365;
+		return DateDiffDays(start, end) / 365;
 	}
 	
 	public static Date ParseExcelDate(String date)
@@ -36,7 +36,6 @@ public class DateHelper {
 	
 		if (date != null && !date.isEmpty() )
 		{
-			System.out.println(date);
 			if ( date.contains("/"))
 			{
 			String tmpdate = date.split(" ")[0];
@@ -47,8 +46,14 @@ public class DateHelper {
 					if (dateinfo != null)
 					{
 						result.setDate(Integer.parseInt(dateinfo[1]));
-						result.setMonth(Integer.parseInt(dateinfo[0]));
-						result.setYear(Integer.parseInt(dateinfo[2]));
+						result.setMonth(Integer.parseInt(dateinfo[0]) - 1);
+						int excelYear = Integer.parseInt(dateinfo[2]);
+						if(excelYear < 30)
+						{
+							excelYear += 100;
+						}
+						
+						result.setYear(excelYear);
 					}
 				}
 			}

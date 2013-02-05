@@ -37,6 +37,7 @@ import elements.IDatabaseObject;
 		}
 		
 		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			request.setCharacterEncoding("UTF-8");
 			String sortKey = request.getParameter("SortKey");
 			if(sortKey == null || sortKey.isEmpty())
 			{
@@ -52,8 +53,6 @@ import elements.IDatabaseObject;
 			{
 				this.needSort = false;
 			}
-			
-			System.out.println(needSort);
 			
 			Boolean showDisabled = request.getParameter("ShowDisabled") != null ? 
 								   true : 

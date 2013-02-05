@@ -11,7 +11,7 @@ public class GroupSubject implements IDatabaseObject<GroupSubject> {
 	private int teacherId = -1;
 	private int roomId = -1;
 	private int subjectId = -1;
-	private int disableflag = -1;
+	private int disableflag = 0;
 	private int groupId = -1;
 	private String description = "";
 	
@@ -124,7 +124,7 @@ public class GroupSubject implements IDatabaseObject<GroupSubject> {
 			
 			this.setId(id);
 			
-			db.NoQuery("INSERT INTO group2subject (id, description, groupid, roomid, subjectid, teacherid, disableflag) VALUES (?, ?, ?, ?, ?, ?, ?)", this.getDescription(), this.getGroupId(), this.getRoomId(), this.getSubjectId(), this.getTeacherId(), this.getDisableflag(), this.getId());
+			db.NoQuery("INSERT INTO group2subject (id, description, groupid, roomid, subjectid, teacherid, disableflag) VALUES (?, ?, ?, ?, ?, ?, ?)",this.getId(), this.getDescription(), this.getGroupId(), this.getRoomId(), this.getSubjectId(), this.getTeacherId(), this.getDisableflag());
 		}
 		catch(Exception ex)
 		{

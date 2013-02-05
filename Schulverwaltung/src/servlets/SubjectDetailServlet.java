@@ -25,11 +25,12 @@ public class SubjectDetailServlet extends HttpServlet {
 
     private HttpServletRequest request;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		this.request = request;
 		int Id = Integer.parseInt(request.getParameter("Id"));
 		Subject curSubject = new Subject().setId(Id);
-		curSubject.setDescription(this.getParamValue("description"))
-		.setShortName(this.getParamValue("shortName"))
+		curSubject.setDescription(this.getParamValue("Description"))
+		.setShortName(this.getParamValue("Short"))
 		.setDisableflag(Integer.parseInt(this.getParamValue("DisableFlag")));
 
 		if(curSubject.getId() == -1)

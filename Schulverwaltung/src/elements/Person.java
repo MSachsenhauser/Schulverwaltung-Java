@@ -44,4 +44,9 @@ public abstract class Person <T> implements IDatabaseObject<T> {
 		this.email = email;
 		return (T) this;
 	}
+	
+	public String getFullName()
+	{
+		return this.getName() + " " + this.getFirstname();
+	}
 }

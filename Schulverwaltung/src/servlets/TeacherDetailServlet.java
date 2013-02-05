@@ -27,12 +27,12 @@ public class TeacherDetailServlet extends HttpServlet {
     private HttpServletRequest request;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		this.request = request;
 		int Id = Integer.parseInt(request.getParameter("Id"));
 		Teacher curTeacher = new Teacher().setId(Id);
 		String birthDay = getParamValue("birthday");
 		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-		System.out.println("workhours" + getParamValue ("workhours"));
 		try {
 			curTeacher.setName(this.getParamValue("name"))
 			.setFirstname(getParamValue("firstname"))
