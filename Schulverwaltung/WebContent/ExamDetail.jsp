@@ -32,13 +32,14 @@
 			curExam.load();
 		}
 		String readonly = curExam.getDisableflag()  > 0 ? "readonly=readonly" : "";
+		DecimalFormat df = new DecimalFormat("0.00");
 	%>
 	<form id="form" method="Post" action="ExamDetailServlet">
 	<input type="hidden" name="Id" value="<%= curExam.getId() %>" />
 	<input type="hidden" name="DisableFlag" value="<%= curExam.getDisableflag() %>" />
 	<input type="hidden" name="Marks" id="Marks" value="<%= curExam.getMarkArrayString("|") %>"/>
 	<input type="hidden" id="SubjectId" value="<%= curExam.getGroupSubjectId() %>"/>
-	<div id="tabControl" style="background: lightBlue; width: 99%; height:400px; margin-left: -10px; overflow: hidden">
+	<div id="tabControl" style="background: lightBlue; width: 99%; height:500px; margin-left: -10px; overflow: hidden">
 		<ul style="font-size: 70%">
 	        <li><a href="#tab1">Allgemein</a></li>
 	        <li><a href="#tab2">Schüler</a></li>
@@ -115,8 +116,14 @@
 					<td colspan="3">
 						<label><nobr>Max. Punkte: </nobr></label>
 						<input name="maxPoints" class="noEnterSubmit" value="<%= curExam.getMaxPoints() > 0 ? curExam.getMaxPoints() : "" %>" type="number" id="maxPoints" style="width: 50px" onblur="numberValidation(this);"/>
-						<label>&nbsp;&nbsp;&nbsp;&nbsp;&#216; <%= curExam.getAvarage() > 0 ? curExam.getAvarage() : "" %></label>
+						<label>&nbsp;&nbsp;&nbsp;&nbsp;&#216; <%= curExam.getAvarage() > 0 ? df.format(curExam.getAvarage()) : "" %></label>
 					</td>
+					<td colspan="3" rowspan="9" valign="top">
+						<label>Beschreibung: </label>
+						<input style="width: 300px" type="text" name="Description" value="<%= curExam.getDescription() %>"/>
+					</td>
+				</tr>
+				<tr>
 					<td colspan="2">
 						<input type="button" value="IHK-Schlüssel verwenden" onclick="generateIHKGradingKey()"/>
 					</td>
@@ -181,7 +188,7 @@
 				</tr>
 			</table>
 		</div>
-		<div id="tab2">
+		<div id="tab2" style="overflow: scroll;">
 			
 		</div>
 	</div>

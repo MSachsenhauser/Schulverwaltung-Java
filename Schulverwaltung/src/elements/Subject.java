@@ -7,38 +7,10 @@ import database.Error;
 
 
 public class Subject implements IDatabaseObject<Subject>{
-	private int id = -1;
 	private String description ="";
 	private int disableflag = -1;
+	private int id = -1;
 	private String shortName = "";
-	public String getShortName() {
-		return shortName;
-	}
-	public Subject setShortName(String shortName) {
-		this.shortName = shortName;
-		return this;
-	}
-	public int getId() {
-		return id;
-	}
-	public Subject setId(int id) {
-		this.id = id;
-		return this;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public Subject setDescription(String description) {
-		this.description = description;
-		return this;
-	}
-	public int getDisableflag() {
-		return disableflag;
-	}
-
-	public void setDisableflag(int disableflag) {
-		this.disableflag = disableflag;
-	}
 	@Override
 	public void addToDb() {
 		try(Database db = new Database())
@@ -74,31 +46,17 @@ public class Subject implements IDatabaseObject<Subject>{
 			Error.out(ex);
 		}
 	}
-	@Override
-	public void removeFromDb() {
-		try (Database db = new Database())
-		{
-			db.NoQuery("UPDATE Subject SET Disableflag = 1 WHERE Id = ?", this.getId());
-		}
-		catch(Exception ex)
-		{
-			Error.out(ex);
-		}
+	public String getDescription() {
+		return description;
 	}
-	@Override
-	public void save() {
-		try(Database db = new Database())
-		{
-			db.NoQuery("update subject set description = ?, disableflag  = ?, short = ? where id = ?",
-					this.getDescription(),
-					this.getDisableflag(),
-					this.getShortName(),
-					this.getId());
-		}
-		catch(Exception ex)
-		{
-			Error.out(ex);
-		}
+	public int getDisableflag() {
+		return disableflag;
+	}
+	public int getId() {
+		return id;
+	}
+	public String getShortName() {
+		return shortName;
 	}
 	@Override
 	public Subject load() {
@@ -116,6 +74,48 @@ public class Subject implements IDatabaseObject<Subject>{
 		{
 			Error.out(ex);
 		}
+		return this;
+	}
+	@Override
+	public void removeFromDb() {
+		try (Database db = new Database())
+		{
+			db.NoQuery("UPDATE Subject SET Disableflag = 1 WHERE Id = ?", this.getId());
+		}
+		catch(Exception ex)
+		{
+			Error.out(ex);
+		}
+	}
+
+	@Override
+	public void save() {
+		try(Database db = new Database())
+		{
+			db.NoQuery("update subject set description = ?, disableflag  = ?, short = ? where id = ?",
+					this.getDescription(),
+					this.getDisableflag(),
+					this.getShortName(),
+					this.getId());
+		}
+		catch(Exception ex)
+		{
+			Error.out(ex);
+		}
+	}
+	public Subject setDescription(String description) {
+		this.description = description;
+		return this;
+	}
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
+	}
+	public Subject setId(int id) {
+		this.id = id;
+		return this;
+	}
+	public Subject setShortName(String shortName) {
+		this.shortName = shortName;
 		return this;
 	}
 }

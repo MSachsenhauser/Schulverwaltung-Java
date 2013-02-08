@@ -7,40 +7,10 @@ import database.Error;
 
 
 public class Guardian extends Person<Guardian>{
-	private String street = "";
-	private String plz = "";
-	private int disableflag = -1;
-	public String getStreet() {
-		return street;
-	}
-	public Guardian setStreet(String street) {
-		this.street = street;
-		return this;
-	}
-	public String getPlz() {
-		return plz;
-	}
-	public Guardian setPlz(String plz) {
-		this.plz = plz;
-		return this;
-	}
-	public String getCity() {
-		return city;
-	}
-	public Guardian setCity(String city) {
-		this.city = city;
-		return this;
-	}
 	private String city = "";
-	
-	public int getDisableflag() {
-		return disableflag;
-	}
-
-	public void setDisableflag(int disableflag) {
-		this.disableflag = disableflag;
-	}
-	
+	private int disableflag = -1;
+	private String plz = "";
+	private String street = "";
 	@Override
 	public void addToDb() {
 		try(Database db = new Database())
@@ -77,38 +47,18 @@ public class Guardian extends Person<Guardian>{
 			Error.out(ex);
 		}
 	}
-	@Override
-	public void removeFromDb() {
-		try (Database db = new Database())
-		{
-			db.NoQuery("UPDATE Guardian SET Disableflag = 1 WHERE Id = ?", this.getId());
-		}
-		catch(Exception ex)
-		{
-			Error.out(ex);
-		}
+	public String getCity() {
+		return city;
 	}
-	@Override
-	public void save() {
-		try(Database db = new Database())
-		{
-			db.NoQuery("update guardian set city = ?,firstname = ?, name = ?, plz  = ?,street = ?, phone = ?, disableflag = ? where id = ?",
-					this.getCity(),
-					this.getFirstname(),
-					this.getName(),
-					this.getPlz(),
-					this.getStreet(),
-					this.getPhone(),
-					this.getDisableflag(),
-					this.getId());
-			
-		}
-		catch(Exception ex)
-		{
-			Error.out(ex);
-		}
+	public int getDisableflag() {
+		return disableflag;
 	}
-
+	public String getPlz() {
+		return plz;
+	}
+	public String getStreet() {
+		return street;
+	}
 	@Override
 	public Guardian load() {
 
@@ -131,6 +81,56 @@ public class Guardian extends Person<Guardian>{
 		{
 			Error.out(ex);
 		}
+		return this;
+	}
+	
+	@Override
+	public void removeFromDb() {
+		try (Database db = new Database())
+		{
+			db.NoQuery("UPDATE Guardian SET Disableflag = 1 WHERE Id = ?", this.getId());
+		}
+		catch(Exception ex)
+		{
+			Error.out(ex);
+		}
+	}
+
+	@Override
+	public void save() {
+		try(Database db = new Database())
+		{
+			db.NoQuery("update guardian set city = ?,firstname = ?, name = ?, plz  = ?,street = ?, phone = ?, disableflag = ? where id = ?",
+					this.getCity(),
+					this.getFirstname(),
+					this.getName(),
+					this.getPlz(),
+					this.getStreet(),
+					this.getPhone(),
+					this.getDisableflag(),
+					this.getId());
+			
+		}
+		catch(Exception ex)
+		{
+			Error.out(ex);
+		}
+	}
+	
+	public Guardian setCity(String city) {
+		this.city = city;
+		return this;
+	}
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
+	}
+	public Guardian setPlz(String plz) {
+		this.plz = plz;
+		return this;
+	}
+
+	public Guardian setStreet(String street) {
+		this.street = street;
 		return this;
 	}
 }

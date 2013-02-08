@@ -22,11 +22,11 @@ import elements.Student;
 public class JobDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+    private HttpServletRequest request;
+    
     public JobDetailServlet() {
         super();
     }
-    
-    private HttpServletRequest request;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		this.request = request;
@@ -47,6 +47,10 @@ public class JobDetailServlet extends HttpServlet {
 		view.forward(request, response);
 	}
 	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		this.doGet(request, response);
+	}
+	
 	private String getParamValue(String name)
 	{
 		try
@@ -58,9 +62,5 @@ public class JobDetailServlet extends HttpServlet {
 		{
 			return "";
 		}
-	}
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.doGet(request, response);
 	}
 }

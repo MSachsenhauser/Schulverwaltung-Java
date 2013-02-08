@@ -16,9 +16,10 @@
 	<script language="javascript" type="text/javascript" src="Scripts/List.js"></script>
 	<script language="javascript" type="text/javascript">
 		detailFileName = "Administration/TeacherDetail.jsp";
-		deleteServlet = "DeleteTeacherServlet";
+		deleteServlet = "deleteTeachers";
 		deleteText = "Möchten Sie die ausgewählten Lehrer wirklich entfernen?";
 		elementName = "Lehrer";
+		dialogWidth += 40;
 	</script>
 <link href="Styles/Default.css" rel="stylesheet" type="text/css"/>
 </head>

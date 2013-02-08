@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import database.Database;
 import database.Error;
+import database.Login;
 
 import elements.*;
 
@@ -255,6 +256,44 @@ public class AjaxServlet extends HttpServlet {
 			}
 		}
 		
+		if(action.equals("deleteInstructor"))
+		{
+			String ids = request.getParameter("Ids");
+			if(ids.contains(";"))
+			{
+				String[] instructorIds = ids.split(";");
+				for(String id:instructorIds)
+				{
+					int instructorId = Integer.parseInt(id);
+					new Instructor().setId(instructorId).removeFromDb();
+				}
+			}
+			else
+			{
+				int instructorId = Integer.parseInt(ids);
+				new Instructor().setId(instructorId).removeFromDb();
+			}
+		}
+		
+		if(action.equals("deleteCompany"))
+		{
+			String ids = request.getParameter("Ids");
+			if(ids.contains(";"))
+			{
+				String[] companyIds = ids.split(";");
+				for(String id:companyIds)
+				{
+					int companyId = Integer.parseInt(id);
+					new Company().setId(companyId).removeFromDb();
+				}
+			}
+			else
+			{
+				int companyId = Integer.parseInt(ids);
+				new Company().setId(companyId).removeFromDb();
+			}
+		}
+		
 		if(action.equals("deleteExams"))
 		{
 			String ids = request.getParameter("Ids");
@@ -347,6 +386,24 @@ public class AjaxServlet extends HttpServlet {
 			{
 				int roomId = Integer.parseInt(ids);
 				new Room().setId(roomId).removeFromDb();
+			}
+		}
+		
+		if(action.equals("deleteLogin"))
+		{
+			String ids = request.getParameter("Ids");
+			if(ids.contains(";"))
+			{
+				String[] logins = ids.split(";");
+				for(String id:logins)
+				{
+					new Login().setUserName(id).removeFromDb();
+				}
+			}
+			else
+			{
+				int teacherId = Integer.parseInt(ids);
+				new Teacher().setId(teacherId).removeFromDb();
 			}
 		}
 		
@@ -489,6 +546,85 @@ public class AjaxServlet extends HttpServlet {
 						subject.getTeacher().getShortName() + " - " + 
 						subject.getRoom().getNumber() + " - " + 
 						subject.getDescription();
+			}
+			catch(Exception ex)
+			{
+				Error.out(ex);
+			}
+		}
+		
+		if(action.equals("saveAbsence"))
+		{
+			try
+			{
+				String begin = request.getParameter("Begin");
+				String end = request.getParameter("End");
+				Boolean excusedByPhone = request.getParameter("ExcusedByPhone") != "";
+				Boolean excusedByEmail = request.getParameter("ExcusedByEmail") != "";
+				Boolean certificate = request.getParameter("Certificate") != "";
+				String studentId = request.getParameter("StudentId");
+				SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+				
+				Absence absence = new Absence();
+				absence.setStudentId(Integer.parseInt(studentId));
+				absence.setStart(format.parse(begin));
+				absence.setEnd(format.parse(end));
+				absence.setExcusedByPhone(excusedByPhone);
+				absence.setExcusedByEmail(excusedByEmail);
+				absence.setCertificate(certificate);
+				absence.addToDb();
+			}
+			catch(Exception ex)
+			{
+				Error.out(ex);
+			}
+		}
+		
+		if(action.equals("deleteAbsence"))
+		{
+			try
+			{
+				String id = request.getParameter("Id");
+				new Absence().setId(Integer.parseInt(id)).removeFromDb();
+				resultText = id;
+			}
+			catch(Exception ex)
+			{
+				Error.out(ex);
+			}
+		}
+		
+		if(action.equals("saveDelay"))
+		{
+			try
+			{
+				String begin = request.getParameter("Begin");
+				String end = request.getParameter("End");
+				String description = request.getParameter("Description");
+				Boolean valid = request.getParameter("Valid") != "";
+				String studentId = request.getParameter("StudentId");
+				SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+				Delay delay = new Delay();
+				delay.setStudentId(Integer.parseInt(studentId));
+				delay.setStart(format.parse(begin));
+				delay.setEnd(format.parse(end));
+				delay.setDescription(description);
+				delay.setValid(valid);
+				delay.addToDb();
+			}
+			catch(Exception ex)
+			{
+				Error.out(ex);
+			}
+		}
+		
+		if(action.equals("deleteDelay"))
+		{
+			try
+			{
+				String id = request.getParameter("Id");
+				new Delay().setId(Integer.parseInt(id)).removeFromDb();
+				resultText = id;
 			}
 			catch(Exception ex)
 			{

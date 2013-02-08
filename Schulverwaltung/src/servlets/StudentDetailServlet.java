@@ -22,10 +22,10 @@ import elements.Student;
 public class StudentDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+    private HttpServletRequest request;
     public StudentDetailServlet() {
         super();
     }
-    private HttpServletRequest request;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
@@ -42,10 +42,11 @@ public class StudentDetailServlet extends HttpServlet {
 			.setCity(getParamValue("city"))
 			.setInstructorId(Integer.parseInt(getParamValue("Instructor")))
 			.setJobId(Integer.parseInt(getParamValue("Job")))
-			.setShortened(Boolean.parseBoolean(getParamValue("shortened")))
-			.setIsGermanFree(Boolean.parseBoolean(getParamValue("germanFree")))
-			.setIsReligionFree(Boolean.parseBoolean(getParamValue("religionFree")))
-			.setIsSportFree(Boolean.parseBoolean(getParamValue("sportFree")))
+			.setTypificationId(Integer.parseInt(getParamValue("TypificationId")))
+			.setShortened(getParamValue("shortened").equals("on"))
+			.setIsGermanFree(getParamValue("germanFree").equals("on"))
+			.setIsReligionFree(getParamValue("religionFree").equals("on"))
+			.setIsSportFree(getParamValue("sportFree").equals("on"))
 			.setBirthday(format.parse(getParamValue("birthday")))
 			.setEntry(format.parse(getParamValue("entry")))
 			.setReligionId(Integer.parseInt(getParamValue("religion")))
@@ -69,8 +70,11 @@ public class StudentDetailServlet extends HttpServlet {
 			curStudent.getGuardian1().setStreet(getParamValue("guardianStreet1"));
 			if(curStudent.getGuardianId1() == -1)
 			{
-				curStudent.getGuardian1().addToDb();
-				db.NoQuery("INSERT INTO student2guardian (studentId, guardianId) VALUES (?, ?)", curStudent.getId(), curStudent.getGuardian1().getId());
+				if(!curStudent.getGuardian1().getName().isEmpty())
+				{
+					curStudent.getGuardian1().addToDb();
+					db.NoQuery("INSERT INTO student2guardian (studentId, guardianId) VALUES (?, ?)", curStudent.getId(), curStudent.getGuardian1().getId());
+				}
 			}
 			else
 			{
@@ -86,8 +90,11 @@ public class StudentDetailServlet extends HttpServlet {
 			
 			if(curStudent.getGuardianId2() == -1)
 			{
-				curStudent.getGuardian2().addToDb();
-				db.NoQuery("INSERT INTO student2guardian (studentId, guardianId) VALUES (?, ?)", curStudent.getId(), curStudent.getGuardian2().getId());
+				if(!curStudent.getGuardian1().getName().isEmpty())
+				{
+					curStudent.getGuardian2().addToDb();
+					db.NoQuery("INSERT INTO student2guardian (studentId, guardianId) VALUES (?, ?)", curStudent.getId(), curStudent.getGuardian2().getId());
+				}
 			}
 			else
 			{
@@ -102,6 +109,14 @@ public class StudentDetailServlet extends HttpServlet {
 		view.forward(request, response);
 	}
 
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		this.doGet(request, response);
+	}
+	
 	private String getParamValue(String name)
 	{
 		try
@@ -113,13 +128,5 @@ public class StudentDetailServlet extends HttpServlet {
 		{
 			return "";
 		}
-	}
-	
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		this.doGet(request, response);
 	}
 }

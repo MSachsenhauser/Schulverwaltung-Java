@@ -55,12 +55,15 @@
 			<td align="center" style="background: lightBlue; width: 100%; height: 550px">
 					<div id="tabControl" style="background: lightBlue; border: none; width: 99%;  height: 550px">
 					<ul style="font-size: 70%">
+						<li><a href="#tab9">Logins</a></li>
 				        <li><a href="#tab1">Berufe</a></li>
 				        <li><a href="#tab2">Religionen</a></li>
 				        <li><a href="#tab3">Lehrer</a></li>
 				        <li><a href="#tab4">Klassen</a></li>
 				        <li><a href="#tab5">Räume</a></li>
 				        <li><a href="#tab6">Fächer</a></li>
+				        <li><a href="#tab7">Firmen</a></li>
+				        <li><a href="#tab8">Ausbilder</a></li>
     				</ul>
     				<div id="tab1" style="width: 100%; height: 100%;">
        				 	<iframe src="JobServlet" style="border: none; height: 100%; width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
@@ -80,6 +83,15 @@
 				    </div>
 				    <div id="tab6" style="width: 100%; height: 100%; overflow: auto">
 						<iframe src="SubjectServlet" style="border: none; height: 100%; width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
+				    </div>
+				    <div id="tab7" style="width: 100%; height: 100%; overflow: auto">
+						<iframe src="CompanyServlet" style="border: none; height: 100%; width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
+				    </div>
+				    <div id="tab8" style="width: 100%; height: 100%; overflow: auto">
+						<iframe src="InstructorServlet" style="border: none; height: 100%; width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
+				    </div>
+				    <div id="tab9" style="width: 100%; height: 100%; overflow: auto">
+						<iframe src="LoginListServlet" style="border: none; height: 100%; width: 970px; margin-left: -45px; margin-top: -15px;"></iframe>
 				    </div>
 				</div>
 			</td>

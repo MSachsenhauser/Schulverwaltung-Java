@@ -7,39 +7,10 @@ import database.Error;
 
 
 public class Room implements IDatabaseObject<Room>{
-	private int id = -1;
-	private String number = "";
 	private String description ="";
 	private int disableflag = -1;
-	public int getId() {
-		return id;
-	}
-	public Room setId(int id) {
-		this.id = id;
-		return this;
-	}
-	public String getNumber() {
-		return number;
-	}
-	public Room setNumber(String number) {
-		this.number = number;
-		return this;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public Room setDescription(String description) {
-		this.description = description;
-		return this;
-	}
-	public int getDisableflag() {
-		return disableflag;
-	}
-
-	public void setDisableflag(int disableflag) {
-		this.disableflag = disableflag;
-	}
-
+	private int id = -1;
+	private String number = "";
 	@Override
 	public void addToDb() {
 		try(Database db = new Database())
@@ -72,33 +43,17 @@ public class Room implements IDatabaseObject<Room>{
 			Error.out(ex);
 		}
 	}
-	@Override
-	public void removeFromDb() {
-		try (Database db = new Database())
-		{
-			db.NoQuery("UPDATE Room SET Disableflag = 1 WHERE Id = ?", this.getId());
-		}
-		catch(Exception ex)
-		{
-			Error.out(ex);
-		}
+	public String getDescription() {
+		return description;
 	}
-	@Override
-	public void save() {
-		try(Database db = new Database())
-		{
-			db.NoQuery("update room set description = ?,number = ?, disableflag  = ? where id = ?",
-					this.getDescription(),
-					this.getNumber(),
-					this.getDisableflag(),
-					this.getId());
-			
-			
-		}
-		catch(Exception ex)
-		{
-			Error.out(ex);
-		}
+	public int getDisableflag() {
+		return disableflag;
+	}
+	public int getId() {
+		return id;
+	}
+	public String getNumber() {
+		return number;
 	}
 	@Override
 	public Room load() {
@@ -116,6 +71,51 @@ public class Room implements IDatabaseObject<Room>{
 		{
 			Error.out(ex);
 		}
+		return this;
+	}
+	@Override
+	public void removeFromDb() {
+		try (Database db = new Database())
+		{
+			db.NoQuery("UPDATE Room SET Disableflag = 1 WHERE Id = ?", this.getId());
+		}
+		catch(Exception ex)
+		{
+			Error.out(ex);
+		}
+	}
+
+	@Override
+	public void save() {
+		try(Database db = new Database())
+		{
+			db.NoQuery("update room set description = ?,number = ?, disableflag  = ? where id = ?",
+					this.getDescription(),
+					this.getNumber(),
+					this.getDisableflag(),
+					this.getId());
+			
+			
+		}
+		catch(Exception ex)
+		{
+			Error.out(ex);
+		}
+	}
+
+	public Room setDescription(String description) {
+		this.description = description;
+		return this;
+	}
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
+	}
+	public Room setId(int id) {
+		this.id = id;
+		return this;
+	}
+	public Room setNumber(String number) {
+		this.number = number;
 		return this;
 	}
 }

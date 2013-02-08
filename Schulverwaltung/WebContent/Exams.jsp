@@ -21,7 +21,7 @@
 		deleteServlet = "DeleteExamServlet";
 		deleteText = "Möchten Sie die ausgewählten Prüfungen wirklich entfernen?";
 		elementName = "Prüfung";
-		dialogHeight = 500;
+		dialogHeight = 550;
 		dialogWidth = 950;
 	</script>
 <link href="Styles/Default.css" rel="stylesheet" type="text/css"/>

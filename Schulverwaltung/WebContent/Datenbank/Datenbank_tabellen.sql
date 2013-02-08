@@ -115,6 +115,7 @@ create table exam
 	(
 		id int primary key,
 		typeId int,
+		description varchar(500),
 		executionDate date,
 		group2SubjectId int,
 		announceDate date,
@@ -292,6 +293,8 @@ AS
 	LEFT JOIN student2group ON student.Id = student2group.studentId
 	LEFT JOIN gradeGroup ON student2group.groupId = gradeGroup.id
 	LEFT JOIN grade ON grade.id = gradeGroup.gradeId
+	WHERE grade.disableflag = 0 or grade.Description is null
+	Group By student.Id
 );
 
 CREATE OR REPLACE VIEW qryReligion
@@ -328,6 +331,7 @@ CREATE OR REPLACE VIEW qryExam
 (	
 	id,
 	type,
+	description,
 	executionDate,
 	subject,
 	teacher,
@@ -339,7 +343,7 @@ CREATE OR REPLACE VIEW qryExam
 )
 AS
 (
-	SELECT exam.id, marktype.description, exam.executionDate, 
+	SELECT exam.id, marktype.description, exam.description, exam.executionDate, 
 		   subject.description, Concat(Concat(teacher.Name, ' '), 
 		   teacher.Firstname), room.number, gradeGroup.description, grade.Description, exam.announceDate, exam.disableflag
 	FROM exam
@@ -433,6 +437,16 @@ INSERT INTO MarkType
 (2, "Schulaufgabe", 2, 0),
 (3, "Mündlich", 1, 0),
 (4, "Kurzarbeit", 1, 0);
+
+INSERT INTO typification
+(id, description, disableflag) VALUES
+(1, "Hauptschule", 0),
+(2, "Realschule", 0),
+(3, "Gymnasium", 0),
+(4, "Universität", 0),
+(5, "Keine", 0),
+(6, "Fachoberschule", 0);
+
 
 INSERT INTO room (id, number, description, disableflag) values (1, '1A1', 'Programmierraum', 0);
 INSERT INTO teacher (id, name, firstname, short, email, roomid, workhours) VALUES (1, 'Mustermann', 'Max', 'MM', 'max@mustermann.de', 1, 40.0);

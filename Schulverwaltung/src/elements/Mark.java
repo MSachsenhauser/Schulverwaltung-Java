@@ -7,74 +7,15 @@ import database.Error;
 
 
 public class Mark implements IDatabaseObject<Mark>{
+	private int disableflag = -1;
+	private Exam exam = null;
+	private int examId = -1;
 	private int id = -1;
 	private int mark = -1;
-	private int studentId = -1;
-	private int examId = -1;
-	private int disableflag = -1;
 	private double points = -1;
+	private int studentId = -1;
 	private String trend = "";
-	private Exam exam = null;
 	
-	public Exam getExam()
-	{
-		if(exam == null)
-		{
-			exam = new Exam().setId(this.getExamId()).load();
-		}
-		return exam;
-	}
-	
-	public int getId() {
-		return id;
-	}
-	public Mark setId(int id) {
-		this.id = id;
-		return this;
-	}
-	public double getPoints() {
-		return points;
-	}
-	public Mark setPoints(double points) {
-		this.points = points;
-		return this;
-	}
-	public int getMark() {
-		return mark;
-	}
-	public Mark setMark(int mark) {
-		this.mark = mark;
-		return this;
-	}
-	public int getStudentId() {
-		return studentId;
-	}
-	public Mark setStudentId(int studentId) {
-		this.studentId = studentId;
-		return this;
-	}
-	public int getExamId() {
-		return examId;
-	}
-	public Mark setExamId(int examId) {
-		this.examId = examId;
-		this.exam = null;
-		return this;
-	}
-	public String getTrend() {
-		return trend;
-	}
-	public Mark setTrend(String trend) {
-		this.trend = trend;
-		return this;
-	}
-	public int getDisableflag() {
-		return disableflag;
-	}
-
-	public void setDisableflag(int disableflag) {
-		this.disableflag = disableflag;
-	}
 	@Override
 	public void addToDb() {
 		try(Database db = new Database())
@@ -100,6 +41,57 @@ public class Mark implements IDatabaseObject<Mark>{
 		{
 			Error.out(ex);
 		}
+	}
+	
+	public int getDisableflag() {
+		return disableflag;
+	}
+	public Exam getExam()
+	{
+		if(exam == null)
+		{
+			exam = new Exam().setId(this.getExamId()).load();
+		}
+		return exam;
+	}
+	public int getExamId() {
+		return examId;
+	}
+	public int getId() {
+		return id;
+	}
+	public int getMark() {
+		return mark;
+	}
+	public double getPoints() {
+		return points;
+	}
+	public int getStudentId() {
+		return studentId;
+	}
+	public String getTrend() {
+		return trend;
+	}
+	@Override
+	public Mark load() {
+		try(Database db = new Database())
+		{
+			ResultSet result = db.getDataRows("SELECT * FROM mark WHERE Id=?", this.getId());
+			while(result.next())
+			{
+				this.setExamId (result.getInt("examId") );
+				this.setMark(result.getInt("mark"));
+				this.setStudentId(result.getInt("studentId"));
+				this.setTrend(result.getString("trend"));
+				this.setDisableflag(result.getInt("disableflag"));
+				this.setPoints(result.getDouble("Points"));
+			}
+		}
+		catch(Exception ex)
+		{
+			Error.out(ex);
+		}
+		return this;
 	}
 	@Override
 	public void removeFromDb() {
@@ -130,25 +122,33 @@ public class Mark implements IDatabaseObject<Mark>{
 			Error.out(ex);
 		}
 	}
-	@Override
-	public Mark load() {
-		try(Database db = new Database())
-		{
-			ResultSet result = db.getDataRows("SELECT * FROM mark WHERE Id=?", this.getId());
-			while(result.next())
-			{
-				this.setExamId (result.getInt("examId") );
-				this.setMark(result.getInt("mark"));
-				this.setStudentId(result.getInt("studentId"));
-				this.setTrend(result.getString("trend"));
-				this.setDisableflag(result.getInt("disableflag"));
-				this.setPoints(result.getDouble("Points"));
-			}
-		}
-		catch(Exception ex)
-		{
-			Error.out(ex);
-		}
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
+	}
+	public Mark setExamId(int examId) {
+		this.examId = examId;
+		this.exam = null;
+		return this;
+	}
+
+	public Mark setId(int id) {
+		this.id = id;
+		return this;
+	}
+	public Mark setMark(int mark) {
+		this.mark = mark;
+		return this;
+	}
+	public Mark setPoints(double points) {
+		this.points = points;
+		return this;
+	}
+	public Mark setStudentId(int studentId) {
+		this.studentId = studentId;
+		return this;
+	}
+	public Mark setTrend(String trend) {
+		this.trend = trend;
 		return this;
 	}
 }

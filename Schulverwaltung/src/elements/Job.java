@@ -7,39 +7,11 @@ import database.Error;
 
 
 public class Job implements IDatabaseObject<Job>{
-	private int id = -1;
 	private String description = "";
-	private double duration = 0.00;
 	private int disableflag = -1;
+	private double duration = 0.00;
+	private int id = -1;
 	
-	public int getId() {
-		return id;
-	}
-	public Job setId(int id) {
-		this.id = id;
-		return this;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public Job setDescription(String description) {
-		this.description = description;
-		return this;
-	}
-	public double getDuration() {
-		return duration;
-	}
-	public Job setDuration(double duration) {
-		this.duration = duration;
-		return this;
-	}
-	public int getDisableflag() {
-		return disableflag;
-	}
-
-	public void setDisableflag(int disableflag) {
-		this.disableflag = disableflag;
-	}
 	@Override
 	public void addToDb() {
 		try(Database db = new Database())
@@ -80,31 +52,17 @@ public class Job implements IDatabaseObject<Job>{
 			Error.out(ex);
 		}
 	}
-	@Override
-	public void removeFromDb() {
-		try (Database db = new Database())
-		{
-			db.NoQuery("UPDATE Job SET Disableflag = 1 WHERE Id = ?", this.getId());
-		}
-		catch(Exception ex)
-		{
-			Error.out(ex);
-		}
+	public String getDescription() {
+		return description;
 	}
-	@Override
-	public void save() {
-		try(Database db = new Database())
-		{
-			db.NoQuery("update job set description = ?,duration = ?,disableflag = ? where id = ?",
-					this.getDescription(),
-					this.getDuration(),
-					this.getDisableflag(),
-					this.getId());
-		}
-		catch(Exception ex)
-		{
-			Error.out(ex);
-		}
+	public int getDisableflag() {
+		return disableflag;
+	}
+	public double getDuration() {
+		return duration;
+	}
+	public int getId() {
+		return id;
 	}
 	@Override
 	public Job load() {
@@ -124,6 +82,48 @@ public class Job implements IDatabaseObject<Job>{
 		{
 			Error.out(ex);
 		}
+		return this;
+	}
+	@Override
+	public void removeFromDb() {
+		try (Database db = new Database())
+		{
+			db.NoQuery("UPDATE Job SET Disableflag = 1 WHERE Id = ?", this.getId());
+		}
+		catch(Exception ex)
+		{
+			Error.out(ex);
+		}
+	}
+
+	@Override
+	public void save() {
+		try(Database db = new Database())
+		{
+			db.NoQuery("update job set description = ?,duration = ?,disableflag = ? where id = ?",
+					this.getDescription(),
+					this.getDuration(),
+					this.getDisableflag(),
+					this.getId());
+		}
+		catch(Exception ex)
+		{
+			Error.out(ex);
+		}
+	}
+	public Job setDescription(String description) {
+		this.description = description;
+		return this;
+	}
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
+	}
+	public Job setDuration(double duration) {
+		this.duration = duration;
+		return this;
+	}
+	public Job setId(int id) {
+		this.id = id;
 		return this;
 	}
 }

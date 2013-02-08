@@ -16,14 +16,14 @@ import elements.Subject;
 public class SubjectDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+    private HttpServletRequest request;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
     public SubjectDetailServlet() {
         super();
     }
-
-    private HttpServletRequest request;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		this.request = request;
@@ -45,6 +45,12 @@ public class SubjectDetailServlet extends HttpServlet {
 		view.forward(request, response);
 	}
 	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		this.doGet(request, response);
+	}
 	private String getParamValue(String name)
 	{
 		try
@@ -56,11 +62,5 @@ public class SubjectDetailServlet extends HttpServlet {
 		{
 			return "";
 		}
-	}
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.doGet(request, response);
 	}
 }

@@ -7,13 +7,37 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script src="Scripts/jquery.js"></script>
-    <script src="Scripts/jquery-ui.js"></script>	
+    <script src="../Scripts/jquery.js"></script>
+    <script src="../Scripts/jquery-ui.js"></script>	
+    <link rel="stylesheet" href="../Styles/Themes/redmond/jquery-ui.css" />
     <script type="text/javascript" src="../Scripts/GradeDetail.js"></script>
      <script type="text/javascript" src="../Scripts/Ajax.js"></script>
      <script type="text/javascript" src="../Scripts/Validation.js"></script>
+     <style type="text/css">
+     	body {
+			font-size: medium;
+		}
+		input {
+			
+		}
+     </style>
 </head>
-<body onload="onLoad()">
+<body>
+<div id="dialog" title="Durchschnitt" style="display: none; padding:0px;">
+   <iframe id="dialogTarget" style="height: 98%; width: 100%; border: none"></iframe>
+</div>
+<script type="text/javascript">
+$(document).ready(function()
+		{
+	$("form").submit(function()
+					{
+						document.getElementById("groupStudents").value = groupStudents.toString();
+						parent.closeDialog();
+						this.submit();
+					});
+		}
+);
+</script>
 <%
 		int gradeId = Integer.parseInt(request.getParameter("Id"));
 		Grade curGrade = new Grade().setId(gradeId);
@@ -22,6 +46,7 @@
 			curGrade.load();
 		}
 		String readonly = curGrade.getDisableflag()  > 0 ? "readonly=readonly" : "";
+		String showGroupElements = curGrade.getId() == -1 ? "style=\"display: none\"" : "";
 	%>
 	<form id="form" method="Post" action="../GradeDetailServlet">
 	<input type="hidden" name="Id" id="Id" value="<%= curGrade.getId() %>" />
@@ -80,7 +105,7 @@
 			</td>
 		</tr>
 		<tr><td>&nbsp;</td></tr>
-		<tr>
+		<tr <%=showGroupElements%>>
 			<td>
 				<input type="text" id="txtGroupDescription" />
 			</td>
@@ -98,7 +123,7 @@
 				</select>
 			</td>
 		</tr>
-		<tr>
+		<tr <%=showGroupElements%>>
 			<td colspan="6">
 				<table style="width: 100%">
 					<tr>
@@ -133,7 +158,7 @@
 				</table>
 			</td>
 		</tr>
-		<tr>
+		<tr <%=showGroupElements%>>
 			<td colspan="6" style="width: 100%">
 				<table style="width: 100%">
 					<tr>
@@ -201,7 +226,10 @@
 		</tr>
 		<tr>
 			<td>
-				<input <%=readonly != "" ? "disabled=disabled" : ""%> type="button" onclick="onSave()" value="speichern" />
+				<input <%=readonly != "" ? "disabled=disabled" : ""%> type="submit" value="speichern" />
+			</td>
+			<td>
+				<input <%=showGroupElements%> type="button" value="Klassendurchschnitt" onclick="openGradeAverage()"/>
 			</td>
 		</tr>
 	</table>

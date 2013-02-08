@@ -73,6 +73,148 @@
     		document.getElementById("txtGuardianCity2").value = document.getElementById("txtGuardianCity1").value;
     		document.getElementById("txtGuardianPhone2").value = document.getElementById("txtGuardianPhone1").value;
     	}
+    	
+    	function recalcDuration()
+    	{
+    		var txtBegin = document.getElementById("txtNewAbsenceBegin");
+    		var txtEnd = document.getElementById("txtNewAbsenceEnd");
+    		if(txtBegin.value != "" && txtEnd.value != "")
+   			{
+    			var splitDate1 = txtBegin.value.split(".");
+   				var date1 = new Date(splitDate1[2], (parseInt(splitDate1[1]) - 1), splitDate1[0]);
+   				var splitDate2 = txtEnd.value.split(".");
+   				var date2 = new Date(splitDate2[2], (parseInt(splitDate2[1]) - 1), splitDate2[0]);
+   				var dayMillis = 1000*60*60*24;
+   				document.getElementById("txtNewAbsenceDuration").value = Math.ceil((date2.getTime() - date1.getTime()) / dayMillis + 1);
+   			}
+    	}
+    	
+    	function recalcDelayDuration()
+    	{
+    		var txtBegin = document.getElementById("txtNewDelayBegin");
+    		var txtEnd = document.getElementById("txtNewDelayEnd");
+    		if(txtBegin.value != "" && txtEnd.value != "")
+   			{
+    			var splitDate1 = txtBegin.value.split(".");
+    			var timeSplit = splitDate1[2].split(" ");
+    			var time = timeSplit[1].split(":");
+   				var date1 = new Date(timeSplit[0], (parseInt(splitDate1[1]) - 1), splitDate1[0], time[0], time[1], 0);
+   				var splitDate2 = txtEnd.value.split(".");
+   				timeSplit = splitDate2[2].split(" ");
+    			time = timeSplit[1].split(":");
+   				var date2 = new Date(timeSplit[0], (parseInt(splitDate2[1]) - 1), splitDate2[0], time[0], time[1], 0);
+   				var minuteMillis = 1000*60;
+   				document.getElementById("txtNewDelayDuration").value = Math.ceil((date2.getTime() - date1.getTime()) / minuteMillis);
+   			}
+    	}
+    	
+    	function saveAbsence()
+    	{		
+			var txtBegin = document.getElementById("txtNewAbsenceBegin");
+    		var txtEnd = document.getElementById("txtNewAbsenceEnd");
+    		var chkExcusedByPhone = document.getElementById("chkNewAbsenceExcusedByPhone");
+    		var chkExcusedByEmail = document.getElementById("chkNewAbsenceExcusedByEmail");
+    		var chkCertificate = document.getElementById("chkNewAbsenceCertificate");
+    		
+    		if(!markControl(txtBegin, txtBegin.value == "") && !markControl(txtEnd, txtEnd.value == ""))
+   			{
+    				UseAjax("http://localhost:8080/Schulverwaltung/AjaxServlet?Action=saveAbsence&StudentId=" + document.getElementById("Id").value + 
+    				"&Begin=" + txtBegin.value + 
+    				"&End=" + txtEnd.value + 
+    				"&ExcusedByPhone=" + chkExcusedByPhone.checked + 
+    				"&ExcusedByEmail=" + chkExcusedByEmail.checked + 
+    				"&Certificate=" + chkCertificate.checked, insertAbsence, false);
+   			}
+    	}
+    	
+    	function saveDelay()
+    	{
+    		var txtBegin = document.getElementById("txtNewDelayBegin");
+    		var txtEnd = document.getElementById("txtNewDelayEnd");
+    		var chkValid = document.getElementById("chkNewDelayValid");
+    		var txtDescription = document.getElementById("chkNewDelayDescription");
+    		
+    		if(!markControl(txtBegin, txtBegin.value == "") && !markControl(txtEnd, txtEnd.value == ""))
+   			{
+    				UseAjax("http://localhost:8080/Schulverwaltung/AjaxServlet?Action=saveDelay&StudentId=" + document.getElementById("Id").value + 
+    				"&Begin=" + txtBegin.value + 
+    				"&End=" + txtEnd.value + 
+    				"&Description=" + txtDescription.value + 
+    				"&Valid=" + chkValid.checked, insertDelay, false);
+   			}
+    	}
+    	
+    	function insertDelay(result)
+    	{
+    		var txtBegin = document.getElementById("txtNewDelayBegin");
+    		var txtEnd = document.getElementById("txtNewDelayEnd");
+    		var chkValid = document.getElementById("chkNewDelayValid");
+    		var txtDescription = document.getElementById("txtNewDelayDescription");
+			var txtDuration = document.getElementById("txtNewDelayDuration");
+			window.location.reload();
+			txtBegin.value ="";
+			txtEnd.value ="";
+			txtDescription.value ="";
+			txtDuration.value ="";
+			chkValid.checked = "";
+    	}
+    	
+    	function deleteDelay(id)
+    	{
+    		if(window.confirm("Soll die Verspätung wirklich gelöscht werden?"))
+   			{
+    			UseAjax("http://localhost:8080/Schulverwaltung/AjaxServlet?Action=deleteDelay&Id=" + id, removeDelay, false);
+   			}
+    	}
+    	
+    	function removeDelay(result)
+    	{
+    		var tableDelay = document.getElementById("tblDelay");
+    		window.location.reload();
+			// ToDo: hier aus der Tabelle entfernen bzw die seite neu laden 
+    	}
+    	
+    	function insertAbsence(result)
+    	{
+    		var txtBegin = document.getElementById("txtNewAbsenceBegin");
+    		var txtEnd = document.getElementById("txtNewAbsenceEnd");
+    		var chkExcusedByPhone = document.getElementById("chkNewAbsenceExcusedByPhone");
+    		var chkExcusedByEmail = document.getElementById("chkNewAbsenceExcusedByEmail");
+    		var chkCertificate = document.getElementById("chkNewAbsenceCertificate");
+			var txtDuration = document.getElementById("txtNewAbsenceDuration");
+    		var tr = "<tr>";
+    		tr += "<td><label><nobr>" + txtBegin.value + "</nobr></label></td>";
+    		tr += "<td><label><nobr>" + txtEnd.value + "</nobr></label></td>";
+    		tr += "<td align=\"center\"><label>" + txtDuration.value + "</label></td>";
+    		tr += "<td align=\"center\"><input disabled=disabled type=\"checkbox\" " + (chkExcusedByPhone.checked != "" ? "checked=\"checked\"" : "") + " /></td>";
+    		tr += "<td align=\"center\"><input disabled=disabled type=\"checkbox\" " + (chkExcusedByEmail.checked != "" ? "checked=\"checked\"" : "") + " /></td>";
+    		tr += "<td align=\"center\"><input disabled=disabled type=\"checkbox\" " + (chkCertificate.checked != "" ? "checked=\"checked\"" : "") + " /></td>";
+    		var tableAbsence = document.getElementById("tblAbsence");
+			//tableAbsence.childNodes[1].childNodes.append(tr);
+			// ToDo: hier in die Tabelle einfügen bzw die seite neu laden 7
+			window.location.reload();
+			txtBegin.value = "";
+			txtEnd.value = "";
+			txtDuration.value = "";
+			chkExcusedByPhone.checked = "";
+			chkExcusedByEmail.checked = "";
+			chkCertificate.checked = "";
+    	}
+    	
+    	function deleteAbsence(id)
+    	{
+    		if(window.confirm("Soll der Krankheitseintrag wirklich gelöscht werden?"))
+   			{
+    			UseAjax("http://localhost:8080/Schulverwaltung/AjaxServlet?Action=deleteAbsence&Id=" + id, removeAbsence, false);
+   			}
+    	}
+    	
+    	function removeAbsence(result)
+    	{
+    		var tableAbsence = document.getElementById("tblAbsence");
+    		window.location.reload();
+    	}
+    	
     </script>
 </head>
 <body onload="onLoad();">
@@ -85,9 +227,11 @@
 		}
 		
 		String readonly = curStudent.getDisableflag()  > 0 ? "readonly=readonly" : "";
+		SimpleDateFormat delayFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+		SimpleDateFormat absenceFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	%>
 	<form id="form" method="Post" action="StudentDetailServlet">
-	<input type="hidden" name="Id" value="<%= curStudent.getId() %>" />
+	<input type="hidden" name="Id" id="Id" value="<%= curStudent.getId() %>" />
 	<input type="hidden" name="DisableFlag" value="<%= curStudent.getDisableflag() %>" />
 	<input type="hidden" id="InstructorId" value="<%= curStudent.getInstructorId() %>" />
 	<input type="hidden" name="GuardianId1" value="<%= curStudent.getGuardianId1() %>" />
@@ -96,9 +240,14 @@
 			<ul style="font-size: 70%">
 		        <li><a href="#tab1">Allgemein</a></li>
 		        <li><a href="#tab5">Eltern</a></li>
-		        <li><a href="#tab2">Noten</a></li>
-		        <li><a href="#tab3">Krankheit</a></li>
-		        <li><a href="#tab4">Fehlzeiten</a></li>
+		        <%
+		        	if(curStudent.getId() > 0)
+		        	{
+		        		out.write("<li><a href=\"#tab2\">Noten</a></li>");
+		        		out.write("<li><a href=\"#tab3\">Krankheit</a></li>\n");
+		        		out.write("<li><a href=\"#tab4\">Fehlzeiten</a></li>\n");
+		        	}
+		        %>
 			</ul>
 			<div id="tab1" style="heigth: 100%">
 				<table style="heigth: 100%">
@@ -234,23 +383,43 @@
 							<table>
 								<tr>
 									<td colspan="2">
-										<input <%=readonly%> type="checkbox" id="shortened" name="shortened" value="<%=curStudent.getShortened() %>" />
+										<input <%=readonly%> type="checkbox" id="shortened" name="shortened" <%=curStudent.getShortened() ? "checked=\"checked\"" : "" %> />
 										<label for="shortened">Verkürzt</label>
 									</td>
 									<td>&nbsp;</td>
 									<td colspan="2">
-										<input <%=readonly%> type="checkbox" id="sportFree" name="sportFree" value="<%=curStudent.getIsSportFree() %>" />
+										<input <%=readonly%> type="checkbox" id="sportFree" name="sportFree" <%=curStudent.getIsSportFree() ? "checked=\"checked\"" : "" %> />
 										<label for="sportFree">Sport befreit</label>
 									</td>
 									<td>&nbsp;</td>
 									<td colspan="2">
-										<input <%=readonly%> type="checkbox" id="germanFree" name="germanFree" value="<%=curStudent.getIsGermanFree() %>" />
+										<input <%=readonly%> type="checkbox" id="germanFree" name="germanFree" <%=curStudent.getIsGermanFree() ? "checked=\"checked\" ": "" %> />
 										<label for="germanFree">Deutsch befreit</label>
 									</td>
 									<td>&nbsp;</td>
 									<td colspan="2">
-										<input <%=readonly%> type="checkbox" id="religonFree" name="religonFree" value="<%=curStudent.getIsReligionFree() %>" />
+										<input <%=readonly%> type="checkbox" id="religonFree" name="religionFree" <%=curStudent.getIsReligionFree() ? "checked=\"checked\"" : "" %> />
 										<label for="religonFree">Religion befreit</label>
+									</td>
+									<td>&nbsp;</td>
+									<td>Vorbildung: </td>
+									<td>
+										<select <%=readonly%> name="TypificationId" style="width: 200px">
+											<option value="-1"> - </option>
+											<%
+												for(Typification typification:ElementLists.getTypifications())
+												{
+													if(curStudent.getTypificationId() == typification.getId())
+													{
+														out.write("<option selected=\"true\" value=\"" + typification.getId() + "\">" + typification.getDescription() + "</option>\n");
+													}
+													else
+													{
+														out.write("<option value=\"" + typification.getId() + "\">" + typification.getDescription() + "</option>\n");
+													}
+												}
+											%>
+										</select>
 									</td>
 								</tr>
 							</table>
@@ -262,7 +431,7 @@
 					
 					<tr>
 						<td>
-							<input <%=readonly != "" ? "disabled=disabled" : ""%> type="submit" value="speichern" />
+							<input <%=readonly != "" ? "disabled=disabled" : ""%> type="submit" id="btnSubmit" value="speichern" />
 						</td>
 					</tr>
 				</table>
@@ -307,7 +476,7 @@
 					</tr>
 				</table>
 			</div>
-			<div id="tab2" style="width: 100%">
+			<div id="tab2" style="width: 100%; display: none">
 				<table style="width: 100%">
 					<tr>
 						<td></td>
@@ -359,8 +528,8 @@
 					%>
 				</table>
 			</div>
-			<div id="tab3" style="width: 90%">
-				<table style="width: 90%;" border="1">
+			<div id="tab3" style="width: 90%; display: none">
+				<table style="width: 90%;" border="1" id="tblAbsence">
 					<tr>
 						<th>Beginn</th>
 						<th>Ende</th>
@@ -368,20 +537,29 @@
 						<th>Entschuldigt(Telefon)</th>
 						<th>Entschuldigt(Schriftlich)</th>
 						<th>Attest</th>
+						<th></th>
+					</tr>
+					<tr>
+						<td><input style="width: 110px" type="text" id="txtNewAbsenceBegin" onblur="dateValidation(this); recalcDuration();"/></td>
+						<td><input style="width: 110px" type="text" id="txtNewAbsenceEnd" onblur="dateValidation(this); recalcDuration();"/></td>
+						<td><input style="width: 50px" type="text" readonly="readonly" id="txtNewAbsenceDuration" /></td>
+						<td align="center"><input type="checkbox" id="chkNewAbsenceExcusedByPhone" /></td>
+						<td align="center"><input type="checkbox" id="chkNewAbsenceExcusedByEmail" /></td>
+						<td align="center"><input type="checkbox" id="chkNewAbsenceCertificate" /></td>
+						<td><input type="button" style="width: 30px" value="+" onclick="saveAbsence()" /></td>
 					</tr>
 					<%
-						SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 						for(Absence absence:curStudent.getAbsence())
 						{
-							out.write("<tr>\n");
+							out.write("<tr id=\"abs_" + absence.getId() + "\">\n");
 							out.write("	<td>\n");
-							out.write("		<label><nobr>" + formatter.format(absence.getStart()) + "</nobr></label>");
+							out.write("		<label><nobr>" + absenceFormatter.format(absence.getStart()) + "</nobr></label>");
 							out.write("	</td>\n");
 							out.write("	<td>\n");
-							out.write("		<label><nobr>" + formatter.format(absence.getEnd()) + "</nobr></label>");
+							out.write("		<label><nobr>" + absenceFormatter.format(absence.getEnd()) + "</nobr></label>");
 							out.write("	</td>\n");
 							out.write("	<td align=\"center\">\n");
-							out.write("		<label>" + DateHelper.DateDiffDays(absence.getStart(), absence.getEnd()) + "</label>");
+							out.write("		<label>" + (DateHelper.DateDiffDays(absence.getStart(), absence.getEnd()) + 1)	 + "</label>");
 							out.write("	</td>\n");
 							out.write("	<td align=\"center\">\n");
 							out.write("		<input  disabled=disabled type=\"checkbox\" " + (absence.getExcusedByPhone() ? "checked=\"checked\"" : "") + " />");
@@ -392,12 +570,15 @@
 							out.write("	<td align=\"center\">\n");
 							out.write("		<input disabled=disabled type=\"checkbox\" " + (absence.getCertificate() ? "checked=\"checked\"" : "") + " />");
 							out.write("	</td>\n");
+							out.write("	<td align=\"center\">\n");
+							out.write("		<input style=\"width: 30px\" type=\"button\" value=\"-\" onclick=\"deleteAbsence(" + absence.getId() + ")\" />");
+							out.write("	</td>\n");
 							out.write("</tr>");
 						}
 					%>
 				</table>
 			</div>
-			<div id="tab4" style="width: 90%">
+			<div id="tab4" style="width: 90%; display: none">
 				<table style="width: 90%;" border="1">
 					<tr>
 						<th>Beginn</th>
@@ -405,25 +586,37 @@
 						<th>Dauer</th>
 						<th>Beschreibung</th>
 						<th>Zählt</th>
+						<th></th>
+					</tr>
+					<tr>
+						<td><input style="width: 180px" type="text" id="txtNewDelayBegin" onblur="dateTimeValidation(this); recalcDelayDuration();"/></td>
+						<td><input style="width: 180px" type="text" id="txtNewDelayEnd" onblur="dateTimeValidation(this); recalcDelayDuration();"/></td>
+						<td><input style="width: 50px" type="text" readonly="readonly" id="txtNewDelayDuration" /></td>
+						<td><input type="text" id="chkNewDelayDescription" style="width: 150px"/></td>
+						<td align="center"><input type="checkbox" id="chkNewDelayValid" /></td>
+						<td><input type="button" style="width: 30px" value="+" onclick="saveDelay()" /></td>
 					</tr>
 					<%
 						for(Delay delay:curStudent.getDelays())
 						{
 							out.write("<tr>\n");
 							out.write("	<td>\n");
-							out.write("		<label><nobr>" + formatter.format(delay.getStart()) + "</nobr></label>");
+							out.write("		<label><nobr>" + delayFormatter.format(delay.getStart()) + "</nobr></label>");
 							out.write("	</td>\n");
 							out.write("	<td>\n");
-							out.write("		<label><nobr>" + formatter.format(delay.getEnd()) + "</nobr></label>");
+							out.write("		<label><nobr>" + delayFormatter.format(delay.getEnd()) + "</nobr></label>");
 							out.write("	</td>\n");
 							out.write("	<td align=\"center\">\n");
-							out.write("		<label>" + DateHelper.DateDiffDays(delay.getStart(), delay.getEnd()) + "</label>");
+							out.write("		<label>" + (DateHelper.DateDiff(delay.getStart(), delay.getEnd()) / 1000 / 60) + "</label>");
 							out.write("	</td>\n");
 							out.write("	<td align=\"center\">\n");
 							out.write("		<label>" + delay.getDescription() + "</label>");
 							out.write("	</td>\n");
 							out.write("	<td align=\"center\">\n");
 							out.write("		<input  disabled=disabled type=\"checkbox\" " + (delay.getValid() ? "checked=\"checked\"" : "") + " />");
+							out.write("	</td>\n");
+							out.write("	<td align=\"center\">\n");
+							out.write("		<input style=\"width: 30px\" type=\"button\" value=\"-\" onclick=\"deleteDelay(" + delay.getId() + ")\" />");
 							out.write("	</td>\n");
 							out.write("</tr>");
 						}

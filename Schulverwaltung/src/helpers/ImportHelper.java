@@ -147,7 +147,7 @@ public class ImportHelper {
 				student.setJobId(jobId);
 				Typification typification = new Typification();
 				typification
-						.setDescription(sheet.getCell(123, i).getContents());
+						.setDescription(sheet.getCell(124, i).getContents());
 				typification.addToDb();
 
 				if (!student.getName().isEmpty()

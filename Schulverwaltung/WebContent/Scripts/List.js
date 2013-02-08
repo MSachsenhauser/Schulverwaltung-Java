@@ -12,14 +12,14 @@ $k(document).ready(function(){
 			{
 			if(openDetails)
 				{
-					var studentId = this.id;
+					var id = this.id;
 					curRow = this;
 					$k("#dialog").dialog({
 				        autoOpen: true,
 				        resizable: false,
 				        title: elementName + " bearbeiten",
 				        modal: false, width: dialogWidth, height: dialogHeight        });
-					$k("#dialogTarget").attr("src", detailFileName + "?Id=" + studentId); 
+					$k("#dialogTarget").attr("src", detailFileName + "?Id=" + id); 
 				}
 			});
 	$k("#btnNew").click(function()
@@ -28,6 +28,7 @@ $k(document).ready(function(){
 			        autoOpen: true,
 			        resizable: false,
 			        title: elementName + " anlegen",
+			        close: reload,
 			        modal: false, width: dialogWidth, height: dialogHeight        });
 				$k("#dialogTarget").attr("src",detailFileName + "?Id=-1"); 
 			});
@@ -36,7 +37,9 @@ $k(document).ready(function(){
 function closeDialog()
 {
 	$k("#dialog").dialog('close');
-	$k("#dialogTarget").attr("src", detailFileName + "?Id=-1"); 
+	$k("#dialogTarget").attr("src", detailFileName + "?Id=-1");
+	document.getElementById("NeedSort").value = 0;
+	setTimeout("reload(null)", 500);
 }
 
 var deletableIds = new Array();
@@ -58,6 +61,17 @@ function checkDeleteEnty(ctrl)
 						}
 				}
 		}
+}
+
+function closeWithOpenEdit(id)
+{
+	alert("test");
+	$k("#dialog").dialog({
+        autoOpen: true,
+        resizable: false,
+        title: elementName + " bearbeiten",
+        modal: false, width: dialogWidth, height: dialogHeight        });
+	$k("#dialogTarget").attr("src", detailFileName + "?Id=" + id); 
 }
 
 function deleteEntries()

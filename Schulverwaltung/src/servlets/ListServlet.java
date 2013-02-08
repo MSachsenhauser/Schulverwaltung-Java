@@ -9,32 +9,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import elements.IDatabaseObject;
-
+import database.Error;
 
 	public class ListServlet<T extends IDatabaseObject<T>> extends HttpServlet{
 
 		private static final long serialVersionUID = 1L;
-		private String oldSortKey;
+		private Class<T> currentClass;
 		
+		private ArrayList<String> filterFields;
+		private Boolean needSort = false;
+		private String oldSortKey;
+		private ArrayList<String> orderFields;
 		private String pageName;
 		private String tableName;
-		private ArrayList<String> orderFields;
-		private ArrayList<String> filterFields;
-		private Class<T> currentClass;
-		private Boolean needSort = false;
 		
 		public ListServlet() {
 	        super();
 	    }
-		
-		public void Setup(Class<T> currentClass, String pageName, String tableName, ArrayList<String> orderFields, ArrayList<String> filterFields)
-		{
-			this.currentClass = currentClass;
-	        this.pageName = pageName;
-	        this.tableName = tableName;
-	        this.orderFields = orderFields;
-	        this.filterFields = filterFields;
-		}
 		
 		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			request.setCharacterEncoding("UTF-8");
@@ -81,7 +72,7 @@ import elements.IDatabaseObject;
 				}
 				catch(Exception ex)
 				{
-					ex.printStackTrace();
+					Error.out(ex);
 				}
 			}
 
@@ -91,5 +82,14 @@ import elements.IDatabaseObject;
 		
 		public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			this.doGet(request, response);
+		}
+		
+		public void Setup(Class<T> currentClass, String pageName, String tableName, ArrayList<String> orderFields, ArrayList<String> filterFields)
+		{
+			this.currentClass = currentClass;
+	        this.pageName = pageName;
+	        this.tableName = tableName;
+	        this.orderFields = orderFields;
+	        this.filterFields = filterFields;
 		}
 }

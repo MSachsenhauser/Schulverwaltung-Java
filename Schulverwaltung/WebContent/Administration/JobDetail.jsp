@@ -7,8 +7,8 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script src="Scripts/jquery.js"></script>
-    <script src="Scripts/jquery-ui.js"></script>	
+    <script src="../Scripts/jquery.js"></script>
+    <script src="../Scripts/jquery-ui.js"></script>	
     <script type="text/javascript" src="../Scripts/Detail.js"></script>
     <script type="text/javascript" src="../Scripts/Validation.js"></script>
 </head>

@@ -6,12 +6,25 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script src="Scripts/jquery.js"></script>
-    <script src="Scripts/jquery-ui.js"></script>	
+    <script src="../Scripts/jquery.js"></script>
+    <script src="../Scripts/jquery-ui.js"></script>	
     <script type="text/javascript" src="../Scripts/Detail.js"></script>
     <script type="text/javascript" src="../Scripts/Validation.js"></script>
 </head>
 <body>
+<script type="text/javascript">
+    $(document).ready(function()
+    		{
+    	alert("Test");
+    			$("#form").submit(function()
+    					{
+    						alert("test");
+    						parent.closeDialog();
+    						this.submit();
+    					});
+    		}
+    );
+    </script>
 <%
 		int id = Integer.parseInt(request.getParameter("Id"));
 		Religion curReligion = new Religion().setId(id);
@@ -21,7 +34,7 @@
 		}
 		String readonly = curReligion.getDisableflag()  > 0 ? "readonly=readonly" : "";
 	%>
-	<form id="form" method="Post" action="../RoomDetailServlet">
+	<form id="form" method="Post" action="../ReligionDetailServlet">
 	<input type="hidden" name="Id" value="<%= curReligion.getId() %>" />
 	<input type="hidden" name="DisableFlag" value="<%= curReligion.getDisableflag() %>" />
 	<table>
@@ -36,7 +49,7 @@
 				<label>Fach: </label>
 			</td>
 			<td>
-				<select <%=readonly%> name="SubjectId" style="width: 200%">
+				<select <%=readonly%> name="SubjectId" style="width: 100%">
 					<option value="-1"></option>
 					<%
 						for(Subject subject:ElementLists.getSubjects())

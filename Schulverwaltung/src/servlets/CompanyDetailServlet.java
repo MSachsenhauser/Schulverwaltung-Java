@@ -11,51 +11,55 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import elements.Religion;
-import elements.Student;
+import database.Error;
+import elements.Company;
+import elements.Exam;
+import elements.Mark;
 
-
-@WebServlet("/ReligionDetailServlet")
-public class ReligionDetailServlet extends HttpServlet {
+/**
+ * Servlet implementation class CompanyDetailServlet
+ */
+@WebServlet("/CompanyDetailServlet")
+public class CompanyDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     private HttpServletRequest request;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReligionDetailServlet() {
+    public CompanyDetailServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		this.request = request;
-		int Id = Integer.parseInt(request.getParameter("Id"));
-		Religion curReligion = new Religion().setId(Id);
-		curReligion.setDescription(this.getParamValue("Description"))
-		.setSubjectId(Integer.parseInt(getParamValue("SubjectId")))
-		.setDisableflag(Integer.parseInt(getParamValue("DisableFlag")));
-
-		if(curReligion.getId() == -1)
-		{
-			curReligion.addToDb();
+		int id = Integer.parseInt(request.getParameter("Id"));
+		Company curCompany = new Company().setId(id);
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+		try {
+			curCompany.setDisableflag(Integer.parseInt(this.getParamValue("DisableFlag")));
+			curCompany.setName(this.getParamValue("Name"));
+			curCompany.setPhone(this.getParamValue("Phone"));
+			curCompany.setCity(this.getParamValue("City"));
+			curCompany.setStreet(this.getParamValue("Street"));
+			curCompany.setPlz(this.getParamValue("Plz"));
+			if(curCompany.getId() == -1)
+			{
+				curCompany.addToDb();
+			}
+			else
+			{
+				curCompany.save();
+			}
+			RequestDispatcher view = request.getRequestDispatcher("CompanyDetail.jsp?Id=" + curCompany.getId());
+			view.forward(request, response);
+		} catch (Exception e) {
+			Error.out(e);
 		}
-		else
-		{
-			curReligion.save();
-		}
-		RequestDispatcher view = request.getRequestDispatcher("Administration/ReligionDetail.jsp?Id=" + curReligion.getId());
-		view.forward(request, response);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		this.doGet(request, response);
 	}
 	

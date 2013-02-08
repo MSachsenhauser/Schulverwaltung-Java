@@ -8,80 +8,14 @@ import database.Error;
 
 
 public class Group implements IDatabaseObject<Group>{
-	private int id = -1;
 	private String description = "";
-	private int timetableId = -1;
 	private int disableflag = -1;
-	private int gradeId = -1;
-	private ArrayList<GroupSubject> subjects = new ArrayList<GroupSubject>();
 	private Grade grade = null;
-	public ArrayList<Student> getStudents() {
-		return students;
-	}
-	public Group setStudents(ArrayList<Student> students) {
-		this.students = students;
-		return this;
-	}
-	
-	public Grade getGrade()
-	{
-		if(this.grade == null)
-		{
-			this.grade = new Grade().setId(this.getGradeId()).load();
-		}
-		
-		return this.grade;
-	}
-	
-	public ArrayList<GroupSubject> getSubjects()
-	{
-		return this.subjects;
-	}
-	
-	public Group setSubjects(ArrayList<GroupSubject> subjects)
-	{
-		this.subjects = subjects;
-		return this;
-	}
-
+	private int gradeId = -1;
+	private int id = -1;
 	private ArrayList<Student> students = new ArrayList<Student>();
-	
-	public int getGradeId() {
-		return gradeId;
-	}
-	public Group setGradeId(int gradeId) {
-		this.gradeId = gradeId;
-		this.grade = null;
-		return this;
-	}
-	public int getId() {
-		return id;
-	}
-	public Group setId(int id) {
-		this.id = id;
-		return this;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public Group setDescription(String description) {
-		this.description = description;
-		return this;
-	}
-	public int getTimetableId() {
-		return timetableId;
-	}
-	public Group setTimetableId(int timetableId) {
-		this.timetableId = timetableId;
-		return this;
-	}
-	public int getDisableflag() {
-		return disableflag;
-	}
-
-	public void setDisableflag(int disableflag) {
-		this.disableflag = disableflag;
-	}
+	private ArrayList<GroupSubject> subjects = new ArrayList<GroupSubject>();
+	private int timetableId = -1;
 	@Override
 	public void addToDb() {
 		try(Database db = new Database())
@@ -117,34 +51,42 @@ public class Group implements IDatabaseObject<Group>{
 		}
 		
 	}
-	@Override
-	public void removeFromDb() {
-		try (Database db = new Database())
-		{
-			db.NoQuery("UPDATE gradeGroup SET Disableflag = 1 WHERE Id = ?", this.getId());
-		}
-		catch(Exception ex)
-		{
-			Error.out(ex);
-		}
+	
+	public String getDescription() {
+		return description;
 	}
-	@Override
-	public void save() {
-		try(Database db = new Database())
+	
+	public int getDisableflag() {
+		return disableflag;
+	}
+	
+	public Grade getGrade()
+	{
+		if(this.grade == null)
 		{
-			db.NoQuery("update gradeGroup set description = ?,timetableId = ?,disableflag = ? where id = ?",
-					this.getDescription(),
-					this.getTimetableId(),
-					this.getDisableflag(),
-					this.getId());
-			
+			this.grade = new Grade().setId(this.getGradeId()).load();
 		}
-		catch(Exception ex)
-		{
-			Error.out(ex);
-		}
+		
+		return this.grade;
 	}
 
+	public int getGradeId() {
+		return gradeId;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public ArrayList<Student> getStudents() {
+		return students;
+	}
+	public ArrayList<GroupSubject> getSubjects()
+	{
+		return this.subjects;
+	}
+	public int getTimetableId() {
+		return timetableId;
+	}
 	@Override
 	public Group load() {
 		// TODO Auto-generated method stub
@@ -180,6 +122,64 @@ public class Group implements IDatabaseObject<Group>{
 		{
 			Error.out(ex);
 		}
+		return this;
+	}
+	@Override
+	public void removeFromDb() {
+		try (Database db = new Database())
+		{
+			db.NoQuery("UPDATE gradeGroup SET Disableflag = 1 WHERE Id = ?", this.getId());
+		}
+		catch(Exception ex)
+		{
+			Error.out(ex);
+		}
+	}
+	@Override
+	public void save() {
+		try(Database db = new Database())
+		{
+			db.NoQuery("update gradeGroup set description = ?,timetableId = ?,disableflag = ? where id = ?",
+					this.getDescription(),
+					this.getTimetableId(),
+					this.getDisableflag(),
+					this.getId());
+			
+		}
+		catch(Exception ex)
+		{
+			Error.out(ex);
+		}
+	}
+	public Group setDescription(String description) {
+		this.description = description;
+		return this;
+	}
+	public void setDisableflag(int disableflag) {
+		this.disableflag = disableflag;
+	}
+
+	public Group setGradeId(int gradeId) {
+		this.gradeId = gradeId;
+		this.grade = null;
+		return this;
+	}
+	public Group setId(int id) {
+		this.id = id;
+		return this;
+	}
+	public Group setStudents(ArrayList<Student> students) {
+		this.students = students;
+		return this;
+	}
+	public Group setSubjects(ArrayList<GroupSubject> subjects)
+	{
+		this.subjects = subjects;
+		return this;
+	}
+
+	public Group setTimetableId(int timetableId) {
+		this.timetableId = timetableId;
 		return this;
 	}
 }

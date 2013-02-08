@@ -7,17 +7,17 @@ public interface IDatabaseObject<T> {
 	 * */
 	void addToDb();
 
+	T load();
+
 	/**
 	 * Methode zum Löschen aus der Datenbank
 	 * */
 	void removeFromDb();
-
+	
 	/**
 	 * Methode zum Aktualisieren in der Datenbank
 	 * */
 	void save();
-	
-	T load();
 	
 	T setId(int id);
 }

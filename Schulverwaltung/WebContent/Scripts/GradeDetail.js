@@ -49,11 +49,14 @@ function addStudents()
 			if(option.selected)
 			{
 				groupStudents.push(selectedGroup + ";" + option.value);
+				groupStudentNames.push(option.text);
 				classMember.options.add(option);
 			}
 		}
 	}
 }
+
+var groupStudentNames = new Array();
 
 function removeStudents()
 {
@@ -72,6 +75,7 @@ function removeStudents()
 					if(groupStudents[j] == selectedGroup + ";" + option.value)
 					{
 						groupStudents.splice(j, 1);
+						groupStudentNames.remove(groupStudentNames[j]);
 					}
 				}
 				
@@ -91,8 +95,20 @@ function onLoad()
 		{
 			var option = classMember.options[i];
 			groupStudents.push(selectedGroup + ";" + option.value);
+			groupStudentNames.push(option.text);
 		}
 	}
+}
+
+function openGradeAverage()
+{
+	var gradeId = document.getElementById("Id").value;
+	$("#dialog").dialog({
+        autoOpen: true,
+        resizable: false,
+        title: "Klassendurchschnitt",
+        modal: false, width: 500, height: 300 });
+	$("#dialogTarget").attr("src","GradeAverage.jsp?Id=" + gradeId); 
 }
 
 function onSave()
@@ -110,6 +126,7 @@ function loadGroupStudents()
 function insertGroupStudents(result)
 {
 	var students = result.split("|");
+	var groupId = document.getElementById("lstGroups").value;
 	var classMember = document.getElementById("lstClassMember");
 	classMember.options.length = 0;
 	for(var i = 0; i < students.length; i++)
@@ -118,6 +135,18 @@ function insertGroupStudents(result)
 		if(student[0] != null && student[1] != null)
 		{
 			classMember.options.add(new Option(student[0] + ": " + student[1], student[0]));
+		}
+	}
+	
+	for(var j = 0; j < groupStudents.length; j++)
+	{
+		var student = groupStudents[j].split(";");
+		if(student[0] == groupId)
+		{
+			if(student[0] != null && student[1] != null)
+			{
+				classMember.options.add(new Option(groupStudentNames[j], student[0]));
+			}
 		}
 	}
 	

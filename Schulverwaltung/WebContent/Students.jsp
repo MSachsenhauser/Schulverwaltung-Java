@@ -98,26 +98,26 @@
 					<%
 						ArrayList<Student> students = (ArrayList<Student>)request.getAttribute("List");
 						out.write("	<table class=\"DetailList\" border=1>\n");
-						out.write("		<thead style=\"background-color: white\">");
-						out.write("			<tr>");
-						out.write("				<td style=\"width: 50px\" class=\"DetailHeader\">&nbsp;</td>");
-						out.write("				<td style=\"width: 100px\" class=\"DetailHeader\" onclick=\"SetSortKey(0)\">Id</td>");
-						out.write("				<td style=\"width: 400px\" class=\"DetailHeader\" onclick=\"SetSortKey(1)\">Vorname</td>");
-						out.write("				<td style=\"width: 100%\" class=\"DetailHeader\" onclick=\"SetSortKey(2)\">Nachname</td>");
-						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(3)\">Klasse</td>");
-						out.write("			</tr>");
-						out.write("		</thead>");
-						out.write("		<tbody>");
+						out.write("		<thead style=\"background-color: white\">\n");
+						out.write("			<tr>\n");
+						out.write("				<td style=\"background-color: lightBlue;\"></td>\n");
+						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(0)\">Id</td>\n");
+						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(1)\">Vorname</td>\n");
+						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(2)\">Nachname</td>\n");
+						out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(3)\">Klasse</td>\n");
+						out.write("			</tr>\n");
+						out.write("		</thead>\n");
+						out.write("		<tbody>\n");
 						if(students != null && students.size() > 0)
 						{
 							for(Student student:students)
 							{
 								out.write("		<tr class=\"DetailEntry\" id=\"" + student.getId() + "\">\n");
-								out.write("			<td><input type=\"checkbox\" onclick=\"checkDeleteEnty(this);\"/></td>\n");
-								out.write("			<td onclick=\"openDetails=true;\">" + student.getId() + "</td>\n");
-								out.write("			<td onclick=\"openDetails=true;\">" + student.getFirstname() + "</td>\n");
+								out.write("			<td style=\"width: 20px\"><input type=\"checkbox\" onclick=\"checkDeleteEnty(this);\"/></td>\n");
+								out.write("			<td style=\"width: 50px\" onclick=\"openDetails=true;\">" + student.getId() + "</td>\n");
+								out.write("			<td style=\"width: 250px\" onclick=\"openDetails=true;\">" + student.getFirstname() + "</td>\n");
 								out.write("			<td onclick=\"openDetails=true;\">" + student.getName() + "</td>\n");
-								out.write("			<td onclick=\"openDetails=true;\">" + student.getGrade().getDescription() + "</td>\n");
+								out.write("			<td style=\"width: 150px\" onclick=\"openDetails=true;\">" + student.getGrade().getDescription() + "</td>\n");
 								out.write("		</tr>\n");
 							}
 						}

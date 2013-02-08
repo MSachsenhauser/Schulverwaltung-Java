@@ -15,16 +15,15 @@
     <script language="javascript" type="text/javascript" src="Scripts/Ajax.js"></script>
 	<script language="javascript" type="text/javascript" src="Scripts/List.js"></script>
 	<script language="javascript" type="text/javascript">
-		detailFileName = "Administration/GradeDetail.jsp";
-		deleteServlet = "deleteGrades";
-		deleteText = "Möchten Sie die ausgewählten Klassen wirklich entfernen?";
-		elementName = "Klasse";
-		dialogHeight = 500;
+		detailFileName = "Administration/CompanyDetail.jsp";
+		deleteServlet = "deleteCompany";
+		deleteText = "Möchten Sie die ausgewählten Firmen wirklich entfernen?";
+		elementName = "Firma";
 	</script>
 <link href="Styles/Default.css" rel="stylesheet" type="text/css"/>
 </head>
 <body class="TabItem">
-<div id="dialog" title="Jobs" style="display: none; height: 100%; width: 100%">
+<div id="dialog" title="Firmen" style="display: none; height: 100%; width: 100%">
    <iframe id="dialogTarget" style="height: 100%; width: 100%; border: none;"></iframe>
 </div>
 <%
@@ -47,7 +46,7 @@
 					   Boolean.parseBoolean(request.getParameter("ShowDisabled")) : 
 					   false;
 %>
-<form action="GradeServlet" method="post">
+<form action="CompanyServlet" method="post">
 	<input type="hidden" id="SortKey" name="SortKey" />
 	<input type="hidden" id="NeedSort" name="NeedSort" value="0" />
 							<div style="background: lightBlue; width: 100%;">
@@ -77,28 +76,28 @@
 							<br/>
        				 		<div style="background: lightBlue; width: 100%; height: 100%; overflow: auto">
 								<%
-									ArrayList<Grade> grades = (ArrayList<Grade>)request.getAttribute("List");
+									ArrayList<Company> companies = (ArrayList<Company>)request.getAttribute("List");
 									out.write("	<table class=\"DetailList\" border=1>\n");
 									out.write("		<thead style=\"background-color: lightBlue\">");
 									out.write("			<tr>");
 									out.write("				<td>&nbsp;</td>");
 									out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(0)\">Id</td>");
-									out.write("				<td class=\"DetailHeader\" style=\"width: 99%\" onclick=\"SetSortKey(1)\">Bezeichnung</td>");
-									out.write("				<td class=\"DetailHeader\" style=\"width: 99%\" onclick=\"SetSortKey(2)\">Lehrer</td>");
-									out.write("				<td class=\"DetailHeader\" style=\"width: 99%\" onclick=\"SetSortKey(3)\">Raum</td>");
+									out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(1)\">Name</td>");
+									out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(2)\">Street</td>");
+									out.write("				<td class=\"DetailHeader\" onclick=\"SetSortKey(3)\">City</td>");
 									out.write("			</tr>");
 									out.write("		</thead>");
 									out.write("		<tbody>");
-									if(grades != null && grades.size() > 0)
+									if(companies != null && companies.size() > 0)
 									{
-										for(Grade grade:grades)
+										for(Company company:companies)
 										{
-											out.write("		<tr class=\"DetailEntry\" id=\"" + grade.getId() + "\">\n");
+											out.write("		<tr class=\"DetailEntry\" id=\"" + company.getId() + "\">\n");
 											out.write("			<td style=\"width: 50px\"><input type=\"checkbox\" onclick=\"checkDeleteEnty(this);\"/></td>\n");
-											out.write("			<td style=\"width: 100px\" onclick=\"openDetails=true;\">" + grade.getId() + "</td>\n");
-											out.write("			<td style=\"width: 100%\" onclick=\"openDetails=true;\">" + grade.getDescription() + "</td>\n");
-											out.write("			<td style=\"width: 100%\" onclick=\"openDetails=true;\">" + grade.getTeacher().getName() + "</td>\n");
-											out.write("			<td style=\"width: 100%\" onclick=\"openDetails=true;\">" + grade.getRoom().getNumber() + "</td>\n");
+											out.write("			<td style=\"width: 50px\" onclick=\"openDetails=true;\">" + company.getId() + "</td>\n");
+											out.write("			<td onclick=\"openDetails=true;\">" + company.getName() + "</td>\n");
+											out.write("			<td onclick=\"openDetails=true;\"><nobr>" + company.getStreet() + "</nobr></td>\n");
+											out.write("			<td onclick=\"openDetails=true;\"><nobr>" + company.getCity() + "</nobr></td>\n");
 											out.write("		</tr>\n");
 										}
 									}

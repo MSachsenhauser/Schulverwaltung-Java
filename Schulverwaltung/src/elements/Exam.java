@@ -10,6 +10,7 @@ import database.Error;
 
 public class Exam implements IDatabaseObject<Exam>{
 	private Date announceDate = new Date();
+	private String description ="";
 	private int disableflag = -1;
 	private Date executionDate = new Date();
 	private GroupSubject groupSubject = new GroupSubject();
@@ -23,7 +24,9 @@ public class Exam implements IDatabaseObject<Exam>{
 	private double minPoints4 = -1;
 	private double minPoints5 = -1;
 	private MarkType type = null;
+
 	private int typeid = -1;
+
 	@Override
 	public void addToDb() 
 	{
@@ -41,10 +44,10 @@ public class Exam implements IDatabaseObject<Exam>{
 			
 			this.setId(id);
 
-			db.NoQuery("INSERT INTO exam(Id,typeid,executionDate, group2subjectId, announceDate, maxpoints, minPoints1," +
+			db.NoQuery("INSERT INTO exam(Id,typeid, description, executionDate, group2subjectId, announceDate, maxpoints, minPoints1," +
 					   " minPoints2, minPoints3, minPoints4, minPoints5,  disableflag)" +
-					   " values(?,?,?,?,?,?,?,?,?,?,?,0)",
-					   this.getId(), this.getTypeId(), this.getExecutionDate(), this.getGroupSubjectId(), 
+					   " values(?,?,?,?,?,?,?,?,?,?,?,?,0)",
+					   this.getId(), this.getTypeId(), this.getDescription(), this.getExecutionDate(), this.getGroupSubjectId(), 
 					   this.getAnnounceDate(), this.getMaxPoints(), this.getMinPoints1(), 
 					   this.getMinPoints2(), this.getMinPoints3(), this.getMinPoints4(), this.getMinPoints5());
 			
@@ -60,11 +63,9 @@ public class Exam implements IDatabaseObject<Exam>{
 			Error.out(ex);
 		}
 	}
-	
 	public Date getAnnounceDate() {
 		return announceDate;
 	}
-	
 	public double getAvarage()
 	{
 		double result = 0;
@@ -80,10 +81,14 @@ public class Exam implements IDatabaseObject<Exam>{
 		return result;
 	}
 	
+	public String getDescription() {
+		return description;
+	}
+	
 	public int getDisableflag() {
 		return disableflag;
 	}
-
+	
 	public Date getExecutionDate() {
 		return executionDate;
 	}
@@ -147,10 +152,11 @@ public class Exam implements IDatabaseObject<Exam>{
 	public double getMinPoints4() {
 		return minPoints4;
 	}
-	
+
 	public double getMinPoints5() {
 		return minPoints5;
 	}
+	
 	public int getTypeId() {
 		this.type = null;
 		return typeid;
@@ -164,6 +170,7 @@ public class Exam implements IDatabaseObject<Exam>{
 			{
 				this.setExecutionDate(result.getDate("executionDate"));
 				this.setAnnounceDate(result.getDate("announceDate"));
+				this.setDescription(result.getString("description"));
 				this.setGroupSubjectId(result.getInt("group2subjectId"));
 				this.setTypeId(result.getInt("typeId"));
 				this.setDisableflag(result.getInt("disableflag"));
@@ -204,8 +211,9 @@ public class Exam implements IDatabaseObject<Exam>{
 	public void save() {
 		try(Database db = new Database())
 		{
-			db.NoQuery("update exam set executionDate = ?, announceDate = ?,group2subjectId = ?, typeId = ?, maxpoints = ?, minpoints1 = ?, minpoints2 = ?, minpoints3 = ?, minpoints4 = ?, minpoints5 = ?, disableflag  = ? where id = ?",
+			db.NoQuery("update exam set executionDate = ?, description =?, announceDate = ?,group2subjectId = ?, typeId = ?, maxpoints = ?, minpoints1 = ?, minpoints2 = ?, minpoints3 = ?, minpoints4 = ?, minpoints5 = ?, disableflag  = ? where id = ?",
 					this.getExecutionDate(),
+					this.getDescription(),
 					this.getAnnounceDate(),
 					this.getGroupSubjectId(),
 					this.getTypeId(),
@@ -236,9 +244,12 @@ public class Exam implements IDatabaseObject<Exam>{
 			Error.out(ex);
 		}
 	}
-	
 	public void setAnnounceDate(Date announceDate) {
 		this.announceDate = announceDate;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public void setDisableflag(int disableflag) {
